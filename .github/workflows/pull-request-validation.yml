@@ -1,0 +1,77 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+
+jobs:
+  repository-hygiene:
+    name: repository-hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate whitespace and file paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "origin/${{ github.base_ref }}...HEAD"
+          if git ls-files | grep -E '(^|/)(\.env($|\.)|.*\.tfstate($|\.)|.*\.tfvars$)' | grep -vE '\.example\.tfvars$'; then
+            echo "A prohibited environment, state, or populated Terraform variable file is tracked."
+            exit 1
+          fi
+
+      - name: Scan for common credential patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -nEI 'AKIA[0-9A-Z]{16}|aws_secret_access_key[[:space:]]*=|BEGIN[[:space:]]+(RSA|OPENSSH|EC)[[:space:]]+PRIVATE[[:space:]]+KEY'; then
+            echo "A common credential pattern was detected."
+            exit 1
+          fi
+
+      - name: Validate internal Markdown links and Mermaid fences
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import sys
+
+          markdown_files = [Path("README.md"), *Path("docs").rglob("*.md")]
+          errors = []
+          link_pattern = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
+
+          for path in markdown_files:
+              if not path.exists():
+                  continue
+              content = path.read_text(encoding="utf-8")
+              if content.count("```mermaid") != content.count("```mermaid\n"):
+                  errors.append(f"{path}: malformed Mermaid fence")
+              if content.count("```") % 2:
+                  errors.append(f"{path}: unclosed code fence")
+              for target in link_pattern.findall(content):
+                  if target.startswith(("http://", "https://", "mailto:", "#")):
+                      continue
+                  target_path = target.split("#", 1)[0]
+                  if not target_path:
+                      continue
+                  if not (path.parent / target_path).resolve().exists():
+                      errors.append(f"{path}: missing internal link target {target}")
+
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          PY

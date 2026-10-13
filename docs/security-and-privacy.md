@@ -8,6 +8,12 @@ All UUIDs, meter indexes, prices, contracts, sites, and customer relationships a
 
 The planned Lake Formation model separates three roles. Ingestion writes landing data only. Transformation reads landing data and writes Iceberg tables. Analysts read approved gold tables through Athena only.
 
+## Demonstration isolation
+
+Every taggable demonstration resource uses `Project = aws-lakehouse-platform`, `Environment = demo`, `ManagedBy = terraform`, a unique `DemoId`, `AutoCleanup = true`, and an `ExpiresAt` timestamp. Terraform state is isolated per demonstration.
+
+The automatic cleanup process uses that state as its scope. It verifies the tags and demonstration identifier before destruction and has IAM permissions limited to Lakehouse resource names, prefixes, and ARNs. It must not discover or act on unrelated resources in the AWS account.
+
 ## Repository safety
 
 Credentials, static access keys, account identifiers, Terraform state, populated variable files, private bucket names, unreviewed logs, and local paths are excluded from version control. Terraform examples use placeholders only. CI will include secret detection before public publication.

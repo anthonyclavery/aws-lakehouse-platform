@@ -5,6 +5,9 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from lakehouse_platform.generator import GeneratorConfig, build_reference_records, iter_consumption_indexes, write_initial_batch
+from lakehouse_platform.incremental import generate_incremental_batch
+from lakehouse_platform.late_events import generate_exception_event
+from lakehouse_platform.processing import process_indexes
 
 
 class GeneratorTests(unittest.TestCase):
@@ -45,6 +48,45 @@ class GeneratorTests(unittest.TestCase):
     def test_sites_cannot_be_fewer_than_customers(self):
         with self.assertRaises(ValueError):
             build_reference_records(GeneratorConfig(customers=5, sites=4, include_indexes=False))
+
+    def test_incremental_batch_continues_from_the_latest_index(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            initial = root / "initial"
+            write_initial_batch(GeneratorConfig(
+                customers=1, sites=1, seed=3, output_dir=initial,
+                as_of=datetime(2026, 1, 3, tzinfo=UTC),
+            ))
+            manifest = generate_incremental_batch(initial, root / "incremental", datetime(2026, 1, 4, tzinfo=UTC))
+            self.assertGreater(manifest["record_counts"]["consumption_index"], 0)
+
+    def test_late_and_corrected_events_are_versioned_and_traceable(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            initial = root / "initial"
+            write_initial_batch(GeneratorConfig(
+                customers=1, sites=1, seed=5, output_dir=initial,
+                as_of=datetime(2026, 1, 3, tzinfo=UTC),
+            ))
+            received_at = datetime(2026, 1, 5, tzinfo=UTC)
+            generate_exception_event(initial, root / "late", "late", received_at)
+            generate_exception_event(initial, root / "correction", "correction", received_at)
+            late = (root / "late" / "late_consumption_index.jsonl").read_text()
+            correction = (root / "correction" / "correction_consumption_index.jsonl").read_text()
+            self.assertIn('"source_version": 1', late)
+            self.assertIn('"source_version": 2', correction)
+
+    def test_processor_deduplicates_a_correction_and_derives_intervals(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            initial = root / "initial"
+            write_initial_batch(GeneratorConfig(customers=1, sites=1, seed=5, output_dir=initial,
+                as_of=datetime(2026, 1, 3, tzinfo=UTC)))
+            correction = root / "correction"
+            generate_exception_event(initial, correction, "correction", datetime(2026, 1, 5, tzinfo=UTC))
+            result = process_indexes([initial, correction])
+            self.assertGreater(len(result["consumption_intervals"]), 0)
+            self.assertTrue(any(row["source_version"] == 2 for row in result["validated_indexes"]))
 
 
 if __name__ == "__main__":

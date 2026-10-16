@@ -56,9 +56,23 @@ The two planned benchmarks measure partition pruning and the effect of Iceberg c
 
 See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology.md](docs/benchmark-methodology.md).
 
+## Local quick start
+
+The local foundation has no third-party runtime dependency and does not access AWS.
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install --editable .
+python -m unittest discover -s tests -v
+python scripts/generate_initial_data.py --customers 4 --sites 8 --output-dir artifacts/example
+```
+
+Generated batches use newline-delimited JSON. They are intentionally ignored by Git and can be regenerated from the seed recorded in their manifest. The default command generates the documented 100-customer, 200-site scenario. Use `--without-indexes` to inspect only the reference flows without generating historical indexes.
+
 ## Project status
 
-Design phase. The business model and public documentation are being reviewed before implementation starts. No AWS deployment, benchmark result, or cost claim has been made yet.
+Local foundation in progress. It currently provides deterministic synthetic initial-batch generation and tests for cumulative-index derivation. No AWS deployment, benchmark result, or cost claim has been made yet.
 
 ## Documentation
 

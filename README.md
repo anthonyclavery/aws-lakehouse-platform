@@ -70,6 +70,8 @@ python scripts/generate_initial_data.py --customers 4 --sites 8 --output-dir art
 
 Generated batches use newline-delimited JSON. They are intentionally ignored by Git and can be regenerated from the seed recorded in their manifest. The default command generates the documented 100-customer, 200-site scenario. Use `--without-indexes` to inspect only the reference flows without generating historical indexes.
 
+`scripts/run_local_silver.py` is a local business-rule oracle. The production-target Silver implementation is [jobs/silver_process_indexes.py](jobs/silver_process_indexes.py), an AWS Glue PySpark job that will be connected to S3 and Iceberg by Terraform in a later phase.
+
 ## Project status
 
 Local foundation in progress. It currently provides deterministic synthetic initial-batch generation and tests for cumulative-index derivation. No AWS deployment, benchmark result, or cost claim has been made yet.

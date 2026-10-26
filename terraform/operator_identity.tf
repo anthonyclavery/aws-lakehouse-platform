@@ -1,6 +1,6 @@
 resource "aws_iam_user" "operator" {
   name          = var.operator_iam_user_name
-  force_destroy = false
+  force_destroy = true
   tags          = merge(local.required_tags, { Purpose = "LakehouseOperator" })
 }
 

@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "cleanup_build" {
     actions = [
       "s3:DeleteBucket",
       "s3:DeleteBucket*",
+      "s3:DeletePublicAccessBlock",
       "s3:DeleteObject",
       "s3:Get*",
       "s3:ListBucket"
@@ -76,6 +77,7 @@ data "aws_iam_policy_document" "cleanup_build" {
     actions = [
       "iam:DeleteRole",
       "iam:DeleteRolePolicy",
+      "iam:DeleteAccessKey",
       "iam:DeleteUser",
       "iam:DeleteUserPolicy",
       "iam:GetRole",
@@ -83,6 +85,7 @@ data "aws_iam_policy_document" "cleanup_build" {
       "iam:GetUser",
       "iam:GetUserPolicy",
       "iam:ListRolePolicies",
+      "iam:ListAccessKeys",
       "iam:ListUserPolicies"
     ]
     resources = [

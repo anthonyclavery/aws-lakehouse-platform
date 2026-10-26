@@ -4,9 +4,10 @@ variable "aws_region" {
 }
 
 variable "aws_profile" {
-  description = "AWS CLI profile used by Terraform. The dedicated profile is used after bootstrap."
+  description = "Optional AWS CLI profile. Omit it when Terraform runs with an IAM role, such as CodeBuild."
   type        = string
-  default     = "lakehouse-deployer"
+  default     = null
+  nullable    = true
 }
 
 variable "operator_iam_user_name" {

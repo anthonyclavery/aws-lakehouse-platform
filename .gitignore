@@ -16,3 +16,5 @@ artifacts/
 *.tfstate.*
 *.tfvars
 !*.example.tfvars
+**/.terraform/
+**/backend.hcl

@@ -10,7 +10,7 @@ The planned Lake Formation model separates three roles. Ingestion writes landing
 
 ## Demonstration isolation
 
-Every taggable demonstration resource uses `Project = aws-lakehouse-platform`, `Environment = demo`, `ManagedBy = terraform`, a unique `DemoId`, `AutoCleanup = true`, and an `ExpiresAt` timestamp. Terraform state is isolated per demonstration.
+Every taggable demonstration resource uses `Project = aws-lakehouse-platform`, `Environment = demo`, `ManagedBy = terraform`, a unique `DemoId`, `AutoCleanup = true`, and an `ExpiresAt` timestamp. The Terraform state bucket is the deliberate exception: it is private, encrypted, versioned, tagged with `Purpose = TerraformState`, and excluded from automatic cleanup so that the deployment can remain manageable. Its isolated bootstrap configuration uses a separate remote-state key.
 
 The automatic cleanup process uses that state as its scope. It verifies the tags and demonstration identifier before destruction and has IAM permissions limited to Lakehouse resource names, prefixes, and ARNs. It must not discover or act on unrelated resources in the AWS account.
 

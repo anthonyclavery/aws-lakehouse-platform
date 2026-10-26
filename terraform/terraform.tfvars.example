@@ -1,0 +1,4 @@
+aws_region = "eu-west-3"
+aws_profile = "lakehouse-deployer"
+demo_id    = "replace-me"
+expires_at = "2026-10-31T22:00:00Z"

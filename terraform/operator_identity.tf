@@ -1,6 +1,6 @@
 resource "aws_iam_user" "operator" {
   name          = var.operator_iam_user_name
-  force_destroy = false
+  force_destroy = true
   tags          = merge(local.required_tags, { Purpose = "LakehouseOperator" })
 }
 
@@ -81,9 +81,9 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Effect = "Allow"
         Action = [
           "codebuild:BatchGetProjects", "codebuild:CreateProject", "codebuild:DeleteProject", "codebuild:GetResourcePolicy", "codebuild:TagResource", "codebuild:UntagResource",
-          "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:DescribeLogGroups", "logs:PutRetentionPolicy", "logs:TagResource", "logs:UntagResource",
+          "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:PutRetentionPolicy", "logs:UntagResource",
           "scheduler:CreateSchedule", "scheduler:DeleteSchedule", "scheduler:GetSchedule", "scheduler:TagResource", "scheduler:UntagResource",
-          "iam:CreateRole", "iam:DeleteRole", "iam:DeleteRolePolicy", "iam:GetRole", "iam:GetRolePolicy", "iam:PassRole", "iam:PutRolePolicy", "iam:TagRole", "iam:UntagRole"
+          "iam:CreateRole", "iam:DeleteRole", "iam:DeleteRolePolicy", "iam:GetRole", "iam:GetRolePolicy", "iam:ListAttachedRolePolicies", "iam:ListRolePolicies", "iam:PassRole", "iam:PutRolePolicy", "iam:TagRole", "iam:UntagRole"
         ]
         Resource = [
           "arn:aws:codebuild:${var.aws_region}:${data.aws_caller_identity.current.account_id}:project/aws-lakehouse-platform-demo-cleanup",
@@ -92,6 +92,27 @@ resource "aws_iam_role_policy" "terraform_operator" {
           "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-build",
           "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-scheduler"
         ]
+      },
+      {
+        Sid      = "TagOnlyProjectCleanupLogGroup"
+        Effect   = "Allow"
+        Action   = ["logs:TagResource"]
+        Resource = ["*"]
+        Condition = {
+          StringEquals = {
+            "aws:RequestTag/Project"     = "aws-lakehouse-platform"
+            "aws:RequestTag/Environment" = "control-plane"
+            "aws:RequestTag/ManagedBy"   = "terraform"
+            "aws:RequestTag/Purpose"     = "TerraformState"
+            "aws:RequestTag/AutoCleanup" = "false"
+          }
+        }
+      },
+      {
+        Sid      = "ReadOnlyLogGroupDiscovery"
+        Effect   = "Allow"
+        Action   = ["logs:DescribeLogGroups", "logs:ListTagsForResource"]
+        Resource = ["*"]
       }
     ]
   })

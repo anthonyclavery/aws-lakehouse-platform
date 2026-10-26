@@ -75,6 +75,23 @@ resource "aws_iam_role_policy" "terraform_operator" {
           "iam:ListAttachedRolePolicies", "iam:ListAttachedUserPolicies", "iam:ListRolePolicies", "iam:ListUserPolicies"
         ]
         Resource = [aws_iam_user.operator.arn, aws_iam_role.terraform_operator.arn]
+      },
+      {
+        Sid    = "ManageOnlyProjectCleanupControlPlane"
+        Effect = "Allow"
+        Action = [
+          "codebuild:BatchGetProjects", "codebuild:CreateProject", "codebuild:DeleteProject", "codebuild:GetResourcePolicy", "codebuild:TagResource", "codebuild:UntagResource",
+          "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:DescribeLogGroups", "logs:PutRetentionPolicy", "logs:TagResource", "logs:UntagResource",
+          "scheduler:CreateSchedule", "scheduler:DeleteSchedule", "scheduler:GetSchedule", "scheduler:TagResource", "scheduler:UntagResource",
+          "iam:CreateRole", "iam:DeleteRole", "iam:DeleteRolePolicy", "iam:GetRole", "iam:GetRolePolicy", "iam:PassRole", "iam:PutRolePolicy", "iam:TagRole", "iam:UntagRole"
+        ]
+        Resource = [
+          "arn:aws:codebuild:${var.aws_region}:${data.aws_caller_identity.current.account_id}:project/aws-lakehouse-platform-demo-cleanup",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/aws-lakehouse-platform-demo-cleanup",
+          "arn:aws:scheduler:${var.aws_region}:${data.aws_caller_identity.current.account_id}:schedule/default/aws-lakehouse-platform-*-cleanup",
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-build",
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-scheduler"
+        ]
       }
     ]
   })

@@ -7,3 +7,5 @@ The account-specific backend settings are intentionally kept in the ignored `bac
 It creates an encrypted private S3 bucket and a Glue catalog database for one explicit demo identifier. Every taggable resource receives the project isolation tags defined in the repository security documentation.
 
 Copy `terraform.tfvars.example` to a local ignored `terraform.tfvars` only when an explicit AWS demonstration is approved. The example values are placeholders and are not a deployment instruction.
+
+The `bootstrap-state` configuration also defines the disabled-by-default cleanup control plane. It creates the one-time schedule only when explicit cleanup inputs are supplied. Its CodeBuild job verifies the destroy plan before applying it. See [the guarded cleanup design](../docs/automated-cleanup.md).

@@ -8,11 +8,6 @@ from typing import Any
 ALLOWED_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
-        "aws_iam_role.terraform_operator",
-        "aws_iam_role_policy.terraform_operator",
-        "aws_iam_user.operator",
-        "aws_iam_user_policy.operator_assume_project_role",
-        "aws_iam_user_policy.operator_self_manage_access_keys",
         "aws_s3_bucket.lakehouse",
         "aws_s3_bucket_public_access_block.lakehouse",
         "aws_s3_bucket_server_side_encryption_configuration.lakehouse",
@@ -23,8 +18,6 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
 TAGGABLE_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
-        "aws_iam_role.terraform_operator",
-        "aws_iam_user.operator",
         "aws_s3_bucket.lakehouse",
     }
 )

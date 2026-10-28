@@ -1,7 +1,11 @@
 resource "aws_iam_user" "operator" {
   name          = var.operator_iam_user_name
-  force_destroy = true
+  force_destroy = false
   tags          = merge(local.required_tags, { Purpose = "LakehouseOperator" })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 data "aws_iam_policy_document" "operator_assume_role" {
@@ -19,6 +23,10 @@ resource "aws_iam_role" "terraform_operator" {
   name               = "${local.operator_prefix}-terraform-operator"
   assume_role_policy = data.aws_iam_policy_document.operator_assume_role.json
   tags               = merge(local.required_tags, { Purpose = "LakehouseTerraformOperator" })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_iam_user_policy" "operator_assume_project_role" {
@@ -28,6 +36,10 @@ resource "aws_iam_user_policy" "operator_assume_project_role" {
     Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Action = ["sts:AssumeRole"], Resource = aws_iam_role.terraform_operator.arn }]
   })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_iam_user_policy" "operator_self_manage_access_keys" {
@@ -41,6 +53,10 @@ resource "aws_iam_user_policy" "operator_self_manage_access_keys" {
       Resource = aws_iam_user.operator.arn
     }]
   })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_iam_role_policy" "terraform_operator" {
@@ -116,4 +132,8 @@ resource "aws_iam_role_policy" "terraform_operator" {
       }
     ]
   })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }

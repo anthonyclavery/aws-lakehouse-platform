@@ -71,29 +71,6 @@ data "aws_iam_policy_document" "cleanup_build" {
     ]
   }
 
-  statement {
-    sid    = "DestroyOnlyDedicatedDemoIdentity"
-    effect = "Allow"
-    actions = [
-      "iam:DeleteRole",
-      "iam:DeleteRolePolicy",
-      "iam:DeleteAccessKey",
-      "iam:DeleteUser",
-      "iam:DeleteUserPolicy",
-      "iam:GetRole",
-      "iam:GetRolePolicy",
-      "iam:GetUser",
-      "iam:GetUserPolicy",
-      "iam:ListRolePolicies",
-      "iam:ListAccessKeys",
-      "iam:ListUserPolicies"
-    ]
-    resources = [
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-terraform-operator",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/lakehouse_user"
-    ]
-  }
-
 }
 
 resource "aws_iam_role_policy" "cleanup_build" {

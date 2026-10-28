@@ -82,7 +82,7 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Action = [
           "codebuild:BatchGetProjects", "codebuild:CreateProject", "codebuild:DeleteProject", "codebuild:GetResourcePolicy", "codebuild:TagResource", "codebuild:UntagResource",
           "logs:CreateLogGroup", "logs:DeleteLogGroup", "logs:PutRetentionPolicy", "logs:UntagResource",
-          "scheduler:CreateSchedule", "scheduler:DeleteSchedule", "scheduler:GetSchedule", "scheduler:TagResource", "scheduler:UntagResource",
+          "scheduler:CreateSchedule", "scheduler:DeleteSchedule", "scheduler:GetSchedule", "scheduler:TagResource", "scheduler:UntagResource", "scheduler:UpdateSchedule",
           "iam:CreateRole", "iam:DeleteRole", "iam:DeleteRolePolicy", "iam:GetRole", "iam:GetRolePolicy", "iam:ListAttachedRolePolicies", "iam:ListRolePolicies", "iam:PassRole", "iam:PutRolePolicy", "iam:TagRole", "iam:UntagRole"
         ]
         Resource = [

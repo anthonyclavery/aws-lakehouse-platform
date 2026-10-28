@@ -8,4 +8,4 @@ It creates an encrypted private S3 bucket and a Glue catalog database for one ex
 
 Copy `terraform.tfvars.example` to a local ignored `terraform.tfvars` only when an explicit AWS demonstration is approved. The example values are placeholders and are not a deployment instruction.
 
-The `bootstrap-state` configuration also defines the disabled-by-default cleanup control plane. It creates the one-time schedule only when explicit cleanup inputs are supplied. Its CodeBuild job verifies the destroy plan before applying it. See [the guarded cleanup design](../docs/automated-cleanup.md).
+The `bootstrap-state` configuration also defines the disabled-by-default cleanup control plane. It creates a daily 20:00 `Europe/Paris` schedule only when explicit cleanup inputs are supplied. Its CodeBuild job verifies the destroy plan before applying it. See [the guarded cleanup design](../docs/automated-cleanup.md).

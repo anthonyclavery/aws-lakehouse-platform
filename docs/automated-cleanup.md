@@ -4,13 +4,13 @@
 
 The cleanup control plane is deliberately separate from the demonstration state. It contains a private state bucket, a CodeBuild project, a dedicated build role, a Scheduler execution role, and a short-retention CloudWatch log group. These resources are not data-plane demonstration resources and remain after a successful cleanup so that the result can be reviewed.
 
-## One-time invocation
+## Daily invocation
 
-The schedule is disabled by default. For an approved demonstration, its operator supplies a `cleanup_demo_id`, the exact UTC expiry value, and a one-time `cleanup_schedule_at` value in the `Europe/Paris` time zone. The schedule invokes the cleanup CodeBuild project once with no retry.
+The schedule is disabled by default. For an approved demonstration, its operator supplies a `cleanup_demo_id` and the exact UTC expiry value. When enabled, it invokes the cleanup CodeBuild project every day at 20:00 in the `Europe/Paris` time zone, with no retry.
 
-The build obtains the `control-plane/terraform.tfstate` key only. It generates a destroy plan and passes its JSON form to the local guard. The guard requires the exact expected resource addresses, deletion actions only, and the expected `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. It rejects every other plan before Terraform can apply it.
+The build obtains the `control-plane/terraform.tfstate` key only. It generates a destroy plan and passes its JSON form to the local guard. The guard requires either an empty plan, or the exact expected resource addresses with deletion actions only and the expected `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. It rejects every other plan before Terraform can apply it.
 
-On successful destruction, the build deletes its own completed EventBridge Scheduler entry. If the build fails, the schedule remains visible for diagnosis; it does not silently retry or expand its scope.
+After a successful destruction, later daily runs produce an accepted no-op plan. If a build fails, the next daily run remains bounded by the same guard; it does not expand its scope.
 
 ## Activation checklist
 

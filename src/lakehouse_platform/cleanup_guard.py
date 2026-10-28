@@ -60,6 +60,9 @@ def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -
         delete_changes.append(change)
 
     deleted_addresses = {change["address"] for change in delete_changes}
+    if not deleted_addresses:
+        return
+
     if deleted_addresses != ALLOWED_DELETE_ADDRESSES:
         missing = sorted(ALLOWED_DELETE_ADDRESSES - deleted_addresses)
         unexpected = sorted(deleted_addresses - ALLOWED_DELETE_ADDRESSES)

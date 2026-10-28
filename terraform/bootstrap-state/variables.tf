@@ -17,7 +17,7 @@ variable "terraform_operator_role_name" {
 
 variable "cleanup_schedule_enabled" {
   type        = bool
-  description = "Whether to create the one-time EventBridge Scheduler cleanup invocation."
+  description = "Whether to create the daily EventBridge Scheduler cleanup invocation at 20:00 Europe/Paris."
   default     = false
 }
 
@@ -31,13 +31,6 @@ variable "cleanup_demo_id" {
 variable "cleanup_expires_at" {
   type        = string
   description = "Expiry timestamp expected by the cleanup build before destruction."
-  default     = null
-  nullable    = true
-}
-
-variable "cleanup_schedule_at" {
-  type        = string
-  description = "One-time local date and time in YYYY-MM-DDTHH:MM:SS format, evaluated in Europe/Paris."
   default     = null
   nullable    = true
 }

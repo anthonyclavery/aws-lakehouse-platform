@@ -94,12 +94,6 @@ data "aws_iam_policy_document" "cleanup_build" {
     ]
   }
 
-  statement {
-    sid       = "DeleteOnlyItsCompletedCleanupSchedule"
-    effect    = "Allow"
-    actions   = ["scheduler:DeleteSchedule"]
-    resources = ["arn:aws:scheduler:${var.aws_region}:${data.aws_caller_identity.current.account_id}:schedule/default/aws-lakehouse-platform-*-cleanup"]
-  }
 }
 
 resource "aws_iam_role_policy" "cleanup_build" {
@@ -172,9 +166,9 @@ resource "aws_iam_role_policy" "cleanup_scheduler" {
 
 resource "aws_scheduler_schedule" "demo_cleanup" {
   count                        = var.cleanup_schedule_enabled ? 1 : 0
-  description                  = "One-time guarded destruction for the named aws-lakehouse-platform demonstration."
+  description                  = "Daily guarded destruction for the named aws-lakehouse-platform demonstration."
   name                         = "aws-lakehouse-platform-${var.cleanup_demo_id}-cleanup"
-  schedule_expression          = "at(${var.cleanup_schedule_at})"
+  schedule_expression          = "cron(0 20 * * ? *)"
   schedule_expression_timezone = "Europe/Paris"
 
   flexible_time_window {
@@ -190,8 +184,7 @@ resource "aws_scheduler_schedule" "demo_cleanup" {
         { name = "DEMO_ID", value = var.cleanup_demo_id, type = "PLAINTEXT" },
         { name = "DEMO_EXPIRES_AT", value = var.cleanup_expires_at, type = "PLAINTEXT" },
         { name = "STATE_BUCKET", value = aws_s3_bucket.terraform_state.bucket, type = "PLAINTEXT" },
-        { name = "AWS_REGION", value = var.aws_region, type = "PLAINTEXT" },
-        { name = "CLEANUP_SCHEDULE_NAME", value = "aws-lakehouse-platform-${var.cleanup_demo_id}-cleanup", type = "PLAINTEXT" }
+        { name = "AWS_REGION", value = var.aws_region, type = "PLAINTEXT" }
       ]
     })
 
@@ -205,10 +198,9 @@ resource "aws_scheduler_schedule" "demo_cleanup" {
     precondition {
       condition = (
         can(regex("^[a-z0-9-]{3,32}$", var.cleanup_demo_id)) &&
-        can(regex("^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$", var.cleanup_schedule_at)) &&
         can(regex("^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$", var.cleanup_expires_at))
       )
-      error_message = "An enabled cleanup schedule requires a valid demo ID, local schedule time, and UTC expiry timestamp."
+      error_message = "An enabled cleanup schedule requires a valid demo ID and UTC expiry timestamp."
     }
   }
 }

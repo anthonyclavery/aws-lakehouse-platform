@@ -35,6 +35,9 @@ def approved_plan():
 
 
 class CleanupGuardTests(unittest.TestCase):
+    def test_accepts_empty_destroy_plan_as_an_idempotent_no_op(self):
+        validate_destroy_plan({"resource_changes": []}, DEMO_ID, EXPIRES_AT)
+
     def test_accepts_exact_expected_deletion_scope(self):
         validate_destroy_plan(approved_plan(), DEMO_ID, EXPIRES_AT)
 

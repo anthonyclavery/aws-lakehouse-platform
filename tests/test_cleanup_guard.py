@@ -49,6 +49,14 @@ class CleanupGuardTests(unittest.TestCase):
         with self.assertRaises(DestroyPlanRejected):
             validate_destroy_plan(plan, DEMO_ID, EXPIRES_AT)
 
+    def test_rejects_deletion_of_the_persistent_deployment_identity(self):
+        plan = approved_plan()
+        plan["resource_changes"].append(
+            {"address": "aws_iam_user.operator", "change": {"actions": ["delete"], "before": {}}}
+        )
+        with self.assertRaises(DestroyPlanRejected):
+            validate_destroy_plan(plan, DEMO_ID, EXPIRES_AT)
+
     def test_rejects_non_delete_action(self):
         plan = approved_plan()
         plan["resource_changes"][0]["change"]["actions"] = ["update"]

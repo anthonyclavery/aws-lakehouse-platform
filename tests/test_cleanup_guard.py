@@ -41,6 +41,15 @@ class CleanupGuardTests(unittest.TestCase):
     def test_accepts_exact_expected_deletion_scope(self):
         validate_destroy_plan(approved_plan(), DEMO_ID, EXPIRES_AT)
 
+    def test_accepts_a_tagged_subset_after_a_partial_cleanup_failure(self):
+        plan = approved_plan()
+        plan["resource_changes"] = [
+            change
+            for change in plan["resource_changes"]
+            if change["address"] == "aws_glue_catalog_database.lakehouse"
+        ]
+        validate_destroy_plan(plan, DEMO_ID, EXPIRES_AT)
+
     def test_rejects_unknown_address(self):
         plan = approved_plan()
         plan["resource_changes"].append(

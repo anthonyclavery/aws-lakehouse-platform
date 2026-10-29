@@ -32,7 +32,12 @@ def _tags(before: dict[str, Any]) -> dict[str, str]:
 
 
 def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -> None:
-    """Reject all plans except a complete deletion of the approved demo resources."""
+    """Reject plans that leave the approved demo deletion scope.
+
+    A previous cleanup can have removed a subset of data-plane resources before
+    an AWS-side failure. Accepting another safe subset makes cleanup idempotent
+    while the explicit allowlist keeps it fail-closed.
+    """
 
     changes = plan.get("resource_changes")
     if not isinstance(changes, list):
@@ -55,13 +60,6 @@ def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -
     deleted_addresses = {change["address"] for change in delete_changes}
     if not deleted_addresses:
         return
-
-    if deleted_addresses != ALLOWED_DELETE_ADDRESSES:
-        missing = sorted(ALLOWED_DELETE_ADDRESSES - deleted_addresses)
-        unexpected = sorted(deleted_addresses - ALLOWED_DELETE_ADDRESSES)
-        raise DestroyPlanRejected(
-            f"Cleanup scope is incomplete or unexpected. Missing={missing}; unexpected={unexpected}."
-        )
 
     for change in delete_changes:
         address = change["address"]

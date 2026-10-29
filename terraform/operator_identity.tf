@@ -84,6 +84,18 @@ resource "aws_iam_role_policy" "terraform_operator" {
         ]
       },
       {
+        Sid      = "ManageOnlyProjectGlueSilverJob"
+        Effect   = "Allow"
+        Action   = ["glue:CreateJob", "glue:DeleteJob", "glue:GetJob", "glue:TagResource", "glue:UntagResource", "glue:UpdateJob"]
+        Resource = ["arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-silver-process-indexes"]
+      },
+      {
+        Sid      = "ManageOnlyProjectJobArtifact"
+        Effect   = "Allow"
+        Action   = ["s3:DeleteObject", "s3:GetObject", "s3:PutObject"]
+        Resource = ["arn:aws:s3:::aws-lakehouse-platform-*/jobs/silver_process_indexes.py"]
+      },
+      {
         Sid    = "ReadOnlyProjectIdentity"
         Effect = "Allow"
         Action = [
@@ -106,7 +118,8 @@ resource "aws_iam_role_policy" "terraform_operator" {
           "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/aws-lakehouse-platform-demo-cleanup",
           "arn:aws:scheduler:${var.aws_region}:${data.aws_caller_identity.current.account_id}:schedule/default/aws-lakehouse-platform-*-cleanup",
           "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-build",
-          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-scheduler"
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-cleanup-scheduler",
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-glue-silver"
         ]
       },
       {

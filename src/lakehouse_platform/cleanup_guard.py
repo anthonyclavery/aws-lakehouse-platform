@@ -8,7 +8,9 @@ from typing import Any
 ALLOWED_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
+        "aws_glue_job.silver_process_indexes",
         "aws_s3_bucket.lakehouse",
+        "aws_s3_object.silver_process_indexes_script",
         "aws_s3_bucket_public_access_block.lakehouse",
         "aws_s3_bucket_server_side_encryption_configuration.lakehouse",
         "random_id.bucket_suffix",
@@ -18,6 +20,7 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
 TAGGABLE_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
+        "aws_glue_job.silver_process_indexes",
         "aws_s3_bucket.lakehouse",
     }
 )

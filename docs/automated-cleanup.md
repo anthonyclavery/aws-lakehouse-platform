@@ -8,6 +8,10 @@ The cleanup control plane is deliberately separate from the demonstration state.
 
 The schedule is disabled by default. For an approved demonstration, its operator supplies a `cleanup_demo_id` and the exact UTC expiry value. When enabled, it invokes the cleanup CodeBuild project every day at 20:00 in the `Europe/Paris` time zone, with no retry.
 
+## Manual invocation
+
+The CodeBuild project also stores the current approved demonstration parameters as non-secret environment defaults: project name, demonstration identifier, expiry timestamp, and the isolated state bucket. A manual build therefore uses the same guarded scope as the schedule without requiring console overrides. When a new demonstration replaces the current one, update the control plane first so its defaults and scheduled overrides remain aligned.
+
 The build obtains the `control-plane/terraform.tfstate` key only. It generates a targeted destroy plan for the data-plane bucket, its access and encryption configurations, the Glue database, and the random bucket suffix. The local guard requires either an empty plan, or exactly those resource addresses with deletion actions only and the expected `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. It rejects every other plan before Terraform can apply it.
 
 The dedicated deployment user, Terraform operator role, and their policies are persistent control-plane identities. They are never in the automatic cleanup scope and use `prevent_destroy`, so the next demonstration can be deployed with the same dedicated profile.

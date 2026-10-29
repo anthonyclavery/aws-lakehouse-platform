@@ -104,6 +104,30 @@ resource "aws_codebuild_project" "cleanup" {
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = false
     type                        = "LINUX_CONTAINER"
+
+    environment_variable {
+      name  = "PROJECT_NAME"
+      value = "aws-lakehouse-platform"
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "DEMO_ID"
+      value = coalesce(var.cleanup_demo_id, "")
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "DEMO_EXPIRES_AT"
+      value = coalesce(var.cleanup_expires_at, "")
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "STATE_BUCKET"
+      value = aws_s3_bucket.terraform_state.bucket
+      type  = "PLAINTEXT"
+    }
   }
 
   logs_config {

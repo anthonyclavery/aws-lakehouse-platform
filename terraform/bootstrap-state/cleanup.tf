@@ -48,12 +48,19 @@ data "aws_iam_policy_document" "cleanup_build" {
     sid    = "DestroyOnlyProjectDataPlaneS3"
     effect = "Allow"
     actions = [
+      "s3:AbortMultipartUpload",
       "s3:DeleteBucket",
       "s3:DeleteBucket*",
       "s3:DeletePublicAccessBlock",
       "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
       "s3:Get*",
-      "s3:ListBucket"
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListBucketVersions",
+      "s3:ListMultipartUploadParts",
+      "s3:PutBucketPublicAccessBlock",
+      "s3:PutEncryptionConfiguration"
     ]
     resources = [
       "arn:aws:s3:::aws-lakehouse-platform-*",
@@ -67,7 +74,8 @@ data "aws_iam_policy_document" "cleanup_build" {
     actions = ["glue:DeleteDatabase", "glue:GetDatabase", "glue:GetTags"]
     resources = [
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
-      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:database/aws_lakehouse_platform_*"
+      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:database/aws_lakehouse_platform_*",
+      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/aws_lakehouse_platform_*/*"
     ]
   }
 

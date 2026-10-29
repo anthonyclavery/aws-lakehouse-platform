@@ -12,6 +12,8 @@ The build obtains the `control-plane/terraform.tfstate` key only. It generates a
 
 The dedicated deployment user, Terraform operator role, and their policies are persistent control-plane identities. They are never in the automatic cleanup scope and use `prevent_destroy`, so the next demonstration can be deployed with the same dedicated profile.
 
+The cleanup role can remove current and versioned S3 objects, abort incomplete multipart uploads, and reset the bucket-level public-access and encryption configurations required by the Terraform provider before deleting the bucket. Its permissions remain restricted to project-prefixed S3 buckets and Glue databases.
+
 After a successful destruction, later daily runs produce an accepted no-op plan. If a build fails, the next daily run remains bounded by the same guard; it does not expand its scope.
 
 ## Activation checklist

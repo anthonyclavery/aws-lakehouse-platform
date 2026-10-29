@@ -32,3 +32,7 @@ python scripts/upload_landing_batch.py \
 ```
 
 Only synthetic batch files and their manifest are uploaded. The script does not accept credentials as command-line arguments and does not log credentials or account identifiers.
+
+## Explicit Silver execution
+
+After the Glue job and Iceberg tables have been provisioned, `scripts/run_silver_index_job.py` starts one named job run for one landed batch. `--wait` makes the script return a failure status when Glue reports a failed terminal state. It is an explicit demonstration command, not a scheduler.

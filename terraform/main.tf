@@ -26,6 +26,14 @@ resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
+resource "terraform_data" "cleanup_context" {
+  input = {
+    project    = "aws-lakehouse-platform"
+    demo_id    = var.demo_id
+    expires_at = var.expires_at
+  }
+}
+
 resource "aws_s3_bucket" "lakehouse" {
   bucket        = "${local.name_prefix}-${random_id.bucket_suffix.hex}"
   force_destroy = true

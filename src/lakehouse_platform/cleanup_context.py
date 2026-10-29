@@ -46,6 +46,8 @@ def derive_cleanup_context(state: dict[str, Any]) -> CleanupContext:
 
     attributes = instances[0].get("attributes")
     context = attributes.get("input") if isinstance(attributes, dict) else None
+    if isinstance(context, dict) and isinstance(context.get("value"), dict):
+        context = context["value"]
     if not isinstance(context, dict):
         raise CleanupContextRejected("Cleanup context resource has no input object.")
 

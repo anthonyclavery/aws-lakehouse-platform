@@ -75,7 +75,8 @@ data "aws_iam_policy_document" "cleanup_build" {
     resources = [
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:database/aws_lakehouse_platform_*",
-      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/aws_lakehouse_platform_*/*"
+      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/aws_lakehouse_platform_*/*",
+      "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:userDefinedFunction/aws_lakehouse_platform_*/*"
     ]
   }
 

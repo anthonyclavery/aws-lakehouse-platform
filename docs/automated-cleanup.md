@@ -10,7 +10,7 @@ The schedule is disabled by default. For an approved demonstration, its operator
 
 ## Manual invocation
 
-The CodeBuild project also stores the current approved demonstration parameters as non-secret environment defaults: project name, demonstration identifier, expiry timestamp, and the isolated state bucket. A manual build therefore uses the same guarded scope as the schedule without requiring console overrides. When a new demonstration replaces the current one, update the control plane first so its defaults and scheduled overrides remain aligned.
+The build derives its project name, demonstration identifier, expiry timestamp, and isolated state bucket from the account, region, and persistent `terraform_data.cleanup_context` record in the isolated demonstration state. A manual build therefore uses the same guarded scope as the schedule without requiring console overrides. The context record survives data-plane cleanup so later daily runs can safely validate an empty plan.
 
 The build obtains the `control-plane/terraform.tfstate` key only. It generates a targeted destroy plan for the data-plane bucket, its access and encryption configurations, the Glue database, and the random bucket suffix. The local guard requires either an empty plan, or exactly those resource addresses with deletion actions only and the expected `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. It rejects every other plan before Terraform can apply it.
 

@@ -52,6 +52,8 @@ The project intentionally models energy cost only. It does not calculate a compl
 
 The local-first workflow validates contracts, business rules, and deterministic scenarios before AWS resources are used. The AWS demonstration then loads synthetic batches, runs incremental Glue jobs, queries results with Athena, proves restricted analyst access, and injects selected late or corrected events.
 
+Bronze ingestion is performed by a versioned Python script, not an orchestration service. It verifies the generated manifest and object checksums before publishing an immutable S3 batch. See [Bronze landing ingestion](docs/landing-ingestion.md).
+
 The two planned benchmarks measure partition pruning and the effect of Iceberg compaction on fragmented files. Results will be added only after real execution and verification.
 
 See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology.md](docs/benchmark-methodology.md).

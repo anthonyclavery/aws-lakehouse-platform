@@ -7,6 +7,13 @@ data "aws_iam_policy_document" "cleanup_build_assume_role" {
       identifiers = ["codebuild.amazonaws.com"]
     }
   }
+
+  statement {
+    sid       = "DestroyOnlyProjectGlueJobs"
+    effect    = "Allow"
+    actions   = ["glue:DeleteJob", "glue:GetJob"]
+    resources = ["arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-silver-process-indexes"]
+  }
 }
 
 resource "aws_iam_role" "cleanup_build" {

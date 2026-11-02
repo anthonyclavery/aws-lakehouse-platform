@@ -27,6 +27,8 @@ phases:
         -out=/tmp/destroy.tfplan -var="aws_region=${AWS_REGION}"
         -var="demo_id=${DEMO_ID}" -var="expires_at=${DEMO_EXPIRES_AT}"
         -target=aws_glue_catalog_database.lakehouse
+        -target=aws_athena_workgroup.demo
+        -target=aws_iam_role_policy.glue_silver
         -target=aws_glue_job.silver_process_indexes
         -target=aws_glue_job.silver_process_reference
         -target=aws_s3_object.silver_process_reference_script

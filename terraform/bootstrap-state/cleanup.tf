@@ -22,6 +22,18 @@ resource "aws_cloudwatch_log_group" "cleanup_build" {
 
 data "aws_iam_policy_document" "cleanup_build" {
   statement {
+    sid       = "RemoveOnlyGlueExecutionInlinePolicy"
+    effect    = "Allow"
+    actions   = ["iam:GetRole", "iam:GetRolePolicy", "iam:DeleteRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies"]
+    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-demo-glue-silver"]
+  }
+  statement {
+    sid       = "DestroyOnlyProjectAthenaWorkgroups"
+    effect    = "Allow"
+    actions   = ["athena:GetWorkGroup", "athena:DeleteWorkGroup", "athena:ListTagsForResource"]
+    resources = ["arn:aws:athena:${var.aws_region}:${data.aws_caller_identity.current.account_id}:workgroup/aws-lakehouse-platform-*"]
+  }
+  statement {
     sid       = "DestroyOnlyProjectGlueJobs"
     effect    = "Allow"
     actions   = ["glue:DeleteJob", "glue:GetJob", "glue:GetTags"]

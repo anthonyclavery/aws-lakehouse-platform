@@ -17,6 +17,8 @@ def approved_plan():
     changes = []
     for address in sorted(ALLOWED_DELETE_ADDRESSES):
         before = {}
+        if address == "aws_iam_role_policy.glue_silver":
+            before = {"role":"aws-lakehouse-platform-demo-glue-silver", "name":"aws-lakehouse-platform-demo-glue-silver"}
         if address in TAGGABLE_DELETE_ADDRESSES:
             before["tags_all"] = {
                 "Project": "aws-lakehouse-platform",
@@ -35,6 +37,16 @@ def approved_plan():
 
 
 class CleanupGuardTests(unittest.TestCase):
+    def test_glue_execution_policy_requires_exact_role_and_policy_name(self):
+        expected = "aws-lakehouse-platform-demo-glue-silver"
+        for before in ({}, {"role":"unrelated", "name":expected}, {"role":expected, "name":"unrelated"}):
+            with self.subTest(before=before), self.assertRaises(DestroyPlanRejected):
+                validate_destroy_plan({"resource_changes":[{"address":"aws_iam_role_policy.glue_silver", "change":{"actions":["delete"],"before":before}}]}, DEMO_ID, EXPIRES_AT)
+
+    def test_athena_workgroup_requires_demo_tags(self):
+        with self.assertRaises(DestroyPlanRejected):
+            validate_destroy_plan({"resource_changes":[{"address":"aws_athena_workgroup.demo", "change":{"actions":["delete"],"before":{}}}]}, DEMO_ID, EXPIRES_AT)
+
     def test_reference_job_and_script_cannot_be_deleted_without_tags(self):
         for change in approved_plan()["resource_changes"]:
             if change["address"] in {"aws_glue_job.silver_process_reference", "aws_s3_object.silver_process_reference_script"}:
@@ -44,6 +56,18 @@ class CleanupGuardTests(unittest.TestCase):
 
     def test_accepts_empty_destroy_plan_as_an_idempotent_no_op(self):
         validate_destroy_plan({"resource_changes": []}, DEMO_ID, EXPIRES_AT)
+
+    def test_accepts_real_terraform_12_targeted_noop_without_resource_changes(self):
+        validate_destroy_plan({"format_version":"1.2", "applyable":False,
+                               "complete":False, "errored":False}, DEMO_ID, EXPIRES_AT)
+
+    def test_missing_resource_changes_requires_explicit_nonapplyable_nonerror_metadata(self):
+        valid = {"format_version":"1.2", "applyable":False, "complete":False, "errored":False}
+        invalid = [{}, {**valid,"applyable":True}, {**valid,"errored":True}, {**valid,"complete":None},
+                   {**valid,"format_version":"unknown"}, {**valid,"resource_changes":None}]
+        for plan in invalid:
+            with self.subTest(plan=plan), self.assertRaises(DestroyPlanRejected):
+                validate_destroy_plan(plan, DEMO_ID, EXPIRES_AT)
 
     def test_accepts_exact_expected_deletion_scope(self):
         validate_destroy_plan(approved_plan(), DEMO_ID, EXPIRES_AT)

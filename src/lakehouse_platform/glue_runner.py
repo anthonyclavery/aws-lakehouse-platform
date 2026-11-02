@@ -89,7 +89,8 @@ def run_glue_jobs(glue, invocations, *, wait_seconds=3600, poll_seconds=15):
 
     runs = []
     for job_name, arguments in invocations:
-        run_id = glue.start_job_run(JobName=job_name, Arguments={f"--{k}": v for k, v in arguments.items()})["JobRunId"]
+        run_id = glue.start_job_run(JobName=job_name, JobRunQueuingEnabled=True,
+                                    Arguments={f"--{k}": v for k, v in arguments.items()})["JobRunId"]
         print(f"Started {job_name}: {run_id}", flush=True)
         deadline = time.monotonic() + wait_seconds
         while True:

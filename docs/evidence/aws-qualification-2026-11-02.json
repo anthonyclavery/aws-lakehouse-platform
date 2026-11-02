@@ -1,0 +1,299 @@
+{
+  "date": "2026-11-02",
+  "region": "eu-west-3",
+  "fixture": {
+    "customers": 5,
+    "sites": 10,
+    "generator_seed": 20261016,
+    "synthetic_as_of": "2026-10-16T00:00:00Z",
+    "contracts": {
+      "BASE": 5,
+      "WEEKEND": 4,
+      "PEAK_OFF_PEAK": 1
+    },
+    "initial_indexes": 53900,
+    "incremental_indexes": 125,
+    "late_events": 1,
+    "higher_version_corrections": 1
+  },
+  "runtime": {
+    "glue_version": "5.0",
+    "worker_type": "G.1X",
+    "workers_per_job": 2,
+    "athena_engine": "3"
+  },
+  "scenarios": {
+    "initial": {
+      "products": {
+        "daily_site_energy": {
+          "expected_rows": 4943,
+          "actual_rows": 4943,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "4d1744e9fedb96b54933ee157ec62b71bf1ce74476c714dbdca6da7ca5474a26",
+          "actual_sha256": "4d1744e9fedb96b54933ee157ec62b71bf1ce74476c714dbdca6da7ca5474a26",
+          "passed": true
+        },
+        "daily_customer_energy": {
+          "expected_rows": 2307,
+          "actual_rows": 2307,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "bf11c9ae911424aad6b621eab9fe60b09b0485792082e71ef11d8f0922dcf25f",
+          "actual_sha256": "bf11c9ae911424aad6b621eab9fe60b09b0485792082e71ef11d8f0922dcf25f",
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "expected_rows": 81,
+          "actual_rows": 81,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "087dc263a799faff84f858d037477ab9f17ee5ac2d68b9d253c1cc1b26225c35",
+          "actual_sha256": "087dc263a799faff84f858d037477ab9f17ee5ac2d68b9d253c1cc1b26225c35",
+          "passed": true
+        }
+      },
+      "bytes_scanned": 745992,
+      "engine_execution_ms": 2894,
+      "passed": true
+    },
+    "incremental": {
+      "products": {
+        "daily_site_energy": {
+          "expected_rows": 4953,
+          "actual_rows": 4953,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "ef62837eaaf53cad07e95a3fad614397bbfb123797c13065c066c52258846d19",
+          "actual_sha256": "ef62837eaaf53cad07e95a3fad614397bbfb123797c13065c066c52258846d19",
+          "passed": true
+        },
+        "daily_customer_energy": {
+          "expected_rows": 2312,
+          "actual_rows": 2312,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "00d0bff6f1ea806b6d9267c88ff85bb2d341b4225facd627f9f3b6a00506cc65",
+          "actual_sha256": "00d0bff6f1ea806b6d9267c88ff85bb2d341b4225facd627f9f3b6a00506cc65",
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "expected_rows": 81,
+          "actual_rows": 81,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "actual_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "passed": true
+        }
+      },
+      "bytes_scanned": 747073,
+      "engine_execution_ms": 7281,
+      "passed": true
+    },
+    "exceptions": {
+      "products": {
+        "daily_site_energy": {
+          "expected_rows": 4953,
+          "actual_rows": 4953,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "cb76a1c60d9a94939440d35fe839ff0b618aea374a2b5b9bd4402d1ebda91835",
+          "actual_sha256": "cb76a1c60d9a94939440d35fe839ff0b618aea374a2b5b9bd4402d1ebda91835",
+          "passed": true
+        },
+        "daily_customer_energy": {
+          "expected_rows": 2312,
+          "actual_rows": 2312,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "a585ded7ba7b28ca0ec69fa77cc24990c0aa9da5af3348d3ab9c1f6d703ec73b",
+          "actual_sha256": "a585ded7ba7b28ca0ec69fa77cc24990c0aa9da5af3348d3ab9c1f6d703ec73b",
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "expected_rows": 81,
+          "actual_rows": 81,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "actual_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "passed": true
+        }
+      },
+      "bytes_scanned": 747070,
+      "engine_execution_ms": 3893,
+      "passed": true
+    },
+    "replay": {
+      "products": {
+        "daily_site_energy": {
+          "expected_rows": 4953,
+          "actual_rows": 4953,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "cb76a1c60d9a94939440d35fe839ff0b618aea374a2b5b9bd4402d1ebda91835",
+          "actual_sha256": "cb76a1c60d9a94939440d35fe839ff0b618aea374a2b5b9bd4402d1ebda91835",
+          "passed": true
+        },
+        "daily_customer_energy": {
+          "expected_rows": 2312,
+          "actual_rows": 2312,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "a585ded7ba7b28ca0ec69fa77cc24990c0aa9da5af3348d3ab9c1f6d703ec73b",
+          "actual_sha256": "a585ded7ba7b28ca0ec69fa77cc24990c0aa9da5af3348d3ab9c1f6d703ec73b",
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "expected_rows": 81,
+          "actual_rows": 81,
+          "missing_groups": 0,
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "expected_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "actual_sha256": "8ceb886045cbc45ea0cd83161d758008cfa3cd50b9c45ae88f7a1642f92d24f1",
+          "passed": true
+        }
+      },
+      "bytes_scanned": 747070,
+      "engine_execution_ms": 2586,
+      "passed": true
+    }
+  },
+  "initial_silver": {
+    "actual": {
+      "quarantine": 0,
+      "indexes": 53900,
+      "intervals": 53890
+    },
+    "expected": {
+      "indexes": 53900,
+      "intervals": 53890,
+      "quarantine": 0
+    },
+    "passed": true,
+    "bytes_scanned": 0
+  },
+  "final_silver": {
+    "actual": {
+      "quarantine": 0,
+      "corrected_versions": 1,
+      "indexes": 54026,
+      "intervals": 54016,
+      "duplicate_index_keys": 0
+    },
+    "expected": {
+      "indexes": 54026,
+      "intervals": 54016,
+      "quarantine": 0,
+      "corrected_versions": 1,
+      "duplicate_index_keys": 0
+    },
+    "passed": true,
+    "bytes_scanned": 491275
+  },
+  "managed_glue_runs": {
+    "succeeded": 16,
+    "failed": 0,
+    "counts_by_scenario": {
+      "reference": 4,
+      "initial": 3,
+      "incremental": 3,
+      "exceptions": 3,
+      "replay": 3
+    },
+    "total_dpu_seconds": "4912.0"
+  },
+  "observed_changes": {
+    "incremental_changes_daily_product": true,
+    "exceptions_change_daily_product": true,
+    "replay_preserves_all_products": true
+  },
+  "glue_compute_estimate": {
+    "usd": "0.6004",
+    "usd_per_dpu_hour": "0.44",
+    "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSGlue/current/eu-west-3/index.json",
+    "scope": "Compute estimate only; excludes CodeBuild, S3, CloudWatch and Athena; not an invoice"
+  },
+  "cleanup": {
+    "successful_builds": 2,
+    "failed_attempts": 1,
+    "preflight_delete_count": 17,
+    "tested_source_revisions": [
+      "79a2d94124021689ef0aac2b6473670769bbe365",
+      "dc778e6899381a8d5c028f3bebc14b2e618fb846"
+    ],
+    "empty_repeat_succeeded": true,
+    "checks": {
+      "demo_bucket_absent": true,
+      "demo_database_absent": true,
+      "demo_job_1_absent": true,
+      "demo_job_2_absent": true,
+      "demo_job_3_absent": true,
+      "demo_job_4_absent": true,
+      "demo_workgroup_absent": true,
+      "deployment_user_preserved": true,
+      "deployment_role_preserved": true,
+      "glue_role_preserved": true,
+      "glue_execution_inline_policy_removed": true,
+      "versioned_state_bucket_preserved": true,
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true
+    }
+  },
+  "limits": [
+    "Synthetic small-fixture qualification, not a scaling benchmark",
+    "Full Gold snapshot rebuild and affected-meter Silver history recomputation",
+    "Shared calculator, not an independent pricing implementation",
+    "No separate analyst/Lake Formation denial qualification",
+    "Valid fixture has zero quarantined records; no managed negative-input quarantine scenario"
+  ]
+}

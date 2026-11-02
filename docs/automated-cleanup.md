@@ -12,13 +12,17 @@ The schedule is disabled by default. For an approved demonstration, its operator
 
 The build derives its project name, demonstration identifier, expiry timestamp, and isolated state bucket from the account, region, and persistent `terraform_data.cleanup_context` record in the isolated demonstration state. A manual build therefore uses the same guarded scope as the schedule without requiring console overrides. The context record survives data-plane cleanup so later daily runs can safely validate an empty plan.
 
-The build obtains the `control-plane/terraform.tfstate` key only. It generates a targeted destroy plan for the data-plane bucket, its access and encryption configurations, the Glue database, and the random bucket suffix. The local guard requires either an empty plan, or a subset of only those resource addresses with deletion actions and the expected `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. Accepting a subset preserves idempotence if an earlier run removed some approved resources before failing. It rejects every other plan before Terraform can apply it.
+The build obtains the `control-plane/terraform.tfstate` key only. It generates a targeted destroy plan for the data-plane bucket, its access and encryption configurations, the Glue database and four jobs, uploaded scripts, the Athena workgroup, and the random bucket suffix. The Glue execution inline policy is also removed because it references the disappearing bucket/database. The execution role itself remains.
+
+The local guard requires either an empty plan, or a subset of only approved addresses with deletion actions. Taggable resources require the exact `Project`, `Environment`, `DemoId`, `AutoCleanup`, and `ExpiresAt` tags. The untaggable execution inline policy instead requires both role and policy names to equal `aws-lakehouse-platform-demo-glue-silver`. No other IAM policy is accepted. Accepting a subset preserves idempotence if an earlier run removed some approved resources before failing. Every other plan is rejected before Terraform can apply it.
 
 The dedicated deployment user, Terraform operator role, and their policies are persistent control-plane identities. They are never in the automatic cleanup scope and use `prevent_destroy`, so the next demonstration can be deployed with the same dedicated profile.
 
-The cleanup role can remove current and versioned S3 objects, abort incomplete multipart uploads, and reset the bucket-level public-access and encryption configurations required by the Terraform provider before deleting the bucket. Its permissions remain restricted to project-prefixed S3 buckets and Glue databases.
+The cleanup role can remove current and versioned S3 objects, abort incomplete multipart uploads, and reset the bucket-level public-access and encryption configurations required by the Terraform provider before deleting the bucket. It can delete the project Glue jobs/database, project Athena workgroup and the exact Glue execution inline policy. IAM permissions for this policy are restricted to the Glue execution role; deployment identities remain outside the guard's deletion scope.
 
 After a successful destruction, later daily runs produce an accepted no-op plan. If a build fails, the next daily run remains bounded by the same guard; it does not expand its scope.
+
+Terraform JSON format 1.2 omits `resource_changes` for some no-op plans. The guard accepts this encoding only with explicit `applyable=false`, `errored=false` and a boolean `complete` field. A targeted plan may legitimately have `complete=false`. An absent change list without these markers, or an explicit null list, remains rejected. The live [qualification report](aws-qualification.md) records a full guarded destruction followed by a successful empty CodeBuild run.
 
 ## Activation checklist
 

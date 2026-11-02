@@ -70,7 +70,7 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Effect = "Allow"
         Action = [
           "s3:CreateBucket", "s3:DeleteBucket", "s3:Get*",
-          "s3:ListBucket", "s3:PutBucket*", "s3:DeleteBucket*"
+          "s3:ListBucket", "s3:PutBucket*", "s3:DeleteBucket*", "s3:PutEncryptionConfiguration"
         ]
         Resource = ["arn:aws:s3:::aws-lakehouse-platform-*"]
       },
@@ -105,6 +105,40 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Effect   = "Allow"
         Action   = ["s3:DeleteObject", "s3:GetObject", "s3:PutObject", "s3:GetObjectTagging", "s3:PutObjectTagging"]
         Resource = [for filename in ["silver_process_reference.py", "silver_process_indexes.py", "gold_price_intervals.py", "gold_aggregate_energy.py", "pricing.py", "gold_spark.py"] : "arn:aws:s3:::aws-lakehouse-platform-*/jobs/${filename}"]
+      },
+      {
+        Sid      = "IngestOnlyProjectLanding"
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject"]
+        Resource = ["arn:aws:s3:::aws-lakehouse-platform-*/landing/*"]
+      },
+      {
+        Sid      = "ReadOnlyProjectWarehouse"
+        Effect   = "Allow"
+        Action   = ["s3:GetObject"]
+        Resource = ["arn:aws:s3:::aws-lakehouse-platform-*/warehouse/*"]
+      },
+      {
+        Sid      = "ManageOnlyProjectAthenaResults"
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:AbortMultipartUpload"]
+        Resource = ["arn:aws:s3:::aws-lakehouse-platform-*/athena-results/*"]
+      },
+      {
+        Sid      = "ManageOnlyProjectAthena"
+        Effect   = "Allow"
+        Action   = ["athena:CreateWorkGroup", "athena:GetWorkGroup", "athena:UpdateWorkGroup", "athena:DeleteWorkGroup", "athena:TagResource", "athena:UntagResource", "athena:ListTagsForResource", "athena:StartQueryExecution", "athena:GetQueryExecution", "athena:GetQueryResults", "athena:StopQueryExecution"]
+        Resource = ["arn:aws:athena:${var.aws_region}:${data.aws_caller_identity.current.account_id}:workgroup/aws-lakehouse-platform-*"]
+      },
+      {
+        Sid    = "ReadOnlyProjectCatalogTables"
+        Effect = "Allow"
+        Action = ["glue:GetTable", "glue:GetTables", "glue:GetPartition", "glue:GetPartitions", "glue:BatchGetPartition"]
+        Resource = [
+          "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
+          "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:database/aws_lakehouse_platform_*",
+          "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/aws_lakehouse_platform_*/*"
+        ]
       },
       {
         Sid    = "ReadOnlyProjectIdentity"

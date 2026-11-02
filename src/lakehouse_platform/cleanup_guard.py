@@ -9,6 +9,8 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
         "aws_glue_job.silver_process_indexes",
+        "aws_glue_job.silver_process_reference",
+        "aws_s3_object.silver_process_reference_script",
         'aws_glue_job.gold["price"]',
         'aws_glue_job.gold["aggregate"]',
         'aws_s3_object.gold_script["price"]',
@@ -27,6 +29,8 @@ TAGGABLE_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
         "aws_glue_job.silver_process_indexes",
+        "aws_glue_job.silver_process_reference",
+        "aws_s3_object.silver_process_reference_script",
         'aws_glue_job.gold["price"]',
         'aws_glue_job.gold["aggregate"]',
         'aws_s3_object.gold_script["price"]',

@@ -19,6 +19,12 @@ The demonstration proves the pipeline with controlled synthetic data. It is not 
 | Run one benchmark | Measured report, not a projected claim |
 | Destroy the environment | Terraform destruction and post-destruction verification |
 
+## Available execution commands
+
+The reference stage has a [Terraform job and sequential launcher](glue-reference-job.md). Run it for all four files in an initial batch, or select the flows present in a partial correction. Then run `scripts/run_silver_index_job.py` for consumption indexes and `scripts/run_gold_jobs.py` for pricing and the three products. All job launches are explicit; local argument previews are available for reference and Gold runs.
+
+The planned flow above remains the target demonstration. Gold currently rebuilds the complete demo snapshot, and the AWS stages have not yet been qualified end to end. Bounded incremental refresh, analyst access checks and benchmarking remain outstanding. Follow [the Gold execution and failure contract](glue-gold-jobs.md) before publishing evidence.
+
 ## Evidence rules
 
 Every capture, log extract, query result, and benchmark report is reviewed before publication. It must contain only synthetic identifiers and must not expose an AWS account identifier, local path, credential, raw configuration value, or personally identifying information.

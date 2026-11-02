@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "cleanup_build" {
     sid       = "DestroyOnlyProjectGlueJobs"
     effect    = "Allow"
     actions   = ["glue:DeleteJob", "glue:GetJob", "glue:GetTags"]
-    resources = [for suffix in ["silver-process-indexes", "gold-price", "gold-aggregate"] : "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-${suffix}"]
+    resources = [for suffix in ["silver-process-reference", "silver-process-indexes", "gold-price", "gold-aggregate"] : "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-${suffix}"]
   }
   statement {
     sid       = "WriteOnlyCleanupLogs"

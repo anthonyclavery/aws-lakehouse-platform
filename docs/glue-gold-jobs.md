@@ -48,7 +48,7 @@ Supply the full initial/reference history and every applicable incremental/corre
 
 The project operator policy is extended only for the named Gold jobs and artifacts. Guarded cleanup includes their exact Terraform addresses and requires demo tags, including for the uploaded Gold objects. The cleanup role's job deletion statement belongs to its permission policy, not its trust policy. Apply the bootstrap permission update before relying on scheduled Gold cleanup; this PR does not deploy either Terraform root.
 
-After deployment, load all four Silver reference histories and process the Silver indexes first. The reference loader currently has a script but no provisioned Terraform job; provision/invoke it separately using the existing reference job documentation. Use the existing AWS profile configured to assume the project operator role, with the optional AWS Python dependency installed. Obtain job names and database from Terraform outputs, then run:
+After deployment, load all four Silver reference histories with the [provisioned reference job and sequential runner](glue-reference-job.md), then process the Silver indexes. Use the existing AWS profile configured to assume the project operator role, with the optional AWS Python dependency installed. Obtain job names and database from Terraform outputs, then run:
 
 ```bash
 .venv/bin/python scripts/run_gold_jobs.py --pricing-job DEMO_GOLD_PRICE_JOB --aggregate-job DEMO_GOLD_AGGREGATE_JOB --database demo_database --dry-run

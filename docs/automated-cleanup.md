@@ -22,6 +22,8 @@ The cleanup role can remove current and versioned S3 objects, abort incomplete m
 
 After a successful destruction, later daily runs produce an accepted no-op plan. If a build fails, the next daily run remains bounded by the same guard; it does not expand its scope.
 
+Terraform JSON format 1.2 omits `resource_changes` for some no-op plans. The guard accepts this encoding only with explicit `applyable=false`, `errored=false` and a boolean `complete` field. A targeted plan may legitimately have `complete=false`. An absent change list without these markers, or an explicit null list, remains rejected. The live [qualification report](aws-qualification.md) records a full guarded destruction followed by a successful empty CodeBuild run.
+
 ## Activation checklist
 
 The operator reviews the main Terraform plan and the bootstrap control-plane plan before applying either. The schedule is enabled only with the exact demonstration identifier and the matching expiry timestamp from the main deployment. The CodeBuild source is `main`, so the cleanup branch must be merged and its CI checks green before an AWS demonstration uses this mechanism.

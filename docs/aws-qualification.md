@@ -6,6 +6,25 @@ Qualification checks the deployed Glue/Iceberg pipeline against the local calcul
 
 It does not qualify a separate analyst identity or Lake Formation denial rules. The operational Terraform role can ingest landing objects, read warehouse objects and query the project catalog. That role is not the future Gold-only analyst role. Performance measurements on this small fixture are execution evidence, not a scaling benchmark. Silver currently recalculates the complete history of each affected meter; Gold rebuilds complete snapshots. This test does not demonstrate bounded backfill performance.
 
+## Measured qualification on 2 November 2026
+
+The [reviewed JSON evidence](evidence/aws-qualification-2026-11-02.json) records the live `eu-west-3` run with five synthetic customers, ten sites and all three contracts (5 BASE, 4 WEEKEND, 1 PEAK_OFF_PEAK). It contains no AWS account, bucket, database or query identifiers.
+
+| Snapshot | Daily site groups | Daily customer groups | Monthly customer groups | Athena/local result |
+| --- | ---: | ---: | ---: | --- |
+| Initial | 4,943 | 2,307 | 81 | Exact fingerprints; zero measure error |
+| Incremental | 4,953 | 2,312 | 81 | Exact fingerprints; zero measure error |
+| Late + corrected | 4,953 | 2,312 | 81 | Exact fingerprints; zero measure error |
+| Initial replay after corrections | 4,953 | 2,312 | 81 | Exact fingerprints; zero measure error |
+
+All 16 managed Glue runs succeeded. The initial 53,900 indexes produced 53,890 intervals. Adding 125 indexes, one late reading and one higher-version correction yielded 54,026 distinct index keys and 54,016 intervals. The correction remained at version 2 after replay. The valid fixture had zero quarantined records; this does not demonstrate managed negative-input quarantine behavior.
+
+Incremental and exception snapshots changed the daily product fingerprints, while replay left every corrected product fingerprint unchanged. The four three-product reconciliations scanned 2,987,205 bytes in total. These are measured scan bytes, not Athena billed bytes, which have minimum charging units.
+
+The first guarded CodeBuild run removed the 17 reviewed data-plane resources. Direct AWS checks confirmed absence of the bucket, database, four jobs, workgroup and execution inline policy. Deployment identities, the Glue role, versioned state bucket and cleanup context remained. The initial empty repeat exposed Terraform's omitted change-list encoding and failed closed; after the narrowly tested fix, CodeBuild repeated cleanup successfully with zero changes. Raw logs and plans remain private; source revisions and outcomes are in the evidence JSON. Control-plane resources and shared service logs are retained.
+
+Qualification also fixed the missing encryption permission, missing generated batch hash manifests, and the Glue capacity-release collision between sequential reference loads. No raw source records, AWS account identifiers or credentials were published.
+
 ## Runtime and permissions
 
 Plan and review both Terraform roots before deployment. Use the dedicated project profile for provisioning and job/query execution. Changes to that role's own policy require the same-account administration profile to apply the exact reviewed policy once; the dedicated role intentionally cannot grant itself permissions. Persistent deployment identities and the state bucket remain outside demonstration cleanup.

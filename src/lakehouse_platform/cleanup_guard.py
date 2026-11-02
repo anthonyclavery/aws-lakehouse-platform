@@ -62,6 +62,12 @@ def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -
     """
 
     changes = plan.get("resource_changes")
+    # Terraform JSON 1.2 omits this key for a genuine no-op. A targeted
+    # destroy plan may have complete=false without being errored/applyable.
+    if ("resource_changes" not in plan and plan.get("format_version") == "1.2"
+            and plan.get("applyable") is False and plan.get("errored") is False
+            and isinstance(plan.get("complete"), bool)):
+        changes = []
     if not isinstance(changes, list):
         raise DestroyPlanRejected("Terraform plan has no resource_changes list.")
 

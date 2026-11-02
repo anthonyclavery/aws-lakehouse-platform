@@ -57,6 +57,18 @@ class CleanupGuardTests(unittest.TestCase):
     def test_accepts_empty_destroy_plan_as_an_idempotent_no_op(self):
         validate_destroy_plan({"resource_changes": []}, DEMO_ID, EXPIRES_AT)
 
+    def test_accepts_real_terraform_12_targeted_noop_without_resource_changes(self):
+        validate_destroy_plan({"format_version":"1.2", "applyable":False,
+                               "complete":False, "errored":False}, DEMO_ID, EXPIRES_AT)
+
+    def test_missing_resource_changes_requires_explicit_nonapplyable_nonerror_metadata(self):
+        valid = {"format_version":"1.2", "applyable":False, "complete":False, "errored":False}
+        invalid = [{}, {**valid,"applyable":True}, {**valid,"errored":True}, {**valid,"complete":None},
+                   {**valid,"format_version":"unknown"}, {**valid,"resource_changes":None}]
+        for plan in invalid:
+            with self.subTest(plan=plan), self.assertRaises(DestroyPlanRejected):
+                validate_destroy_plan(plan, DEMO_ID, EXPIRES_AT)
+
     def test_accepts_exact_expected_deletion_scope(self):
         validate_destroy_plan(approved_plan(), DEMO_ID, EXPIRES_AT)
 

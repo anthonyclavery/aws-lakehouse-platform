@@ -85,6 +85,7 @@ Local foundation in progress. It currently provides deterministic synthetic init
 | [Architecture](docs/architecture.md) | Bronze, silver, gold layers and AWS responsibilities |
 | [Data contracts](docs/data-contracts.md) | Input flows, keys, units, versions, and constraints |
 | [Business rules](docs/business-rules.md) | Consumption, tariff, rollover, replacement, and backfill rules |
+| [Gold pricing jobs](docs/glue-gold-jobs.md) | Shared tariff calculation, local rebuild, Glue execution and validation limits |
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
 | [Security and privacy](docs/security-and-privacy.md) | Public-repository and access-control guardrails |

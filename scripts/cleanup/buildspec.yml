@@ -28,6 +28,8 @@ phases:
         -var="demo_id=${DEMO_ID}" -var="expires_at=${DEMO_EXPIRES_AT}"
         -target=aws_glue_catalog_database.lakehouse
         -target=aws_glue_job.silver_process_indexes
+        -target=aws_glue_job.gold
+        -target=aws_s3_object.gold_script
         -target=aws_s3_bucket.lakehouse
         -target=aws_s3_object.silver_process_indexes_script
         -target=aws_s3_bucket_public_access_block.lakehouse

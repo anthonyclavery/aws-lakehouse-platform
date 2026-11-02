@@ -8,12 +8,6 @@ data "aws_iam_policy_document" "cleanup_build_assume_role" {
     }
   }
 
-  statement {
-    sid       = "DestroyOnlyProjectGlueJobs"
-    effect    = "Allow"
-    actions   = ["glue:DeleteJob", "glue:GetJob"]
-    resources = ["arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-silver-process-indexes"]
-  }
 }
 
 resource "aws_iam_role" "cleanup_build" {
@@ -27,6 +21,12 @@ resource "aws_cloudwatch_log_group" "cleanup_build" {
 }
 
 data "aws_iam_policy_document" "cleanup_build" {
+  statement {
+    sid       = "DestroyOnlyProjectGlueJobs"
+    effect    = "Allow"
+    actions   = ["glue:DeleteJob", "glue:GetJob", "glue:GetTags"]
+    resources = [for suffix in ["silver-process-indexes", "gold-price", "gold-aggregate"] : "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-${suffix}"]
+  }
   statement {
     sid       = "WriteOnlyCleanupLogs"
     effect    = "Allow"

@@ -28,6 +28,8 @@ This first interval may be shorter or longer than the standard hourly or daily c
 
 Contract changes are effective at local midnight. A transition index is generated at the change boundary whenever the expected reading cadence changes.
 
+Gold allocates `[interval_start, interval_end)` by elapsed UTC time, splitting at local tariff/day boundaries and reference changes. The first runnable [Gold jobs](glue-gold-jobs.md) rebuild complete demo snapshots, including removal of obsolete groups. Bounded incremental refresh described below remains the target architecture.
+
 Prices cover energy only. The project deliberately excludes subscriptions, tax, network costs, VAT, and invoice calculation.
 
 ## Late data, corrections, and backfills

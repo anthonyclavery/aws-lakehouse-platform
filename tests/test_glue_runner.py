@@ -16,6 +16,20 @@ def invocation(**overrides):
 
 
 class GlueRunnerTests(unittest.TestCase):
+    def test_rejects_unsafe_batch_ids_and_table_sql(self):
+        for batch in ("", "x' OR 1=1", "UPPER", "too_short"):
+            with self.subTest(batch=batch),self.assertRaises(GlueInvocationRejected):
+                build_silver_index_arguments(invocation(batch_id=batch))
+        for table in ("glue_catalog.demo.x;DROP TABLE y", "glue_catalog.demo.bad-name", "glue_catalog.demo.a.b"):
+            with self.subTest(table=table),self.assertRaises(GlueInvocationRejected):
+                build_silver_index_arguments(invocation(silver_index_table=table))
+
+    def test_rejects_overlapping_storage_tables(self):
+        with self.assertRaises(GlueInvocationRejected):
+            build_silver_index_arguments(invocation(quarantine_table="glue_catalog.demo.consumption_index"))
+        with self.assertRaises(GlueInvocationRejected):
+            build_silver_index_arguments(invocation(silver_index_table="glue_catalog.demo.meter_consumption_interval_recalculation_work"))
+
     def test_builds_only_explicit_glue_job_arguments(self):
         arguments = build_silver_index_arguments(invocation())
         self.assertEqual("initial-20261016", arguments["BATCH_ID"])

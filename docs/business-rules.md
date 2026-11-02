@@ -36,6 +36,8 @@ Prices cover energy only. The project deliberately excludes subscriptions, tax, 
 
 An unchanged replay is ignored. A higher `source_version` is a correction. A late index or corrected index recalculates the interval immediately before and after that index, then refreshes only affected gold aggregates.
 
+[Silver now bounds logical interval recalculation](bounded-silver.md) to effective changed readings and their successors, with durable recovery after an interrupted commit. Gold's affected-aggregate refresh remains the target; its current implementation still rebuilds complete snapshots.
+
 Changes to customer ownership, site-to-meter relationships, contracts, or tariffs trigger bounded recalculation for their effective periods. A quarantine record never reaches gold tables.
 
 ## Quality policy

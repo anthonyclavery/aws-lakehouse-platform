@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-02",
+  "region": "eu-west-3",
+  "scope": "Bounded logical Silver interval recalculation and recovery; Gold unchanged",
+  "fixture": {
+    "meters": 2,
+    "initial_indexes": 2000,
+    "input_row_hashes": {
+      "initial": "eefc14397ce6223151c9fa7674ef81d9c45aa084fd64e87a8361e00bc926e0c7",
+      "append": "12c55a41efa609d9c9f110a2f3cfb4cdea055a92ba5607c353411a857778c481",
+      "delta": "26786c18a9190a2aa039251491ea0e2706690922d13dfff196a9ce83ee588682",
+      "fault": "3a714f01e8f4f0d4c126762551d5c4cca134e469ec67e61719fb6b85ae72418e",
+      "blocked": "819d62499ce5bf2048c8208e346cda97391ba6af4c2cc30ee210b58c0fbf688f",
+      "baseline": "23153bdcf4e8c918e0408fb19ebadde7dd38215c4f6de27cece0af5cd24d3f54",
+      "invalid": "44abdde77b56be09777e31a10841e4106e99c0d30824bf3942be9715931c064d",
+      "sequence-invalid": "a1e0e88b3acc7b7b1c1fe1876153e17cfc7c8898e93038fc5cf69f9154e6e5f0"
+    },
+    "producer": "scripts/generate_bounded_silver_fixture.py",
+    "data_rows_reproduced_byte_for_byte": true
+  },
+  "script_sha256": "dce06b0e50721bd01b441652b553888651abeaa3bea0ecf0a4b562ae004912fb",
+  "scenarios": {
+    "initial": {
+      "indexes": 2000,
+      "intervals": 1998,
+      "pending": 0,
+      "quarantine": 0,
+      "interval_sha256": "3b642c2a3298d14b153d570fbf1acf4eed98b4cebd953298e55c0fc3e63dcd4d",
+      "audit": {
+        "batch_id": "bounded-initial",
+        "changed_indexes": 2000,
+        "interval_mutations": 1998,
+        "recalculated_interval_keys": 2000
+      }
+    },
+    "append": {
+      "indexes": 2002,
+      "intervals": 2000,
+      "pending": 0,
+      "quarantine": 0,
+      "interval_sha256": "39a6952d90361b59fdd2eda806ecbb5a2885d31e1b6d04ebcdc04bc93340de86",
+      "audit": {
+        "batch_id": "bounded-append",
+        "changed_indexes": 2,
+        "interval_mutations": 2,
+        "recalculated_interval_keys": 2
+      }
+    },
+    "delta": {
+      "indexes": 2003,
+      "intervals": 2001,
+      "pending": 0,
+      "quarantine": 0,
+      "interval_sha256": "39ce1e1cfb530cf0ec688bca973c08b6c87dd817b5fe8d0437ea48da93265243",
+      "audit": {
+        "batch_id": "bounded-delta",
+        "changed_indexes": 2,
+        "interval_mutations": 3,
+        "recalculated_interval_keys": 3
+      }
+    },
+    "fault": {
+      "indexes": 2003,
+      "intervals": 2001,
+      "pending": 0,
+      "quarantine": 0,
+      "interval_sha256": "6e700e40791e660f6c288a2f3ba1c0707df23b9165e76fb15b98afd77a01dab7",
+      "audit": {
+        "batch_id": "bounded-fault",
+        "changed_indexes": 0,
+        "interval_mutations": 2,
+        "recalculated_interval_keys": 2
+      }
+    },
+    "baseline": {
+      "indexes": 2003,
+      "intervals": 2000,
+      "pending": 0,
+      "quarantine": 0,
+      "interval_sha256": "0a890ebd70ab6275b4b0dffa1bb22bd310bc91acc72f00de9996974fd967c7b7",
+      "audit": {
+        "batch_id": "bounded-baseline",
+        "changed_indexes": 1,
+        "interval_mutations": 1,
+        "recalculated_interval_keys": 2
+      }
+    },
+    "invalid": {
+      "indexes": 2003,
+      "intervals": 2000,
+      "pending": 0,
+      "quarantine": 2,
+      "interval_sha256": "0a890ebd70ab6275b4b0dffa1bb22bd310bc91acc72f00de9996974fd967c7b7",
+      "audit": {
+        "batch_id": "bounded-invalid",
+        "changed_indexes": 0,
+        "interval_mutations": 0,
+        "recalculated_interval_keys": 0
+      }
+    },
+    "replay": {
+      "indexes": 2003,
+      "intervals": 2000,
+      "pending": 0,
+      "quarantine": 2,
+      "interval_sha256": "0a890ebd70ab6275b4b0dffa1bb22bd310bc91acc72f00de9996974fd967c7b7",
+      "audit": {
+        "batch_id": "bounded-initial",
+        "changed_indexes": 0,
+        "interval_mutations": 0,
+        "recalculated_interval_keys": 0
+      }
+    },
+    "replay_snapshots_unchanged": true,
+    "sequence_invalid_rejected_without_writes": true
+  },
+  "managed_run_states": {
+    "SUCCEEDED": 7,
+    "FAILED": 3,
+    "STOPPED": 1
+  },
+  "expected_failure_checks": {
+    "interval_commit_denied_after_index_commit": true,
+    "different_batch_refused_while_pending": true,
+    "sequence_contradiction_rejected_before_accepted_writes": true
+  },
+  "queue_incident": {
+    "idle_waiting_run_stopped": 1,
+    "execution_seconds_before_stop": 0,
+    "same_immutable_batch_resubmitted": true,
+    "description": "Service reported maximum concurrency although all other job runs were terminal; no concurrency limit was increased"
+  },
+  "cleanup": {
+    "status": "SUCCEEDED",
+    "source_revision": "195a1e94cdb4874f2aa3fca1bc1f3ebb0c7ff39c",
+    "checks": {
+      "demo_bucket_absent": true,
+      "demo_database_absent": true,
+      "demo_job_1_absent": true,
+      "demo_job_2_absent": true,
+      "demo_job_3_absent": true,
+      "demo_job_4_absent": true,
+      "demo_workgroup_absent": true,
+      "deployment_user_preserved": true,
+      "deployment_role_preserved": true,
+      "glue_role_preserved": true,
+      "glue_execution_inline_policy_removed": true,
+      "versioned_state_bucket_preserved": true,
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true
+    },
+    "original_schedule_restored": true
+  },
+  "limits": [
+    "Neighbour lookup still scans/sorts affected meter history",
+    "Iceberg copy-on-write can rewrite files containing unchanged rows",
+    "Gold still rebuilds full snapshots; reference-history impact planning is separate",
+    "One writer across the table set; no distributed multi-table transaction",
+    "Sequence-invalid batches fail closed before accepted writes; automatic per-row sequence quarantine remains unimplemented",
+    "Controlled small fixture, not a latency or scaling benchmark"
+  ]
+}

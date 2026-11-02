@@ -17,6 +17,8 @@ def approved_plan():
     changes = []
     for address in sorted(ALLOWED_DELETE_ADDRESSES):
         before = {}
+        if address == "aws_iam_role_policy.glue_silver":
+            before = {"role":"aws-lakehouse-platform-demo-glue-silver", "name":"aws-lakehouse-platform-demo-glue-silver"}
         if address in TAGGABLE_DELETE_ADDRESSES:
             before["tags_all"] = {
                 "Project": "aws-lakehouse-platform",
@@ -35,6 +37,16 @@ def approved_plan():
 
 
 class CleanupGuardTests(unittest.TestCase):
+    def test_glue_execution_policy_requires_exact_role_and_policy_name(self):
+        expected = "aws-lakehouse-platform-demo-glue-silver"
+        for before in ({}, {"role":"unrelated", "name":expected}, {"role":expected, "name":"unrelated"}):
+            with self.subTest(before=before), self.assertRaises(DestroyPlanRejected):
+                validate_destroy_plan({"resource_changes":[{"address":"aws_iam_role_policy.glue_silver", "change":{"actions":["delete"],"before":before}}]}, DEMO_ID, EXPIRES_AT)
+
+    def test_athena_workgroup_requires_demo_tags(self):
+        with self.assertRaises(DestroyPlanRejected):
+            validate_destroy_plan({"resource_changes":[{"address":"aws_athena_workgroup.demo", "change":{"actions":["delete"],"before":{}}}]}, DEMO_ID, EXPIRES_AT)
+
     def test_reference_job_and_script_cannot_be_deleted_without_tags(self):
         for change in approved_plan()["resource_changes"]:
             if change["address"] in {"aws_glue_job.silver_process_reference", "aws_s3_object.silver_process_reference_script"}:

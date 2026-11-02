@@ -7,7 +7,7 @@ import random
 from datetime import UTC, datetime
 from pathlib import Path
 
-from .generator import SCHEMA_VERSION, iso_z
+from .generator import SCHEMA_VERSION, _sha256, iso_z
 
 
 def _index_paths(batch_dir: Path) -> list[Path]:
@@ -87,6 +87,7 @@ def generate_exception_event(
     path = output_dir / f"{kind}_consumption_index.jsonl"
     path.write_text(json.dumps(event, sort_keys=True) + "\n", encoding="utf-8")
     manifest = {"batch_type": kind.upper(), "seed": seed, "received_at": iso_z(received_at),
+                "files": [{"path": path.name, "sha256": _sha256(path)}],
                 "record_counts": {"consumption_index": 1}, "meter_id": meter_id}
     (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest

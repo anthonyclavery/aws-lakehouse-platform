@@ -87,6 +87,7 @@ Local foundation in progress. It currently provides deterministic synthetic init
 | [Business rules](docs/business-rules.md) | Consumption, tariff, rollover, replacement, and backfill rules |
 | [Gold pricing jobs](docs/glue-gold-jobs.md) | Shared tariff calculation, local rebuild, Glue execution and validation limits |
 | [Silver reference job](docs/glue-reference-job.md) | Provisioned loader and sequential execution of the four reference flows |
+| [AWS qualification](docs/aws-qualification.md) | Athena reconciliation, operational permissions and evidence procedure |
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
 | [Security and privacy](docs/security-and-privacy.md) | Public-repository and access-control guardrails |

@@ -27,7 +27,7 @@ Replace `DEMO_REFERENCE_JOB`, `demo_database` and the example S3 location with t
 | site_contract | reference/site_contract.jsonl | site_contract_history | contract_id |
 | tariff_grid | reference/tariff_grid.jsonl | tariff_grid_history | tariff_rule_id |
 
-The runner always targets `glue_catalog.<database>.<table>`. It never reads the whole batch or mixes reference flows. It validates the batch URI, database and flow selection before starting any run. Default order is the table order above. Each run must reach `SUCCEEDED` before the next starts. API failure, terminal failure, expiry or a one-hour client wait timeout stops the chain with a nonzero exit status. A client timeout leaves the AWS run active; inspect its printed run ID before retrying. Completed earlier flows remain committed and may be replayed.
+The runner always targets `glue_catalog.<database>.<table>`. It never reads the whole batch or mixes reference flows. It validates the batch URI, database and flow selection before starting any run. Default order is the table order above. Each run must reach `SUCCEEDED` before the next is submitted. Native Glue queuing handles a capacity-release delay after completion while keeping one concurrent run. API failure, terminal failure, expiry or a one-hour client wait timeout stops the chain with a nonzero exit status. A client timeout leaves the AWS run active; inspect its printed run ID before retrying. Completed earlier flows remain committed and may be replayed.
 
 For a partial reference correction, select only the files actually present:
 

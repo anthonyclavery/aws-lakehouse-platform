@@ -7,7 +7,7 @@ import random
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from .generator import REGISTER_MAX_WH, SCHEMA_VERSION, iso_z
+from .generator import REGISTER_MAX_WH, SCHEMA_VERSION, _sha256, iso_z
 
 
 def _rows(path: Path):
@@ -67,6 +67,8 @@ def generate_incremental_batch(
                 }
                 handle.write(json.dumps(row, sort_keys=True) + "\n")
                 count += 1
-    manifest = {"batch_type": "INCREMENTAL", "until": iso_z(until), "seed": seed, "record_counts": {"consumption_index": count}}
+    manifest = {"batch_type": "INCREMENTAL", "until": iso_z(until), "seed": seed,
+                "record_counts": {"consumption_index": count},
+                "files": [{"path": output_path.name, "sha256": _sha256(output_path)}]}
     (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest

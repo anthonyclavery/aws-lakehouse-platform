@@ -8,6 +8,8 @@ from typing import Any
 ALLOWED_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
+        "aws_athena_workgroup.demo",
+        "aws_iam_role_policy.glue_silver",
         "aws_glue_job.silver_process_indexes",
         "aws_glue_job.silver_process_reference",
         "aws_s3_object.silver_process_reference_script",
@@ -28,6 +30,7 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
 TAGGABLE_DELETE_ADDRESSES = frozenset(
     {
         "aws_glue_catalog_database.lakehouse",
+        "aws_athena_workgroup.demo",
         "aws_glue_job.silver_process_indexes",
         "aws_glue_job.silver_process_reference",
         "aws_s3_object.silver_process_reference_script",
@@ -82,6 +85,11 @@ def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -
 
     for change in delete_changes:
         address = change["address"]
+        if address == "aws_iam_role_policy.glue_silver":
+            before = change.get("change", {}).get("before") or {}
+            expected = "aws-lakehouse-platform-demo-glue-silver"
+            if before.get("role") != expected or before.get("name") != expected:
+                raise DestroyPlanRejected("Only the exact Glue execution inline policy may be deleted.")
         if address not in TAGGABLE_DELETE_ADDRESSES:
             continue
         tags = _tags(change.get("change", {}).get("before") or {})

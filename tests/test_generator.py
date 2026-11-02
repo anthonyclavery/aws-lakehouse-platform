@@ -8,9 +8,24 @@ from lakehouse_platform.generator import GeneratorConfig, build_reference_record
 from lakehouse_platform.incremental import generate_incremental_batch
 from lakehouse_platform.late_events import generate_exception_event
 from lakehouse_platform.processing import process_indexes
+from lakehouse_platform.landing import plan_landing_upload
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_every_generated_batch_has_a_hash_manifest_accepted_by_bronze(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            initial = root / "initial"
+            write_initial_batch(GeneratorConfig(customers=1, sites=1, seed=3, output_dir=initial,
+                                               as_of=datetime(2026, 1, 3, tzinfo=UTC)))
+            generate_incremental_batch(initial, root / "incremental", datetime(2026, 1, 4, tzinfo=UTC))
+            for kind in ("late", "correction"):
+                generate_exception_event(initial, root / kind, kind, datetime(2026, 1, 5, tzinfo=UTC))
+            for kind in ("initial", "incremental", "late", "correction"):
+                planned = plan_landing_upload(root / kind, f"test-{kind}")
+                self.assertGreater(len(planned), 1)
+                self.assertEqual(f"landing/batch_id=test-{kind}/manifest.json", planned[-1].key)
+
     def test_default_distribution_and_relationships(self):
         records = build_reference_records(GeneratorConfig(include_indexes=False))
         contracts = Counter(item["contract_type"] for item in records["site_contract"])

@@ -61,6 +61,7 @@ class ReferenceRunnerTests(unittest.TestCase):
         glue.get_job_run.side_effect = [{"JobRun": {"JobRunState": state}} for state in
             ("RUNNING", "SUCCEEDED", "SUCCEEDED", "SUCCEEDED", "SUCCEEDED")]
         self.assertEqual(["0", "1", "2", "3"], run_reference_jobs(glue, "ref-job", "demo_db", BATCH))
+        self.assertTrue(all(call.kwargs["JobRunQueuingEnabled"] for call in glue.start_job_run.call_args_list))
         targets = [call.kwargs["Arguments"]["--TARGET_TABLE"] for call in glue.start_job_run.call_args_list]
         self.assertEqual([f"glue_catalog.demo_db.{flow}_history" for flow in BUSINESS_KEYS], targets)
         self.assertEqual(["0", "0", "1", "2", "3"], [call.kwargs["RunId"] for call in glue.get_job_run.call_args_list])

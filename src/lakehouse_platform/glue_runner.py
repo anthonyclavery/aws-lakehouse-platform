@@ -23,8 +23,8 @@ class SilverIndexInvocation:
 
 
 def build_silver_index_arguments(invocation: SilverIndexInvocation) -> dict[str, str]:
-    if not invocation.batch_id or not invocation.batch_id.isascii():
-        raise GlueInvocationRejected("batch_id must be a non-empty ASCII identifier.")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,63}", invocation.batch_id):
+        raise GlueInvocationRejected("batch_id must match an immutable lowercase landing batch identifier.")
     if not invocation.landing_path.startswith("s3://") or "/landing/" not in invocation.landing_path:
         raise GlueInvocationRejected("landing_path must be an S3 landing location.")
     tables = {
@@ -32,8 +32,12 @@ def build_silver_index_arguments(invocation: SilverIndexInvocation) -> dict[str,
         "SILVER_INTERVAL_TABLE": invocation.silver_interval_table,
         "QUARANTINE_TABLE": invocation.quarantine_table,
     }
-    if any(not table.startswith("glue_catalog.") for table in tables.values()):
-        raise GlueInvocationRejected("Silver and quarantine tables must use the glue_catalog Iceberg catalog.")
+    if any(not re.fullmatch(r"glue_catalog\.[a-z][a-z0-9_]{0,254}\.[a-z][a-z0-9_]{0,254}", table)
+           for table in tables.values()) or len(set(tables.values())) != len(tables):
+        raise GlueInvocationRejected("Silver and quarantine tables require distinct, simple glue_catalog identifiers.")
+    work = invocation.silver_interval_table + "_recalculation_work"
+    if work in tables.values() or len(work.rsplit(".", 1)[-1]) > 255:
+        raise GlueInvocationRejected("The derived recalculation work table conflicts or exceeds the identifier limit.")
     return {"BATCH_ID": invocation.batch_id, "LANDING_PATH": invocation.landing_path, **tables}
 
 

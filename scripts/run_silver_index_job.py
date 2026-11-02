@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import argparse
-import time
+import json
 
-from lakehouse_platform.glue_runner import SilverIndexInvocation, build_silver_index_arguments
+from lakehouse_platform.glue_runner import SilverIndexInvocation, build_silver_index_arguments, run_glue_jobs
 
 
 def parse_args() -> argparse.Namespace:
@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--profile")
     parser.add_argument("--region")
     parser.add_argument("--wait", action="store_true", help="Wait for completion and return a failing exit code on job failure.")
+    parser.add_argument("--dry-run", action="store_true", help="Validate and display arguments without contacting AWS.")
     return parser.parse_args()
 
 
@@ -32,24 +33,20 @@ def main() -> None:
         silver_interval_table=args.silver_interval_table,
         quarantine_table=args.quarantine_table,
     ))
+    if args.dry_run:
+        print(json.dumps(job_arguments, indent=2))
+        return
     try:
         import boto3
     except ImportError as error:
         raise SystemExit("Install the optional AWS dependency first: python -m pip install -e '.[aws]'") from error
     glue = boto3.Session(profile_name=args.profile, region_name=args.region).client("glue")
-    run_id = glue.start_job_run(JobName=args.job_name, Arguments={f"--{key}": value for key, value in job_arguments.items()})["JobRunId"]
-    print(f"Started Glue job run {run_id} for batch {args.batch_id}.")
-    if not args.wait:
+    if args.wait:
+        run_glue_jobs(glue, [(args.job_name, job_arguments)])
         return
-    terminal_states = {"SUCCEEDED", "FAILED", "STOPPED", "TIMEOUT", "ERROR"}
-    while True:
-        state = glue.get_job_run(JobName=args.job_name, RunId=run_id, PredecessorsIncluded=False)["JobRun"]["JobRunState"]
-        if state in terminal_states:
-            print(f"Glue job run {run_id} finished with state {state}.")
-            if state != "SUCCEEDED":
-                raise SystemExit(1)
-            return
-        time.sleep(15)
+    run_id = glue.start_job_run(JobName=args.job_name, JobRunQueuingEnabled=True,
+                                Arguments={f"--{key}": value for key, value in job_arguments.items()})["JobRunId"]
+    print(f"Started Glue job run {run_id} for batch {args.batch_id}.")
 
 
 if __name__ == "__main__":

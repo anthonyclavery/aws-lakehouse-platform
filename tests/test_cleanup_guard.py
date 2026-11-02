@@ -35,6 +35,13 @@ def approved_plan():
 
 
 class CleanupGuardTests(unittest.TestCase):
+    def test_reference_job_and_script_cannot_be_deleted_without_tags(self):
+        for change in approved_plan()["resource_changes"]:
+            if change["address"] in {"aws_glue_job.silver_process_reference", "aws_s3_object.silver_process_reference_script"}:
+                change["change"]["before"] = {}
+                with self.subTest(address=change["address"]), self.assertRaises(DestroyPlanRejected):
+                    validate_destroy_plan({"resource_changes": [change]}, DEMO_ID, EXPIRES_AT)
+
     def test_accepts_empty_destroy_plan_as_an_idempotent_no_op(self):
         validate_destroy_plan({"resource_changes": []}, DEMO_ID, EXPIRES_AT)
 

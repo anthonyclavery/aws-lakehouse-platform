@@ -89,21 +89,22 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Action = ["glue:CreateJob", "glue:DeleteJob", "glue:GetJob", "glue:GetTags", "glue:TagResource", "glue:UntagResource", "glue:UpdateJob"]
         Resource = [
           "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-silver-process-indexes",
+          "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-silver-process-reference",
           "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-gold-price",
           "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-gold-aggregate"
         ]
       },
       {
-        Sid      = "RunOnlyProjectGoldJobs"
+        Sid      = "RunOnlyProjectPipelineJobs"
         Effect   = "Allow"
         Action   = ["glue:StartJobRun", "glue:GetJobRun"]
-        Resource = [for suffix in ["gold-price", "gold-aggregate"] : "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-${suffix}"]
+        Resource = [for suffix in ["silver-process-reference", "silver-process-indexes", "gold-price", "gold-aggregate"] : "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:job/aws-lakehouse-platform-*-${suffix}"]
       },
       {
         Sid      = "ManageOnlyProjectJobArtifact"
         Effect   = "Allow"
         Action   = ["s3:DeleteObject", "s3:GetObject", "s3:PutObject", "s3:GetObjectTagging", "s3:PutObjectTagging"]
-        Resource = [for filename in ["silver_process_indexes.py", "gold_price_intervals.py", "gold_aggregate_energy.py", "pricing.py", "gold_spark.py"] : "arn:aws:s3:::aws-lakehouse-platform-*/jobs/${filename}"]
+        Resource = [for filename in ["silver_process_reference.py", "silver_process_indexes.py", "gold_price_intervals.py", "gold_aggregate_energy.py", "pricing.py", "gold_spark.py"] : "arn:aws:s3:::aws-lakehouse-platform-*/jobs/${filename}"]
       },
       {
         Sid    = "ReadOnlyProjectIdentity"

@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+from urllib.parse import urlsplit
+
+from .reference_processing import BUSINESS_KEYS
 
 
 class GlueInvocationRejected(ValueError):
@@ -53,9 +56,37 @@ def build_gold_arguments(database: str) -> tuple[dict[str, str], dict[str, str]]
 
 def run_gold_jobs(glue, pricing_job, aggregate_job, database, *, wait_seconds=3600, poll_seconds=15):
     """Run pricing then aggregation, failing closed on any unsuccessful state."""
+    return run_glue_jobs(glue, zip((pricing_job, aggregate_job), build_gold_arguments(database)),
+                         wait_seconds=wait_seconds, poll_seconds=poll_seconds)
+
+
+def build_reference_arguments(database: str, batch_path: str, flows=None) -> list[dict[str, str]]:
+    """Resolve one immutable batch into file-specific reference invocations."""
+    if not re.fullmatch(r"[a-z][a-z0-9_]*", database):
+        raise GlueInvocationRejected("database must be a lowercase Glue database identifier")
+    uri = urlsplit(batch_path)
+    if (uri.scheme != "s3" or not re.fullmatch(r"[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]", uri.netloc)
+            or not re.fullmatch(r"/landing/batch_id=[a-z0-9][a-z0-9-]{2,63}/?", uri.path)
+            or uri.query or uri.fragment):
+        raise GlueInvocationRejected("batch_path must be s3://BUCKET/landing/batch_id=BATCH_ID")
+    selected = list(BUSINESS_KEYS) if flows is None else list(flows)
+    if not selected or len(set(selected)) != len(selected) or any(flow not in BUSINESS_KEYS for flow in selected):
+        raise GlueInvocationRejected("Select distinct supported reference flows")
+    return [{"LANDING_PATH": f"{batch_path.rstrip('/')}/reference/{flow}.jsonl",
+             "TARGET_TABLE": f"glue_catalog.{database}.{flow}_history",
+             "BUSINESS_KEY_COLUMNS": ",".join(BUSINESS_KEYS[flow])} for flow in selected]
+
+
+def run_reference_jobs(glue, job_name, database, batch_path, flows=None, *, wait_seconds=3600, poll_seconds=15):
+    arguments = build_reference_arguments(database, batch_path, flows)
+    return run_glue_jobs(glue, ((job_name, values) for values in arguments),
+                         wait_seconds=wait_seconds, poll_seconds=poll_seconds)
+
+
+def run_glue_jobs(glue, invocations, *, wait_seconds=3600, poll_seconds=15):
+    """Wait for each invocation to succeed before starting the next one."""
     import time
 
-    invocations = zip((pricing_job, aggregate_job), build_gold_arguments(database))
     runs = []
     for job_name, arguments in invocations:
         run_id = glue.start_job_run(JobName=job_name, Arguments={f"--{k}": v for k, v in arguments.items()})["JobRunId"]

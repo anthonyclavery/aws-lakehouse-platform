@@ -6,6 +6,8 @@ The account-specific backend settings are intentionally kept in the ignored `bac
 
 It creates an encrypted private S3 bucket and a Glue catalog database for one explicit demo identifier. Every taggable resource receives the project isolation tags defined in the repository security documentation.
 
+Glue resources include the Silver index job, the [reusable reference-data job](../docs/glue-reference-job.md), and both [Gold jobs](../docs/glue-gold-jobs.md), with their S3 scripts. `silver_reference_job_name`, `gold_job_names` and `glue_database_name` expose the names needed for explicit launches. Creating resources does not start processing.
+
 Copy `terraform.tfvars.example` to a local ignored `terraform.tfvars` only when an explicit AWS demonstration is approved. The example values are placeholders and are not a deployment instruction.
 
 The `bootstrap-state` configuration also defines the disabled-by-default cleanup control plane. It creates a daily 20:00 `Europe/Paris` schedule only when explicit cleanup inputs are supplied. Its CodeBuild job verifies the destroy plan before applying it. See [the guarded cleanup design](../docs/automated-cleanup.md).

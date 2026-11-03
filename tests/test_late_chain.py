@@ -36,6 +36,12 @@ class LateChainTests(TestCase):
                     self.assertEqual(Decimal(expected["rounded_gold_eur"]), cost)
                     ratio = Fraction(expected["exact_cost_fraction"])
                     self.assertLessEqual(abs(cost - Decimal(ratio.numerator) / Decimal(ratio.denominator)), Decimal("1e-11"))
+                contract_costs = {"initial": ("2", "13/10", "7/5"), "late": ("2", "7/5", "48/35"),
+                                  "correction": ("2", "7/5", "103/70")}[phase]
+                monthly = {row["customer_id"]: row["energy_cost_eur"] for row in expected_products(history)["monthly_customer_energy"]}
+                for meter, fraction in enumerate(contract_costs):
+                    ratio = Fraction(fraction)
+                    self.assertLessEqual(abs(monthly[stable_uuid("integrated-customer", meter)] - Decimal(ratio.numerator) / Decimal(ratio.denominator)), Decimal("1e-11"))
 
     def test_correction_changes_only_its_endpoint_and_successor(self):
         with TemporaryDirectory() as folder:

@@ -17,8 +17,15 @@ variables {
 run "partition_benchmark_plan" {
   command = plan
   assert {
-    condition     = length(aws_s3_object.benchmark_script) == 2 && length(aws_glue_job.gold) == 2
-    error_message = "Benchmark ships two artifacts and reuses the bounded existing Glue runtime."
+    condition     = length(aws_s3_object.benchmark_script) == 4 && length(aws_glue_job.gold) == 2
+    error_message = "Pruning and compaction ship four artifacts and reuse the bounded existing Glue runtime."
+  }
+  assert {
+    condition = (
+      local.benchmark_scripts.compaction == "jobs/benchmark_compaction.py" &&
+      local.benchmark_scripts.compaction_profile == "src/lakehouse_platform/compaction_benchmark.py"
+    )
+    error_message = "Compaction must ship its explicit phase driver and recovery/measurement module."
   }
   assert {
     condition = alltrue([for object in aws_s3_object.benchmark_script :

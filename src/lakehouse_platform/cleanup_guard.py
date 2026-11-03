@@ -22,6 +22,8 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
         'aws_s3_object.gold_script["refresh"]',
         'aws_s3_object.benchmark_script["build"]',
         'aws_s3_object.benchmark_script["profile"]',
+        'aws_s3_object.benchmark_script["compaction"]',
+        'aws_s3_object.benchmark_script["compaction_profile"]',
         "aws_s3_bucket.lakehouse",
         "aws_s3_object.silver_process_indexes_script",
         "aws_s3_bucket_public_access_block.lakehouse",
@@ -46,6 +48,8 @@ TAGGABLE_DELETE_ADDRESSES = frozenset(
         'aws_s3_object.gold_script["refresh"]',
         'aws_s3_object.benchmark_script["build"]',
         'aws_s3_object.benchmark_script["profile"]',
+        'aws_s3_object.benchmark_script["compaction"]',
+        'aws_s3_object.benchmark_script["compaction_profile"]',
         "aws_s3_bucket.lakehouse",
     }
 )

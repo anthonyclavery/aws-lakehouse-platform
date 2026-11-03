@@ -178,6 +178,38 @@ def measure(athena, database, workgroup, profile, manifest, *, repeats=3, query_
                                  "excludes": "Glue, S3, catalog, metadata validation queries and taxes; estimate is not an invoice"}}
 
 
+INTERVAL_COLUMNS = ("meter_id", "interval_start", "interval_end", "consumption_wh", "quality_status")
+WRITER_PROPERTIES = {"write.format.default": "parquet", "write.parquet.compression-codec": "zstd",
+                     "write.target-file-size-bytes": "134217728", "write.distribution-mode": "none"}
+
+
+def make_intervals(spark, profile):
+    """Shared Spark fixture; expected results use an independent Python oracle."""
+    from pyspark.sql import functions as F
+    rows = (spark.range(profile.rows).withColumn("hour", F.floor(F.col("id") / profile.meters).cast("long"))
+            .withColumn("meter_id", F.concat(F.lit("meter_"), F.pmod("id", F.lit(profile.meters)).cast("string"))))
+    epoch = (date.fromisoformat(profile.start_date) - date(1970, 1, 1)).days * 86400
+    return (rows.withColumn("interval_end", F.timestamp_seconds(F.lit(epoch) + F.col("hour") * 3600))
+            .withColumn("interval_start", F.timestamp_seconds(F.lit(epoch) + (F.col("hour") - 1) * 3600))
+            .withColumn("consumption_wh", (100 + F.pmod(F.col("id") * 37 + F.col("hour") * 13, F.lit(4901))).cast("long"))
+            .withColumn("quality_status", F.lit("VALID")))
+
+
+def table_details(spark, table):
+    from pyspark.sql import functions as F
+    files = spark.table(table + ".files").filter("content = 0")
+    summary = files.agg(F.count("*").alias("data_files"), F.sum("record_count").alias("records"),
+        F.sum("file_size_in_bytes").alias("data_bytes"), F.min("file_size_in_bytes").alias("min_file_bytes"),
+        F.max("file_size_in_bytes").alias("max_file_bytes"),
+        F.percentile_approx("file_size_in_bytes", 0.5).alias("median_file_bytes")).collect()[0].asDict()
+    iceberg = spark._jvm.org.apache.iceberg.spark.Spark3Util.loadIcebergTable(spark._jsparkSession, table)
+    fields = iceberg.spec().fields()
+    summary["partition_spec"] = [{"source_column": iceberg.schema().findColumnName(fields.get(i).sourceId()),
+                                  "transform": str(fields.get(i).transform())} for i in range(fields.size())]
+    summary["properties"] = {key: str(iceberg.properties().get(key)) for key in WRITER_PROPERTIES}
+    return summary, str(iceberg.currentSnapshot().snapshotId())
+
+
 def build_tables(spark, database, profile):
     """Create two fresh Iceberg tables; never overwrite a pre-existing table."""
     from pyspark.sql import functions as F
@@ -188,16 +220,7 @@ def build_tables(spark, database, profile):
     spark.conf.set("spark.sql.session.timeZone", "UTC")
     spark.conf.set("spark.sql.ansi.enabled", "true")
     spark.conf.set("spark.sql.shuffle.partitions", "16")
-    rows = (spark.range(profile.rows).withColumn("hour", F.floor(F.col("id") / profile.meters).cast("long"))
-            .withColumn("meter_id", F.concat(F.lit("meter_"), F.pmod("id", F.lit(profile.meters)).cast("string"))))
-    epoch = (date.fromisoformat(profile.start_date) - date(1970, 1, 1)).days * 86400
-    rows = (rows.withColumn("interval_end", F.timestamp_seconds(F.lit(epoch) + F.col("hour") * 3600))
-            .withColumn("interval_start", F.timestamp_seconds(F.lit(epoch) + (F.col("hour") - 1) * 3600))
-            .withColumn("consumption_wh", (100 + F.pmod(F.col("id") * 37 + F.col("hour") * 13, F.lit(4901))).cast("long"))
-            .withColumn("quality_status", F.lit("VALID")))
-    columns = ("meter_id", "interval_start", "interval_end", "consumption_wh", "quality_status")
-    properties = {"write.format.default": "parquet", "write.parquet.compression-codec": "zstd",
-                  "write.target-file-size-bytes": "134217728", "write.distribution-mode": "none"}
+    rows = make_intervals(spark, profile)
     for layout, table in tables.items():
         if layout == "unpartitioned":
             # Deliberately scatter history through every file to avoid accidental
@@ -205,8 +228,8 @@ def build_tables(spark, database, profile):
             ordered = rows.repartition(16, F.pmod("id", F.lit(16))).sortWithinPartitions(F.xxhash64("id"))
         else:
             ordered = rows.repartition(16, F.to_date("interval_end")).sortWithinPartitions("interval_end", "meter_id")
-        writer = ordered.select(*columns).writeTo(table).using("iceberg")
-        for key, value in properties.items():
+        writer = ordered.select(*INTERVAL_COLUMNS).writeTo(table).using("iceberg")
+        for key, value in WRITER_PROPERTIES.items():
             writer = writer.tableProperty(key, value)
         if layout == "daily":
             writer = writer.partitionedBy(F.days("interval_end"))
@@ -216,18 +239,7 @@ def build_tables(spark, database, profile):
         raise ValueError("Persisted benchmark datasets differ")
     layouts, source_snapshots = {}, {}
     for layout, table in tables.items():
-        files = spark.table(table + ".files").filter("content = 0")
-        summary = files.agg(F.count("*").alias("data_files"), F.sum("record_count").alias("records"),
-            F.sum("file_size_in_bytes").alias("data_bytes"), F.min("file_size_in_bytes").alias("min_file_bytes"),
-            F.max("file_size_in_bytes").alias("max_file_bytes"),
-            F.percentile_approx("file_size_in_bytes", 0.5).alias("median_file_bytes")).collect()[0].asDict()
-        iceberg = spark._jvm.org.apache.iceberg.spark.Spark3Util.loadIcebergTable(spark._jsparkSession, table)
-        source_snapshots[layout] = str(iceberg.currentSnapshot().snapshotId())
-        fields = iceberg.spec().fields()
-        summary["partition_spec"] = [{"source_column": iceberg.schema().findColumnName(fields.get(i).sourceId()),
-                                      "transform": str(fields.get(i).transform())} for i in range(fields.size())]
-        summary["properties"] = {key: str(iceberg.properties().get(key)) for key in properties}
-        layouts[layout] = summary
+        layouts[layout], source_snapshots[layout] = table_details(spark, table)
     manifest = {"profile": asdict(profile), "rows": profile.rows, "multiset_equal": True, "layouts": layouts,
                 "source_snapshots": source_snapshots,
                 "ordering": {"unpartitioned": "16 hash-distributed tasks, xxhash64 row ordering",

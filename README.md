@@ -76,7 +76,7 @@ Generated batches use newline-delimited JSON. They are intentionally ignored by 
 
 ## Project status
 
-The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
+The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [integrated identity chain](docs/integrated-chain.md) proves source publication by the dedicated ingestion role, ten normal managed job runs, complete Silver reconciliation and analyst Gold reads before/after updates under active LF governance. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
 
 ## Documentation
 

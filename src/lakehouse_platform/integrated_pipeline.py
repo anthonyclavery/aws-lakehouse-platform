@@ -1,6 +1,7 @@
 """Explicit manifest-backed ingestion -> reference/Silver -> Gold execution."""
 import json
 import re
+import time
 from pathlib import Path
 
 from .glue_runner import (SilverIndexInvocation, build_gold_arguments, build_reference_arguments,
@@ -8,7 +9,7 @@ from .glue_runner import (SilverIndexInvocation, build_gold_arguments, build_ref
 from .landing import plan_landing_upload, upload_landing_batch
 
 
-def build_integrated_invocations(values, batch_id, *, load_references):
+def build_integrated_invocations(values, batch_id, *, load_references, gold_batch_id=None):
     location = values["landing_path"]
     match = re.fullmatch(r"s3://(aws-lakehouse-platform-([a-z0-9-]{3,31}))-[a-f0-9]{8}/landing/", location)
     if not match or values["glue_database_name"] != match[1].replace("-", "_"):
@@ -20,7 +21,7 @@ def build_integrated_invocations(values, batch_id, *, load_references):
     silver = build_silver_index_arguments(SilverIndexInvocation(batch_id, location + f"batch_id={batch_id}/consumption_index.jsonl",
         f"glue_catalog.{database}.consumption_index", f"glue_catalog.{database}.meter_consumption_interval",
         f"glue_catalog.{database}.quarantine_records"))
-    gold = build_gold_arguments(database, batch_id, "bounded")
+    gold = build_gold_arguments(database, gold_batch_id if gold_batch_id is not None else batch_id, "bounded")
     stages = []
     if load_references:
         for flow, arguments in zip(("site_meter", "customer_site", "site_contract", "tariff_grid"),
@@ -31,8 +32,11 @@ def build_integrated_invocations(values, batch_id, *, load_references):
     return stages
 
 
-def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_references, journal: Path, poll_seconds=15):
-    stages = build_integrated_invocations(values, batch_id, load_references=load_references)
+def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_references, journal: Path, poll_seconds=15,
+                         gold_batch_id=None, reuse_delay_seconds=0):
+    if reuse_delay_seconds < 0:
+        raise ValueError("Job reuse delay must be nonnegative")
+    stages = build_integrated_invocations(values, batch_id, load_references=load_references, gold_batch_id=gold_batch_id)
     planned = plan_landing_upload(batch_dir, batch_id)
     required = {"consumption_index.jsonl"}
     if load_references:
@@ -42,7 +46,10 @@ def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_referenc
         raise ValueError("The manifest does not supply every planned pipeline input")
     uploaded = upload_landing_batch(s3, values["landing_path"].split("/")[2], batch_dir, batch_id)
     completed = []
+    previous_job = None
     for label, job, arguments in stages:
+        if job == previous_job and reuse_delay_seconds:
+            time.sleep(reuse_delay_seconds)
         class RecordingGlue:
             last_state = None
 
@@ -71,5 +78,6 @@ def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_referenc
                 return response
 
         run_glue_jobs(RecordingGlue(), [(job, arguments)], poll_seconds=poll_seconds)
+        previous_job = job
     return {"passed": True, "uploaded_source_objects": len(uploaded.uploaded_keys), "reused_source_objects": len(uploaded.existing_keys),
             "stages": completed, "source_manifest_last": planned[-1].key.endswith("/manifest.json")}

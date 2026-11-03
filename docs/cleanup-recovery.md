@@ -17,3 +17,15 @@ The driver also writes `destroy-initial-plan.json` and, on recovery, `destroy-re
 After completion, independently confirm that the bucket, Glue database/jobs, both workgroups, analyst/data IAM roles, Gold registrations and scoped grants are absent. Confirm that the data plane is absent from Terraform state, persistent identities and versioned state remain, original LF account settings match exactly, and the cleanup schedule remains enabled. An administrative read audit, if required to inspect removed grants, runs only after the build terminates and restores its settings in `finally`.
 
 Run the same pushed revision again against the empty environment. Require a successful one-pass receipt with zero initial deletions and no recovery. This final run checks that subsequent scheduled cleanup remains harmless.
+
+## Managed result on 2026-11-03
+
+A fresh Glue fixture and all 35 analyst governance resources were deployed. Actual analyst Gold queries and Bronze/Silver denials passed before teardown. A private state audit confirmed all 57 cleanup instances existed. Account-wide LF settings were restored before starting the existing CodeBuild cleanup project at the pushed revision.
+
+The single build succeeded after two apply attempts. Its first apply returned seven native LF revoke errors, with no other Terraform errors. The automatic refresh/revalidation reduced the deletion plan from 57 to eight resources, with zero remaining LF permission revocations. The driver then applied that saved subset successfully. There was no injected failure, manual inter-pass repair or temporary global LF administrator for the cleanup role.
+
+Independent API/state checks confirmed deletion of demo data, jobs, database, workgroups, analyst/data roles, registrations and scoped grants. Persistent deployment identities, versioned Terraform state, cleanup context and the enabled schedule were preserved. Original LF settings matched exactly after the final administrative read audit.
+
+A second CodeBuild invocation at the same source revision succeeded on the empty environment in one pass, with zero deletions, no errors and no recovery. The independent final checks passed again.
+
+The [sanitized evidence](evidence/cleanup-recovery-2026-11-03.json) records source revision, native receipts, private-code fingerprints and final checks. The prior analyst qualification's limitation on native automatic recovery is superseded by this full-cycle result. Local validation passed 163 Python tests, six Terraform mock scenarios, formatting and both Terraform root validations.

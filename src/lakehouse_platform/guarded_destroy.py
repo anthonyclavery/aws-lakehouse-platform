@@ -44,12 +44,15 @@ def destroy(region, demo_id, expires_at, *, directory=Path("/tmp"), run=subproce
         validate_destroy_plan(plan, demo_id, expires_at)
         return plan
     initial = prepare()
+    (directory / "destroy-initial-plan.json").write_text(json.dumps(initial))
+    recovery = None
     for attempt in (1, 2):
         result = run(base + ["apply", "-input=false", str(plan_path)], capture_output=True, text=True)
         output = result.stdout + result.stderr
         print(output, flush=True)
         if result.returncode == 0:
-            return {"succeeded": True, "passes": attempt}
+            return {"succeeded": True, "passes": attempt,
+                    "initial_delete_count": len(deletion_set(initial)), "recovery": recovery}
         if attempt == 2 or not lf_revoke_only_failure(output):
             raise RuntimeError("Guarded destroy apply failed; no unverified retry is allowed")
         # LF can remove a caller's own grants and still return AccessDenied while
@@ -57,5 +60,8 @@ def destroy(region, demo_id, expires_at, *, directory=Path("/tmp"), run=subproce
         # error: refresh state and validate a new, strictly smaller delete plan.
         refreshed = prepare()
         validate_recovery(initial, refreshed)
+        (directory / "destroy-recovery-plan.json").write_text(json.dumps(refreshed))
+        recovery = {"lf_revoke_only_failure": True, "strict_subset_revalidated": True,
+                    "remaining_lf_revocations": 0, "remaining_delete_count": len(deletion_set(refreshed))}
         print("All failed LF revocations disappeared on refresh; applying the revalidated remaining subset", flush=True)
     raise AssertionError("Unreachable")

@@ -12,6 +12,7 @@ mock_provider "aws" {
   }
 }
 mock_provider "random" {}
+mock_provider "aws" { alias = "ingestion_governance" }
 
 variables {
   aws_region = "eu-west-3"

@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "cleanup_build" {
     sid       = "RemoveOnlyProjectAnalystIdentities"
     effect    = "Allow"
     actions   = ["iam:GetRole", "iam:GetRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies", "iam:ListInstanceProfilesForRole", "iam:DeleteRolePolicy", "iam:DeleteRole"]
-    resources = [for suffix in ["analyst", "lakeformation-data"] : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-*-${suffix}"]
+    resources = [for suffix in ["analyst", "lakeformation-data", "ingestion"] : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-*-${suffix}"]
   }
   statement {
     sid       = "RevokeDelegatedProjectLakeFormation"

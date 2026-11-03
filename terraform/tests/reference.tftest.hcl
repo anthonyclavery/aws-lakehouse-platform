@@ -8,6 +8,7 @@ mock_provider "aws" {
   }
 }
 mock_provider "random" {}
+mock_provider "aws" { alias = "ingestion_governance" }
 mock_provider "aws" { alias = "governance" }
 
 variables {

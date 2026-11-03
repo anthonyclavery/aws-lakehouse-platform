@@ -31,7 +31,7 @@ flowchart TB
         end
 
         Athena["Amazon Athena<br/>analyst queries and benchmarks"]
-        LakeFormation["AWS Lake Formation<br/>ingestion, transformation,<br/>and analyst permissions"]
+        LakeFormation["AWS Lake Formation<br/>Gold transformation, operations<br/>and analyst permissions"]
         CloudWatch["Amazon CloudWatch<br/>Glue logs and batch metrics"]
     end
 

@@ -23,7 +23,7 @@ python scripts/upload_landing_batch.py \
 
 ## Approved demonstration upload
 
-Install the optional AWS dependency in the local environment, then use the dedicated project profile. The bucket name is read from reviewed Terraform output and is never committed.
+Install the optional AWS dependency in the local environment, then use the dedicated project profile to assume the [Bronze ingestion role](ingestion-access.md). The bucket and role ARN are read from reviewed Terraform output and are never committed.
 
 ```bash
 python -m pip install -e '.[aws]'
@@ -32,7 +32,8 @@ python scripts/upload_landing_batch.py \
   --batch-id initial-20261016 \
   --bucket <lakehouse-bucket> \
   --profile lakehouse-deployer \
-  --region eu-west-3
+  --region eu-west-3 \
+  --role-arn <ingestion-role-arn>
 ```
 
 Only synthetic batch files and their manifest are uploaded. The script does not accept credentials as command-line arguments and does not log credentials or account identifiers.

@@ -6,7 +6,7 @@ All UUIDs, meter indexes, prices, contracts, sites, and customer relationships a
 
 ## Access control
 
-The [analyst implementation](analyst-access.md) uses named Lake Formation SELECT grants on the three Gold products and a dedicated Athena/result boundary. Analyst IAM excludes Silver/internal catalog resources and explicitly denies direct landing/warehouse object access. A read-only LF data role vends credentials only for the exact Gold locations. Actual assumed-role qualification covers positive Gold reads and negative Silver/S3 checks, including SELECT revocation/restoration. Transformation and project-operation roles retain their scoped operational access; a separate ingestion identity remains a target rather than an implemented claim.
+The [analyst implementation](analyst-access.md) uses named Lake Formation SELECT grants on the three Gold products and a dedicated Athena/result boundary. Analyst IAM excludes Silver/internal catalog resources and explicitly denies direct landing/warehouse object access. A read-only LF data role vends credentials only for the exact Gold locations. Actual assumed-role qualification covers positive Gold reads and negative Silver/S3 checks, including SELECT revocation/restoration. The [dedicated ingestion role](ingestion-access.md) can create only absent Bronze batch objects and read them for replay verification. It has no LF grants or transformation/query/identity-management rights. Transformation and project-operation roles retain their separate scoped operational access.
 
 ## Demonstration isolation
 

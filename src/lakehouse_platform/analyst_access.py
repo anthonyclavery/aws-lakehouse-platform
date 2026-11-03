@@ -6,7 +6,7 @@ from urllib.parse import urlsplit
 
 GOLD = ("daily_site_energy", "daily_customer_energy", "monthly_customer_energy")
 SILVER = ("consumption_index", "meter_consumption_interval", "site_meter_history", "customer_site_history",
-          "site_contract_history", "tariff_grid_history", "priced_intervals",
+          "site_contract_history", "tariff_grid_history", "quarantine_records", "priced_intervals",
           "meter_consumption_interval_recalculation_work", "priced_intervals_stage", "priced_intervals_refresh")
 
 

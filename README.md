@@ -76,7 +76,7 @@ Generated batches use newline-delimited JSON. They are intentionally ignored by 
 
 ## Project status
 
-The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
+The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [integrated identity chain](docs/integrated-chain.md) proves source publication by the dedicated ingestion role, ten normal managed job runs, complete Silver reconciliation and analyst Gold reads before/after updates under active LF governance. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
 
 ## Documentation
 
@@ -90,6 +90,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Bounded Gold refresh](docs/bounded-gold.md) | Silver ledger consumption, old/new group footprints and durable recovery |
 | [Silver reference job](docs/glue-reference-job.md) | Provisioned loader and sequential execution of the four reference flows |
 | [AWS qualification](docs/aws-qualification.md) | Athena reconciliation, operational permissions and evidence procedure |
+| [Integrated AWS identity chain](docs/integrated-chain.md) | Source-shaped ingestion, real Silver/Gold runs and analyst verification before/after governed updates |
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |

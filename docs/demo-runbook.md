@@ -21,6 +21,8 @@ The demonstration proves the pipeline with controlled synthetic data. It is not 
 
 ## Available execution commands
 
+The [integrated identity-chain procedure](integrated-chain.md) connects the dedicated ingestion role, the normal managed Silver/Gold jobs and analyst verification on the same initial/append history. It includes a compact source fixture, sequential launcher and complete Silver reconciliation.
+
 Use the [dedicated ingestion role](ingestion-access.md) with the manifest-backed uploader for Bronze publication. The reference stage has a [Terraform job and sequential launcher](glue-reference-job.md). Run it for all four files in an initial batch, or select the flows present in a partial correction. Then run `scripts/run_silver_index_job.py` for consumption indexes and `scripts/run_gold_jobs.py` for pricing and the three products. All job launches are explicit; local argument previews are available for reference and Gold runs.
 
 The controlled synthetic AWS pipeline has been [qualified end to end](aws-qualification.md), including initial/incremental data, late/corrected readings, replay and guarded cleanup. [Silver](bounded-silver.md) and [Gold](bounded-gold.md) bound logical recalculation and recover interrupted commits. The [partition](partition-benchmark.md) and [same-table compaction](compaction-benchmark.md) benchmarks provide repeatable measurements on separate profiles. [Analyst qualification](analyst-access.md) verifies actual Gold reads and Silver/S3 refusals. Follow [the Gold execution and failure contract](glue-gold-jobs.md) and the analyst enable/seal sequence before publishing evidence.

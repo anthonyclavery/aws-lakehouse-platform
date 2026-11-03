@@ -146,3 +146,19 @@ class IntegratedPipelineTests(TestCase):
             with self.assertRaises(OSError):
                 run_integrated_batch(s3, glue, VALUES, root / "initial", "integrated-initial", load_references=True, journal=Path(folder) / "jobs.jsonl")
             glue.start_job_run.assert_not_called()
+
+    def test_queued_run_is_observed_without_duplicate_submission_or_success_records(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder) / "fixture"
+            write_integrated_fixture(root)
+            glue = Mock()
+            glue.start_job_run.return_value = {"JobRunId": "synthetic-run"}
+            states = ["WAITING", "WAITING", "RUNNING", "SUCCEEDED", "SUCCEEDED", "SUCCEEDED"]
+            glue.get_job_run.side_effect = [{"JobRun": {"JobRunState": state}} for state in states]
+            journal = Path(folder) / "jobs.jsonl"
+            report = run_integrated_batch(FakeS3(), glue, VALUES, root / "append", "integrated-append", load_references=False, journal=journal, poll_seconds=0)
+            self.assertEqual(3, glue.start_job_run.call_count)
+            self.assertEqual(3, len(report["stages"]))
+            rows = [json.loads(row) for row in journal.read_text().splitlines()]
+            self.assertEqual(1, sum(row.get("observed_state") == "WAITING" for row in rows))
+            self.assertEqual(3, sum(row.get("state") == "SUCCEEDED" for row in rows))

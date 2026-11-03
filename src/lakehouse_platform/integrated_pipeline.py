@@ -44,6 +44,8 @@ def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_referenc
     completed = []
     for label, job, arguments in stages:
         class RecordingGlue:
+            last_state = None
+
             def start_job_run(self, **kwargs):
                 response = glue.start_job_run(**kwargs)
                 with journal.open("a") as output:
@@ -54,6 +56,12 @@ def run_integrated_batch(s3, glue, values, batch_dir, batch_id, *, load_referenc
                 response = glue.get_job_run(**kwargs)
                 run = response["JobRun"]
                 state = run["JobRunState"]
+                if state != self.last_state:
+                    print(f"Integrated stage {label}: {state}", flush=True)
+                    with journal.open("a") as output:
+                        output.write(json.dumps({"stage": label, "run_id": kwargs["RunId"], "observed_state": state,
+                                                 "detail": run.get("StateDetail")}) + "\n")
+                    self.last_state = state
                 if state in {"SUCCEEDED", "FAILED", "STOPPED", "TIMEOUT", "ERROR", "EXPIRED"}:
                     summary = {"stage": label, "state": state, "execution_seconds": run.get("ExecutionTime")}
                     with journal.open("a") as output:

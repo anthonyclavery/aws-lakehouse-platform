@@ -15,6 +15,12 @@ variable "terraform_operator_role_name" {
   default     = "aws-lakehouse-platform-demo-terraform-operator"
 }
 
+variable "operator_iam_user_name" {
+  type        = string
+  description = "Protected deployment user read during targeted analyst teardown; never deletable by cleanup."
+  default     = "lakehouse_user"
+}
+
 variable "cleanup_schedule_enabled" {
   type        = bool
   description = "Whether to create the daily EventBridge Scheduler cleanup invocation at 20:00 Europe/Paris."

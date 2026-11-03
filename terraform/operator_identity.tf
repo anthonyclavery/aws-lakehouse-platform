@@ -66,6 +66,12 @@ resource "aws_iam_role_policy" "terraform_operator" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid      = "AssumeOnlyProjectAnalyst"
+        Effect   = "Allow"
+        Action   = ["sts:AssumeRole"]
+        Resource = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-*-analyst"]
+      },
+      {
         Sid    = "ManageOnlyProjectS3"
         Effect = "Allow"
         Action = [

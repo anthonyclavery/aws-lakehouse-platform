@@ -22,6 +22,27 @@ resource "aws_cloudwatch_log_group" "cleanup_build" {
 
 data "aws_iam_policy_document" "cleanup_build" {
   statement {
+    sid     = "ReadProtectedDeploymentIdentity"
+    effect  = "Allow"
+    actions = ["iam:GetUser", "iam:GetRole", "iam:GetRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies"]
+    resources = [
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.operator_iam_user_name}",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.terraform_operator_role_name}"
+    ]
+  }
+  statement {
+    sid       = "RemoveOnlyProjectAnalystIdentities"
+    effect    = "Allow"
+    actions   = ["iam:GetRole", "iam:GetRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies", "iam:ListInstanceProfilesForRole", "iam:DeleteRolePolicy", "iam:DeleteRole"]
+    resources = [for suffix in ["analyst", "lakeformation-data"] : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-lakehouse-platform-*-${suffix}"]
+  }
+  statement {
+    sid       = "RevokeDelegatedProjectLakeFormation"
+    effect    = "Allow"
+    actions   = ["lakeformation:ListPermissions", "lakeformation:RevokePermissions", "lakeformation:DescribeResource", "lakeformation:DeregisterResource"]
+    resources = ["*"]
+  }
+  statement {
     sid       = "RemoveOnlyGlueExecutionInlinePolicy"
     effect    = "Allow"
     actions   = ["iam:GetRole", "iam:GetRolePolicy", "iam:DeleteRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies"]
@@ -90,7 +111,7 @@ data "aws_iam_policy_document" "cleanup_build" {
   statement {
     sid     = "DestroyOnlyProjectGlueDatabase"
     effect  = "Allow"
-    actions = ["glue:DeleteDatabase", "glue:GetDatabase", "glue:GetTags"]
+    actions = ["glue:DeleteDatabase", "glue:GetDatabase", "glue:GetTags", "glue:GetTable"]
     resources = [
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:database/aws_lakehouse_platform_*",

@@ -1,5 +1,7 @@
 import copy
 import unittest
+from analyst_fixtures import analyst_before
+from lakehouse_platform.analyst_access import access_addresses
 
 from lakehouse_platform.cleanup_guard import (
     ALLOWED_DELETE_ADDRESSES,
@@ -17,6 +19,8 @@ def approved_plan():
     changes = []
     for address in sorted(ALLOWED_DELETE_ADDRESSES):
         before = {}
+        if address in access_addresses():
+            before = analyst_before(address, DEMO_ID)
         if address == "aws_iam_role_policy.glue_silver":
             before = {"role":"aws-lakehouse-platform-demo-glue-silver", "name":"aws-lakehouse-platform-demo-glue-silver"}
         if address in TAGGABLE_DELETE_ADDRESSES:

@@ -42,7 +42,7 @@ Corrected or late data triggers a bounded recalculation. A corrected index can a
 
 ## Access model
 
-The ingestion role writes only landing batches. The transformation role reads raw data and writes Iceberg tables. The analyst role reads approved gold tables through Athena. Lake Formation is the control point for the data-plane separation.
+The transformation role reads raw data and writes Iceberg tables. The [implemented analyst role](analyst-access.md) reads only the three approved Gold products through Athena using Lake Formation credentials. IAM excludes Silver/internal catalog resources and direct landing/warehouse objects. A separate landing-only ingestion identity remains a target; current ingestion uses the dedicated project operator. Lake Formation registration is limited to Gold, with explicit operational grants preserved for the writer and operator.
 
 No persistent streaming service or publicly exposed endpoint is required for V1.
 

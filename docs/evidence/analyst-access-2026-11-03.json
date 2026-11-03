@@ -1,0 +1,263 @@
+{
+  "date": "2026-11-03",
+  "scope": "Same-account disposable synthetic demonstration; no row/column or cross-account qualification",
+  "access_source_revision": "c91a631",
+  "cleanup_source_revision": "63e37dd",
+  "empty_cleanup_source_revision": "2db7470",
+  "local_validation": {
+    "python_tests_passed": 158,
+    "terraform_mock_scenarios_passed": 6,
+    "terraform_roots_validated": 2,
+    "terraform_fmt_check": true
+  },
+  "managed_glue_fixture": {
+    "runtime": "Glue 5",
+    "succeeded": true,
+    "execution_seconds": 143,
+    "intervals": 4,
+    "meters": 2,
+    "days": 2,
+    "each_product_total_kwh": "6",
+    "each_product_total_eur": "1.20"
+  },
+  "access": {
+    "passed": true,
+    "gold_products": {
+      "daily_site_energy": {
+        "expected_rows": 4,
+        "actual_rows": 4,
+        "missing_groups": 0,
+        "extra_groups": 0,
+        "max_absolute_error": {
+          "consumption_kwh": "0E-12",
+          "energy_cost_eur": "0E-12"
+        },
+        "expected_sha256": "ff97c8e808da7d4303f993892e7a2e7aa7f239ac92575d25dc53039f9f13d275",
+        "actual_sha256": "ff97c8e808da7d4303f993892e7a2e7aa7f239ac92575d25dc53039f9f13d275",
+        "passed": true
+      },
+      "daily_customer_energy": {
+        "expected_rows": 4,
+        "actual_rows": 4,
+        "missing_groups": 0,
+        "extra_groups": 0,
+        "max_absolute_error": {
+          "consumption_kwh": "0E-12",
+          "energy_cost_eur": "0E-12"
+        },
+        "expected_sha256": "0876e01d5bee4877ae1a2338c894a9af7ca20a52409dc078f1056215827e0d24",
+        "actual_sha256": "0876e01d5bee4877ae1a2338c894a9af7ca20a52409dc078f1056215827e0d24",
+        "passed": true
+      },
+      "monthly_customer_energy": {
+        "expected_rows": 2,
+        "actual_rows": 2,
+        "missing_groups": 0,
+        "extra_groups": 0,
+        "max_absolute_error": {
+          "consumption_kwh": "0E-12",
+          "energy_cost_eur": "0E-12"
+        },
+        "expected_sha256": "7eadf44cc0918f10a2df7d427a55516c7f1ab0a26ac4d0c6833981158bebfd5f",
+        "actual_sha256": "7eadf44cc0918f10a2df7d427a55516c7f1ab0a26ac4d0c6833981158bebfd5f",
+        "passed": true
+      }
+    },
+    "silver_and_internal_sql_denials": {
+      "consumption_index": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "meter_consumption_interval": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "site_meter_history": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "customer_site_history": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "site_contract_history": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "tariff_grid_history": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "priced_intervals": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "meter_consumption_interval_recalculation_work": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "priced_intervals_stage": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      },
+      "priced_intervals_refresh": {
+        "catalog": {
+          "denied": true,
+          "code": "AccessDeniedException"
+        },
+        "athena": {
+          "denied": true,
+          "authorization_error": true,
+          "catalog_masked_not_found": true
+        },
+        "exists_for_operator": true
+      }
+    },
+    "direct_s3_denials": {
+      "bronze": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "silver": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "gold_direct": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      }
+    },
+    "gold_select_revocation_denied": {
+      "denied": true,
+      "authorization_error": true
+    },
+    "gold_select_restored": true,
+    "results_reused": false,
+    "temporary_credentials_used": true,
+    "authorization_layers": {
+      "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+      "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables",
+      "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access"
+    },
+    "region": "eu-west-3"
+  },
+  "terraform_convergence_no_managed_changes": true,
+  "cleanup": {
+    "initial_attempt": "Failed after partial deletion: missing IAM role inspection permission and LF self-revoke responses after actual grant removal",
+    "native_scoped_audit_confirmed_grants_absent": true,
+    "reviewed_fix": "Allow ListInstanceProfilesForRole only on ephemeral analyst/data roles; bounded refresh/revalidate recovery for LF-only revoke failures",
+    "remaining_resources_cleanup_succeeded": true,
+    "recovery_branch_verified_by_unit_tests": true,
+    "automatic_two_pass_recovery_exercised_on_aws": false,
+    "repeat_on_empty_environment_succeeded": true,
+    "analyst_verification": {
+      "role_arn_absent": true,
+      "data_role_arn_absent": true,
+      "analyst_workgroup_absent": true,
+      "daily_customer_energy_registration_absent": true,
+      "daily_site_energy_registration_absent": true,
+      "monthly_customer_energy_registration_absent": true,
+      "gold_and_location_grants_absent": true,
+      "original_lf_settings_restored": true,
+      "cleanup_schedule_unchanged": true
+    },
+    "base_verification": {
+      "demo_bucket_absent": true,
+      "demo_database_absent": true,
+      "demo_job_1_absent": true,
+      "demo_job_2_absent": true,
+      "demo_job_3_absent": true,
+      "demo_job_4_absent": true,
+      "demo_workgroup_absent": true,
+      "deployment_user_preserved": true,
+      "deployment_role_preserved": true,
+      "glue_role_preserved": true,
+      "glue_execution_inline_policy_removed": true,
+      "versioned_state_bucket_preserved": true,
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true
+    }
+  },
+  "code_sha256": {
+    "src/lakehouse_platform/analyst_access.py": "0495f664188da2100390e29641047e182935aa9d47503cf975a5e7fb29ffed99",
+    "src/lakehouse_platform/guarded_destroy.py": "f2415704848f315f76cb31a1a6707dd34fb9303971d79710e2bf469dae9e875c",
+    "terraform/analyst.tf": "90b0555e9c305317709afd8b11e540d6d72b420ea2c2345875e91b49f7ebc618",
+    "tests/glue/qualify_analyst_fixture.py": "76053ccff86ba7337a504b4d9232a9d286bb779ebfeafa5638893e304fd7130a"
+  },
+  "privacy": "Only synthetic counts, comparisons, fingerprints and checks are published; identifiers, credentials, plans, state and raw logs remain private"
+}

@@ -1,5 +1,6 @@
 from pathlib import Path
 import unittest
+import re
 
 
 POLICY_PATH = Path(__file__).parents[1] / "terraform" / "bootstrap-state" / "cleanup.tf"
@@ -17,9 +18,18 @@ class CleanupIamPolicyTests(unittest.TestCase):
             ":userDefinedFunction/aws_lakehouse_platform_*/*",
         )
 
-        self.assertIn('actions = ["glue:DeleteDatabase", "glue:GetDatabase", "glue:GetTags"]', policy)
+        self.assertIn('actions = ["glue:DeleteDatabase", "glue:GetDatabase", "glue:GetTags", "glue:GetTable"]', policy)
         for resource_suffix in required_resource_suffixes:
             self.assertIn(resource_suffix, policy)
+
+    def test_protected_identity_dependency_access_is_read_only(self):
+        policy = POLICY_PATH.read_text()
+        block = re.search(r'sid\s*=\s*"ReadProtectedDeploymentIdentity"(.*?)\n  }', policy, re.S)[1]
+        self.assertIn('"iam:GetUser"', block)
+        self.assertIn('"iam:GetRolePolicy"', block)
+        self.assertNotIn("iam:Delete", block)
+        self.assertNotIn("iam:Put", block)
+        self.assertNotIn("iam:Update", block)
 
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@ Glue and PySpark: tariff allocation and aggregates
 Apache Iceberg gold tables queried through Athena
 ```
 
-Lake Formation separates ingestion, transformation, and analyst access. Terraform provisions and later destroys the cloud resources required for a short, controlled demonstration.
+The target Lake Formation model separates ingestion, transformation, and analyst access. Its separate analyst role and denial tests remain to be provisioned; current managed pipeline qualification uses the dedicated project operator and transformation role. Terraform provisions and later destroys the cloud resources required for a short, controlled demonstration.
 
 Further design details are in [docs/architecture.md](docs/architecture.md).
 
@@ -54,7 +54,7 @@ The local-first workflow validates contracts, business rules, and deterministic 
 
 Bronze ingestion is performed by a versioned Python script, not an orchestration service. It verifies the generated manifest and object checksums before publishing an immutable S3 batch. See [Bronze landing ingestion](docs/landing-ingestion.md).
 
-The two planned benchmarks measure partition pruning and the effect of Iceberg compaction on fragmented files. Results will be added only after real execution and verification.
+The partition benchmark compares identical unpartitioned and day-partitioned Iceberg datasets through repeated Athena queries. A separate benchmark for compaction on fragmented files remains planned. Results are published only after real execution and verification.
 
 See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology.md](docs/benchmark-methodology.md).
 
@@ -72,11 +72,11 @@ python scripts/generate_initial_data.py --customers 4 --sites 8 --output-dir art
 
 Generated batches use newline-delimited JSON. They are intentionally ignored by Git and can be regenerated from the seed recorded in their manifest. The default command generates the documented 100-customer, 200-site scenario. Use `--without-indexes` to inspect only the reference flows without generating historical indexes.
 
-`scripts/run_local_silver.py` is a local business-rule oracle. The production-target Silver implementation is [jobs/silver_process_indexes.py](jobs/silver_process_indexes.py), an AWS Glue PySpark job that will be connected to S3 and Iceberg by Terraform in a later phase.
+`scripts/run_local_silver.py` is a local business-rule oracle. The [provisioned Glue Silver job](jobs/silver_process_indexes.py) writes Iceberg indexes and bounded consumption intervals with durable recovery.
 
 ## Project status
 
-Local foundation in progress. It currently provides deterministic synthetic initial-batch generation and tests for cumulative-index derivation. No AWS deployment, benchmark result, or cost claim has been made yet.
+The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition benchmark](docs/partition-benchmark.md) supplies a separate scale profile and repeatable measurement procedure. Analyst/Lake Formation denial checks and the compaction benchmark remain outstanding. Qualification environments are torn down after verification; this is not a continuously deployed service.
 
 ## Documentation
 
@@ -92,6 +92,7 @@ Local foundation in progress. It currently provides deterministic synthetic init
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
+| [Partition benchmark](docs/partition-benchmark.md) | Deterministic Iceberg pair, repeated Athena measurements and evidence |
 | [Security and privacy](docs/security-and-privacy.md) | Public-repository and access-control guardrails |
 | [Cost and destruction](docs/cost-and-destruction.md) | Cost discipline and post-demo cleanup requirements |
 | [Architecture decision records](docs/adr/README.md) | Accepted architectural decisions and their consequences |

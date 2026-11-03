@@ -37,6 +37,16 @@ def approved_plan():
 
 
 class CleanupGuardTests(unittest.TestCase):
+    def test_benchmark_artifacts_require_tags_and_exact_instance_names(self):
+        for change in approved_plan()["resource_changes"]:
+            if change["address"].startswith("aws_s3_object.benchmark_script"):
+                change["change"]["before"] = {}
+                with self.subTest(address=change["address"]), self.assertRaises(DestroyPlanRejected):
+                    validate_destroy_plan({"resource_changes": [change]}, DEMO_ID, EXPIRES_AT)
+        with self.assertRaises(DestroyPlanRejected):
+            validate_destroy_plan({"resource_changes": [{"address": 'aws_s3_object.benchmark_script["unrelated"]',
+                "change": {"actions": ["delete"], "before": {}}}]}, DEMO_ID, EXPIRES_AT)
+
     def test_glue_execution_policy_requires_exact_role_and_policy_name(self):
         expected = "aws-lakehouse-platform-demo-glue-silver"
         for before in ({}, {"role":"unrelated", "name":expected}, {"role":expected, "name":"unrelated"}):

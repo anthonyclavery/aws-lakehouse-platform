@@ -1,0 +1,248 @@
+{
+  "profile": {
+    "benchmark_id": "pruning_v2",
+    "history_days": 730,
+    "meters": 200,
+    "start_date": "2024-01-01"
+  },
+  "rows": 3504000,
+  "build": {
+    "profile": {
+      "benchmark_id": "pruning_v2",
+      "history_days": 730,
+      "meters": 200,
+      "start_date": "2024-01-01"
+    },
+    "rows": 3504000,
+    "multiset_equal": true,
+    "layouts": {
+      "unpartitioned": {
+        "data_files": 10,
+        "records": 3504000,
+        "data_bytes": 23589459,
+        "min_file_bytes": 1522851,
+        "max_file_bytes": 4327852,
+        "median_file_bytes": 1523194,
+        "partition_spec": [],
+        "properties": {
+          "write.format.default": "parquet",
+          "write.parquet.compression-codec": "zstd",
+          "write.target-file-size-bytes": "134217728",
+          "write.distribution-mode": "none"
+        }
+      },
+      "daily": {
+        "data_files": 730,
+        "records": 3504000,
+        "data_bytes": 7157443,
+        "min_file_bytes": 9777,
+        "max_file_bytes": 9830,
+        "median_file_bytes": 9805,
+        "partition_spec": [
+          {
+            "source_column": "interval_end",
+            "transform": "day"
+          }
+        ],
+        "properties": {
+          "write.format.default": "parquet",
+          "write.parquet.compression-codec": "zstd",
+          "write.target-file-size-bytes": "134217728",
+          "write.distribution-mode": "none"
+        }
+      }
+    },
+    "ordering": {
+      "unpartitioned": "16 hash-distributed tasks, xxhash64 row ordering",
+      "daily": "16 day-distributed tasks, interval_end/meter ordering"
+    }
+  },
+  "expected_result": {
+    "rows": "4800",
+    "meters": "200",
+    "consumption_wh": "12207757",
+    "first_reading": "2024-12-31 00:00:00",
+    "last_reading": "2024-12-31 23:00:00"
+  },
+  "query_day": "2024-12-31",
+  "repetitions": 3,
+  "execution_order": [
+    "unpartitioned",
+    "daily",
+    "daily",
+    "unpartitioned",
+    "unpartitioned",
+    "daily"
+  ],
+  "sql_templates": {
+    "unpartitioned": "SELECT COUNT(*) AS rows, COUNT(DISTINCT meter_id) AS meters,\nSUM(consumption_wh) AS consumption_wh,\ndate_format(MIN(interval_end), '%Y-%m-%d %H:%i:%s') AS first_reading,\ndate_format(MAX(interval_end), '%Y-%m-%d %H:%i:%s') AS last_reading\nFROM \"benchmark_database\".\"benchmark_pruning_v2_unpartitioned\"\nWHERE interval_end >= TIMESTAMP '2024-12-31 00:00:00'\n  AND interval_end < TIMESTAMP '2025-01-01 00:00:00'",
+    "daily": "SELECT COUNT(*) AS rows, COUNT(DISTINCT meter_id) AS meters,\nSUM(consumption_wh) AS consumption_wh,\ndate_format(MIN(interval_end), '%Y-%m-%d %H:%i:%s') AS first_reading,\ndate_format(MAX(interval_end), '%Y-%m-%d %H:%i:%s') AS last_reading\nFROM \"benchmark_database\".\"benchmark_pruning_v2_daily\"\nWHERE interval_end >= TIMESTAMP '2024-12-31 00:00:00'\n  AND interval_end < TIMESTAMP '2025-01-01 00:00:00'"
+  },
+  "workgroup": {
+    "engine": "Athena engine version 3",
+    "scan_cap_bytes": 1073741824,
+    "enforced": true,
+    "result_encryption": "SSE_S3",
+    "result_reuse": false
+  },
+  "samples": {
+    "unpartitioned": [
+      {
+        "bytes_scanned": 17005513,
+        "engine_ms": 756,
+        "planning_ms": 93,
+        "queue_ms": 62,
+        "total_ms": 911,
+        "scan_cost_model": {
+          "rounded_bytes": 18000000,
+          "estimated_usd": "0.00009"
+        },
+        "result_reused": false
+      },
+      {
+        "bytes_scanned": 17005513,
+        "engine_ms": 685,
+        "planning_ms": 93,
+        "queue_ms": 95,
+        "total_ms": 836,
+        "scan_cost_model": {
+          "rounded_bytes": 18000000,
+          "estimated_usd": "0.00009"
+        },
+        "result_reused": false
+      },
+      {
+        "bytes_scanned": 17005513,
+        "engine_ms": 1673,
+        "planning_ms": 314,
+        "queue_ms": 58,
+        "total_ms": 1822,
+        "scan_cost_model": {
+          "rounded_bytes": 18000000,
+          "estimated_usd": "0.00009"
+        },
+        "result_reused": false
+      }
+    ],
+    "daily": [
+      {
+        "bytes_scanned": 8032,
+        "engine_ms": 613,
+        "planning_ms": 97,
+        "queue_ms": 61,
+        "total_ms": 745,
+        "scan_cost_model": {
+          "rounded_bytes": 10000000,
+          "estimated_usd": "0.00005"
+        },
+        "result_reused": false
+      },
+      {
+        "bytes_scanned": 8032,
+        "engine_ms": 586,
+        "planning_ms": 119,
+        "queue_ms": 61,
+        "total_ms": 724,
+        "scan_cost_model": {
+          "rounded_bytes": 10000000,
+          "estimated_usd": "0.00005"
+        },
+        "result_reused": false
+      },
+      {
+        "bytes_scanned": 8032,
+        "engine_ms": 591,
+        "planning_ms": 99,
+        "queue_ms": 100,
+        "total_ms": 762,
+        "scan_cost_model": {
+          "rounded_bytes": 10000000,
+          "estimated_usd": "0.00005"
+        },
+        "result_reused": false
+      }
+    ]
+  },
+  "summaries": {
+    "unpartitioned": {
+      "median_bytes_scanned": 17005513,
+      "median_engine_ms": 756,
+      "median_planning_ms": 93,
+      "median_queue_ms": 62,
+      "median_total_ms": 911
+    },
+    "daily": {
+      "median_bytes_scanned": 8032,
+      "median_engine_ms": 591,
+      "median_planning_ms": 99,
+      "median_queue_ms": 61,
+      "median_total_ms": 745
+    }
+  },
+  "snapshots_unchanged": true,
+  "results_equal_oracle": true,
+  "median_scan_reduction_fraction": "0.9995276825815251795109033171",
+  "cost_assumptions": {
+    "usd_per_tb": "5",
+    "mb_bytes": 1000000,
+    "tb_bytes": 1000000000000,
+    "minimum_mb_per_query": 10,
+    "rounding_mb": 1,
+    "excludes": "Glue, S3, catalog, metadata validation queries and taxes; estimate is not an invoice"
+  },
+  "region": "eu-west-3",
+  "qualification": {
+    "date": "2026-11-03",
+    "source_revision": "327a4abf225fa444c16cd9c718b6be0a54aa104c",
+    "glue": {
+      "version": "5.0",
+      "worker_type": "G.1X",
+      "workers": 2,
+      "execution_seconds": 127,
+      "state": "SUCCEEDED"
+    },
+    "deployed_sources": {
+      "matched": true,
+      "sha256": {
+        "jobs/benchmark_partition_pruning.py": "f3f88fcc98e6a566a91ab02975adbad1b6213de44b378a826f4f94829b5335a7",
+        "src/lakehouse_platform/partition_benchmark.py": "43f01ac7047bb9adb6205e689090749ce59832aebba6f22b1336c78f36c0ee16"
+      }
+    },
+    "runner_sha256": "a6366abfd36300418f3ebeb4806e12afa144fffd7ef677a633d121e2b78071fb",
+    "athena_helper_sha256": "1bb86a8ffc30be7f7e35c2da5cd04356b1e402b9127caf69bf5033896e360b88",
+    "local_validation": {
+      "unittests": 124,
+      "mocked_terraform_plans": 4,
+      "both_roots_validated": true
+    },
+    "guarded_cleanup": {
+      "status": "SUCCEEDED",
+      "checks": {
+        "demo_bucket_absent": true,
+        "demo_database_absent": true,
+        "demo_job_1_absent": true,
+        "demo_job_2_absent": true,
+        "demo_job_3_absent": true,
+        "demo_job_4_absent": true,
+        "demo_workgroup_absent": true,
+        "deployment_user_preserved": true,
+        "deployment_role_preserved": true,
+        "glue_role_preserved": true,
+        "glue_execution_inline_policy_removed": true,
+        "versioned_state_bucket_preserved": true,
+        "cleanup_context_preserved": true,
+        "data_plane_absent_from_state": true
+      },
+      "schedule": {
+        "state": "ENABLED",
+        "unchanged": true
+      }
+    },
+    "limits": [
+      "One deterministic profile and one selective day; ordering, compression ratio and file counts differ across layouts.",
+      "Athena result reuse disabled; service/storage caches were not flushed.",
+      "No compaction, ingestion-throughput or Lake Formation analyst-access claim.",
+      "Reported scan costs are an explicit decimal-unit model, not an AWS bill."
+    ]
+  }
+}

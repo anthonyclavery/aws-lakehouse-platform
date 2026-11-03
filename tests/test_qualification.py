@@ -40,6 +40,8 @@ class QualificationTests(unittest.TestCase):
         rows, statistics = query_rows(athena,"demo_db","workgroup","SELECT 1")
         self.assertEqual([{"value":"first"},{"value":"second"}],rows)
         self.assertEqual(3,statistics["DataScannedInBytes"])
+        self.assertEqual({"ResultReuseByAgeConfiguration": {"Enabled": False}},
+                         athena.start_query_execution.call_args.kwargs["ResultReuseConfiguration"])
         self.assertEqual("page2",athena.get_query_results.call_args_list[1].kwargs["NextToken"])
 
     def test_query_failure_and_timeout_fail_without_reading_results(self):

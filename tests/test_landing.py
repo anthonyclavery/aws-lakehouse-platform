@@ -191,3 +191,23 @@ class LandingTests(unittest.TestCase):
                 upload_landing_batch(client, "bucket", create_batch(Path(directory)), "atomic-test")
             self.assertEqual("BadDigest", raised.exception.response["Error"]["Code"])
             self.assertFalse(client.objects)
+
+    def test_retry_after_manifest_failure_reuses_data_then_publishes_manifest(self):
+        class InterruptedS3(FakeS3):
+            interrupted = False
+
+            def put_object(self, **kwargs):
+                if kwargs["Key"].endswith("/manifest.json") and not self.interrupted:
+                    self.interrupted = True
+                    raise OSError("connection interrupted before manifest publication")
+                return super().put_object(**kwargs)
+        with TemporaryDirectory() as directory:
+            batch = create_batch(Path(directory))
+            client = InterruptedS3()
+            with self.assertRaises(OSError):
+                upload_landing_batch(client, "bucket", batch, "atomic-test")
+            self.assertEqual(1, len(client.objects))
+            self.assertNotIn(("bucket", "landing/batch_id=atomic-test/manifest.json"), client.objects)
+            result = upload_landing_batch(client, "bucket", batch, "atomic-test")
+            self.assertEqual(("landing/batch_id=atomic-test/manifest.json",), result.uploaded_keys)
+            self.assertEqual(("landing/batch_id=atomic-test/reference/site_meter.jsonl",), result.existing_keys)

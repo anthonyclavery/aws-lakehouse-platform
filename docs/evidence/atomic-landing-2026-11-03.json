@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-03",
+  "qualified_source_revision": "615ffcfdb0154b2a41591f92aa7f0846d394d2bd",
+  "scope": "Native S3 landing atomicity on a disposable synthetic demonstration; no new Glue business or ingestion-role qualification",
+  "local_python_tests_passed": 171,
+  "native_landing": {
+    "passed": true,
+    "region": "eu-west-3",
+    "concurrent_writers": 2,
+    "objects_in_complete_batch": 5,
+    "objects_created_once": 5,
+    "native_precondition_failures_412": 5,
+    "all_stored_bytes_match": true,
+    "unchanged_replay_reused_all_objects": true,
+    "conflicting_objects": {
+      "missing": {
+        "conflict_rejected": true,
+        "original_preserved": true,
+        "manifest_absent": true
+      },
+      "spoof": {
+        "conflict_rejected": true,
+        "original_preserved": true,
+        "manifest_absent": true
+      }
+    },
+    "native_bad_digest_400_rejected_without_object": true
+  },
+  "native_cleanup": {
+    "build_status": "SUCCEEDED",
+    "error_count": 0,
+    "only_lf_revoke_errors": false,
+    "refresh_revalidation_message": false,
+    "receipts": [
+      {
+        "succeeded": true,
+        "passes": 1,
+        "initial_delete_count": 22,
+        "recovery": null
+      }
+    ]
+  },
+  "independent_cleanup_checks": {
+    "demo_bucket_absent": true,
+    "demo_database_absent": true,
+    "demo_job_1_absent": true,
+    "demo_job_2_absent": true,
+    "demo_job_3_absent": true,
+    "demo_job_4_absent": true,
+    "demo_workgroup_absent": true,
+    "deployment_user_preserved": true,
+    "deployment_role_preserved": true,
+    "glue_role_preserved": true,
+    "glue_execution_inline_policy_removed": true,
+    "versioned_state_bucket_preserved": true,
+    "cleanup_context_preserved": true,
+    "data_plane_absent_from_state": true
+  },
+  "control_preservation": {
+    "original_lf_settings_preserved": true,
+    "cleanup_schedule_enabled": true,
+    "independent_cleanup_verification_repeated_and_passed": true
+  },
+  "code_sha256": {
+    "src/lakehouse_platform/landing.py": "028c50661ed801c1fe46f81b0aad5d3d056208a688315315b6f7fbfedf5f1f28",
+    "scripts/qualify_landing_atomicity.py": "d90329f7fe85138ffa50288ad540173b0245535ca8375a5d92729438db648acb"
+  },
+  "limits": [
+    "Uploader-level per-object atomic creation, not batch transactions or S3 Object Lock",
+    "Other writers with unconditional write/delete permission remain outside this guarantee",
+    "Interrupted batches may leave data without a manifest; downstream must require manifests"
+  ],
+  "privacy": "Only synthetic counts and sanitized checks are published; identifiers, credentials, state, plans and raw logs remain private"
+}

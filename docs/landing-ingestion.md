@@ -55,6 +55,8 @@ The qualifier requires project/demo/automatic-cleanup bucket tags, fresh case pr
 
 The [2026-11-03 evidence](evidence/atomic-landing-2026-11-03.json) records the managed result and post-test cleanup checks. See AWS's [conditional-write behavior](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html) and [PutObject checksum contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html).
 
+The managed run created each of five batch objects once across two simultaneous uploads, observed five native HTTP 412 responses, verified all stored bytes and an unchanged replay, preserved conflicting objects with missing/spoofed metadata without publishing their manifests, and observed native `BadDigest`/400 rejection without creating an object. The guarded cleanup succeeded in one pass with 22 deletions. The first independent bucket-absence probe still observed the bucket; repeated verification confirmed it and the rest of the data plane absent, with persistent identities and versioned state preserved. The published checks describe that final verified state. Local validation passed 171 tests, including conflicting concurrent writers and resuming publication after a manifest failure.
+
 ## Explicit Silver execution
 
 After the Glue job and Iceberg tables have been provisioned, `scripts/run_silver_index_job.py` starts one named job run for one landed batch. `--wait` makes the script return a failure status when Glue reports a failed terminal state. It is an explicit demonstration command, not a scheduler.

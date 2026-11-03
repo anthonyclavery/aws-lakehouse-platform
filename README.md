@@ -52,7 +52,7 @@ The project intentionally models energy cost only. It does not calculate a compl
 
 The local-first workflow validates contracts, business rules, and deterministic scenarios before AWS resources are used. The AWS demonstration then loads synthetic batches, runs incremental Glue jobs, queries results with Athena, proves restricted analyst access, and injects selected late or corrected events.
 
-Bronze ingestion is performed by a versioned Python script, not an orchestration service. It verifies the generated manifest and object checksums before publishing an immutable S3 batch. See [Bronze landing ingestion](docs/landing-ingestion.md).
+Bronze ingestion uses a versioned Python script. It verifies the generated manifest and checksums, creates each object with an S3 conditional write, and publishes the manifest last. Replays verify stored bytes; concurrent writers cannot replace an existing object through this uploader. See [Bronze landing ingestion](docs/landing-ingestion.md).
 
 The partition benchmark compares identical unpartitioned and day-partitioned Iceberg datasets through repeated Athena queries. The compaction benchmark measures the same fragmented table before and after bin-pack maintenance, with full-content verification and durable recovery. Results are published only after real execution and verification.
 
@@ -84,6 +84,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | --- | --- |
 | [Architecture](docs/architecture.md) | Bronze, silver, gold layers and AWS responsibilities |
 | [Data contracts](docs/data-contracts.md) | Input flows, keys, units, versions, and constraints |
+| [Bronze landing ingestion](docs/landing-ingestion.md) | Conditional source writes, byte-verified replay and native concurrency qualification |
 | [Business rules](docs/business-rules.md) | Consumption, tariff, rollover, replacement, and backfill rules |
 | [Gold pricing jobs](docs/glue-gold-jobs.md) | Shared tariff calculation, local rebuild, Glue execution and validation limits |
 | [Bounded Gold refresh](docs/bounded-gold.md) | Silver ledger consumption, old/new group footprints and durable recovery |

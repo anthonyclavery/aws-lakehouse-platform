@@ -14,9 +14,9 @@ The local calculator uses Decimal arithmetic and assigns allocation division res
 
 ## Jobs and tables
 
-`gold_price_intervals.py` reads the Silver interval and four reference tables. It streams intervals by Spark partition and broadcasts at most 10,000 rows per reference flow. Exceeding this demo bound fails before processing. The source data must be a complete, deduplicated Silver snapshot. The job validates all priced data before atomically replacing `priced_intervals` through Iceberg. Interval/segment boundaries are UTC timestamps, `local_date` is a date, and rows retain meter, site, customer, contract, price, quality and allocation method. The segment key is `(meter_id, interval_start, interval_end, segment_start)`.
+`gold_price_intervals.py` reads the Silver interval and four reference tables. It streams selected endpoints by Spark partition and broadcasts at most 10,000 rows per reference flow. Exceeding this demo bound fails before processing. The source data must be a complete, deduplicated Silver snapshot. The job validates and durably stages all selected priced data before merging `priced_intervals` through Iceberg. Interval/segment boundaries are UTC timestamps, `local_date` is a date, and rows retain meter, site, customer, contract, price, quality and allocation method. The segment key is `(meter_id, interval_end, segment_start, segment_end)`. See [bounded Gold](bounded-gold.md) for the work-ledger checkpoint and retry protocol.
 
-`gold_aggregate_energy.py` reads that snapshot and replaces the following products:
+`gold_aggregate_energy.py` reads that snapshot and refreshes affected groups in the following products:
 
 | Table | Grouping | Partition |
 | --- | --- | --- |
@@ -24,9 +24,9 @@ The local calculator uses Decimal arithmetic and assigns allocation division res
 | `daily_customer_energy` | customer, local date | local date |
 | `monthly_customer_energy` | customer, local month (`YYYY-MM`) | local month |
 
-Products contain `consumption_kwh` and `energy_cost_eur`. Full replacement removes obsolete segments and customer/date groups after late data, corrections, ownership transfers or an empty source. This first runnable Gold implementation performs a complete demo rebuild; bounded incremental refresh remains future work. It does not repair obsolete rows already present in Silver: those must be corrected upstream first.
+Products contain `consumption_kwh` and `energy_cost_eur`. Old/new staged footprints remove obsolete segments and customer/date groups after late data and corrections. Reference snapshot changes require explicit `--refresh-mode full`, covering ownership transfers or changed validity/tariffs. A first run bootstraps the destination; migration from an existing checkpoint-free Gold table requires a fresh destination. It does not repair obsolete rows already present in Silver: those must be corrected upstream first.
 
-Replacement is atomic per table, not across all products. Run one Gold chain at a time, with Silver/reference writers paused, and expose results after the chain succeeds. Each Glue job allows one concurrent run. If aggregation fails after writing one product, rerun aggregation against the unchanged priced snapshot to converge all products. A client wait timeout leaves the AWS run active: inspect its state before retrying. There is no automatic schedule or automatic retry.
+Commits are atomic per table, not across all products. Run one Gold chain at a time, with Silver/reference writers paused, and expose results after the chain succeeds. Each Glue job allows one concurrent run. If a commit succeeds before the driver fails, retry the same `BATCH_ID` and `REFRESH_MODE`; staged footprints converge all products before advancing the consumed-work checkpoint. A client wait timeout leaves the AWS run active: inspect its state before retrying. There is no automatic schedule or automatic retry.
 
 ## Local execution
 
@@ -44,15 +44,15 @@ Supply the full initial/reference history and every applicable incremental/corre
 
 ## Terraform and explicit AWS execution
 
-`terraform/glue_gold.tf` defines two Glue 5.0 jobs, four S3 script/module objects updated by content hash and the `gold_job_names` output. Gold reuses the existing Silver transformation role, project bucket and catalog database. Both jobs inherit the existing Iceberg Spark configuration and receive shared Python modules through `--extra-py-files`. They use two G.1X workers, a 30-minute timeout, zero retries and disabled bookmarks for snapshot rebuilding.
+`terraform/glue_gold.tf` defines two Glue 5.0 jobs, five S3 script/module objects updated by content hash and the `gold_job_names` output. Gold reuses the existing Silver transformation role, project bucket and catalog database. Both jobs inherit the existing Iceberg Spark configuration and receive shared Python modules through `--extra-py-files`. They use two G.1X workers, a 30-minute timeout, zero retries and disabled bookmarks; explicit snapshot checkpoints control refreshes.
 
-The project operator policy is extended only for the named Gold jobs and artifacts. Guarded cleanup includes their exact Terraform addresses and requires demo tags, including for the uploaded Gold objects. The cleanup role's job deletion statement belongs to its permission policy, not its trust policy. Apply the bootstrap permission update before relying on scheduled Gold cleanup; this PR does not deploy either Terraform root.
+The project operator policy is extended only for the named Gold jobs and artifacts. Guarded cleanup includes their exact Terraform addresses and requires demo tags, including for the uploaded Gold objects. The cleanup role's job deletion statement belongs to its permission policy, not its trust policy. Apply required operator/bootstrap permission updates before provisioning or relying on scheduled Gold cleanup. The cleanup source must include the new refresh module allowlist entry.
 
 After deployment, load all four Silver reference histories with the [provisioned reference job and sequential runner](glue-reference-job.md), then process the Silver indexes. Use the existing AWS profile configured to assume the project operator role, with the optional AWS Python dependency installed. Obtain job names and database from Terraform outputs, then run:
 
 ```bash
-.venv/bin/python scripts/run_gold_jobs.py --pricing-job DEMO_GOLD_PRICE_JOB --aggregate-job DEMO_GOLD_AGGREGATE_JOB --database demo_database --dry-run
-.venv/bin/python scripts/run_gold_jobs.py --pricing-job DEMO_GOLD_PRICE_JOB --aggregate-job DEMO_GOLD_AGGREGATE_JOB --database demo_database --profile PROJECT_OPERATOR_PROFILE --region eu-west-3
+.venv/bin/python scripts/run_gold_jobs.py --pricing-job DEMO_GOLD_PRICE_JOB --aggregate-job DEMO_GOLD_AGGREGATE_JOB --database demo_database --batch-id gold-initial --dry-run
+.venv/bin/python scripts/run_gold_jobs.py --pricing-job DEMO_GOLD_PRICE_JOB --aggregate-job DEMO_GOLD_AGGREGATE_JOB --database demo_database --batch-id gold-initial --profile PROJECT_OPERATOR_PROFILE --region eu-west-3
 ```
 
 Replace the uppercase placeholders and `demo_database` with the Terraform output values. The runner waits for pricing success before starting aggregation; terminal failure, expiry, API error or timeout returns a nonzero exit status. Each run ID is printed for inspection. The default wait bound is one hour per job.

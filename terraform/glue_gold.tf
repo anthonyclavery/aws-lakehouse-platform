@@ -4,6 +4,7 @@ locals {
     aggregate = "jobs/gold_aggregate_energy.py"
     pricing   = "src/lakehouse_platform/pricing.py"
     adapter   = "src/lakehouse_platform/gold_spark.py"
+    refresh   = "src/lakehouse_platform/gold_refresh.py"
   }
   gold_jobs = {
     price = {
@@ -57,8 +58,8 @@ resource "aws_glue_job" "gold" {
   execution_property {
     max_concurrent_runs = 1
   }
-  default_arguments = merge(aws_glue_job.silver_process_indexes.default_arguments, each.value.arguments, {
-    "--extra-py-files"      = join(",", [for key in ["pricing", "adapter"] : "s3://${aws_s3_bucket.lakehouse.id}/${aws_s3_object.gold_script[key].key}"])
+  default_arguments = merge(aws_glue_job.silver_process_indexes.default_arguments, local.gold_jobs.price.arguments, local.gold_jobs.aggregate.arguments, {
+    "--extra-py-files"      = join(",", [for key in ["pricing", "adapter", "refresh"] : "s3://${aws_s3_bucket.lakehouse.id}/${aws_s3_object.gold_script[key].key}"])
     "--job-bookmark-option" = "job-bookmark-disable"
   })
   tags = merge(local.required_tags, { Purpose = "GlueGold" })

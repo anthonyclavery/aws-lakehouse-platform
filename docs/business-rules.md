@@ -28,7 +28,7 @@ This first interval may be shorter or longer than the standard hourly or daily c
 
 Contract changes are effective at local midnight. A transition index is generated at the change boundary whenever the expected reading cadence changes.
 
-Gold allocates `[interval_start, interval_end)` by elapsed UTC time, splitting at local tariff/day boundaries and reference changes. The first runnable [Gold jobs](glue-gold-jobs.md) rebuild complete demo snapshots, including removal of obsolete groups. Bounded incremental refresh described below remains the target architecture.
+Gold allocates `[interval_start, interval_end)` by elapsed UTC time, splitting at local tariff/day boundaries and reference changes. The [Gold jobs](glue-gold-jobs.md) now [bound endpoint pricing and aggregate mutations](bounded-gold.md), including removal of obsolete groups and durable interrupted-run recovery. Reference snapshot changes require an explicit full refresh.
 
 Prices cover energy only. The project deliberately excludes subscriptions, tax, network costs, VAT, and invoice calculation.
 
@@ -36,7 +36,7 @@ Prices cover energy only. The project deliberately excludes subscriptions, tax, 
 
 An unchanged replay is ignored. A higher `source_version` is a correction. A late index or corrected index recalculates the interval immediately before and after that index, then refreshes only affected gold aggregates.
 
-[Silver now bounds logical interval recalculation](bounded-silver.md) to effective changed readings and their successors, with durable recovery after an interrupted commit. Gold's affected-aggregate refresh remains the target; its current implementation still rebuilds complete snapshots.
+[Silver bounds logical interval recalculation](bounded-silver.md) to effective changed readings and their successors, with durable recovery after an interrupted commit. [Gold consumes the unacknowledged Silver endpoint ledger](bounded-gold.md), retains old/new footprints and recomputes affected groups. Neither implementation claims bounded physical reads or file rewrites.
 
 Changes to customer ownership, site-to-meter relationships, contracts, or tariffs trigger bounded recalculation for their effective periods. A quarantine record never reaches gold tables.
 

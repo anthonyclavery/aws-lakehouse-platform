@@ -41,9 +41,9 @@ def build_silver_index_arguments(invocation: SilverIndexInvocation) -> dict[str,
     return {"BATCH_ID": invocation.batch_id, "LANDING_PATH": invocation.landing_path, **tables}
 
 
-def build_gold_arguments(database: str) -> tuple[dict[str, str], dict[str, str]]:
+def build_gold_arguments(database: str, batch_id=None, refresh_mode="bounded") -> tuple[dict[str, str], dict[str, str]]:
     """Use separate source and destination tables in the demo Glue catalog."""
-    if not re.fullmatch(r"[a-z][a-z0-9_]*", database):
+    if not re.fullmatch(r"[a-z][a-z0-9_]{0,254}", database):
         raise GlueInvocationRejected("database must be a lowercase Glue database identifier")
     names = {
         "INTERVAL_TABLE": "meter_consumption_interval", "SITE_METER_TABLE": "site_meter_history",
@@ -53,14 +53,20 @@ def build_gold_arguments(database: str) -> tuple[dict[str, str], dict[str, str]]
         "MONTHLY_CUSTOMER_TABLE": "monthly_customer_energy",
     }
     tables = {key: f"glue_catalog.{database}.{name}" for key, name in names.items()}
-    return ({key: value for key, value in tables.items() if key not in {
-        "DAILY_SITE_TABLE", "DAILY_CUSTOMER_TABLE", "MONTHLY_CUSTOMER_TABLE"}},
-        {key: tables[key] for key in ("PRICED_INTERVAL_TABLE", "DAILY_SITE_TABLE", "DAILY_CUSTOMER_TABLE", "MONTHLY_CUSTOMER_TABLE")})
+    result = (dict(tables), dict(tables))
+    if batch_id is not None:
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,63}", batch_id) or refresh_mode not in ("bounded", "full"):
+            raise GlueInvocationRejected("Invalid Gold batch identifier or refresh mode")
+        for arguments in result:
+            arguments.update(BATCH_ID=batch_id, REFRESH_MODE=refresh_mode)
+    return result
 
 
-def run_gold_jobs(glue, pricing_job, aggregate_job, database, *, wait_seconds=3600, poll_seconds=15):
+def run_gold_jobs(glue, pricing_job, aggregate_job, database, *, batch_id=None, refresh_mode="bounded", wait_seconds=3600, poll_seconds=15):
     """Run pricing then aggregation, failing closed on any unsuccessful state."""
-    return run_glue_jobs(glue, zip((pricing_job, aggregate_job), build_gold_arguments(database)),
+    if batch_id is None:
+        raise GlueInvocationRejected("A Gold batch_id is required for durable refresh and retry")
+    return run_glue_jobs(glue, zip((pricing_job, aggregate_job), build_gold_arguments(database, batch_id, refresh_mode)),
                          wait_seconds=wait_seconds, poll_seconds=poll_seconds)
 
 

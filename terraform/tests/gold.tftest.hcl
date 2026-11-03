@@ -19,8 +19,8 @@ run "gold_plan" {
   command = plan
 
   assert {
-    condition     = length(aws_glue_job.gold) == 2 && length(aws_s3_object.gold_script) == 4
-    error_message = "Gold requires two jobs and all four script/module artifacts."
+    condition     = length(aws_glue_job.gold) == 2 && length(aws_s3_object.gold_script) == 5
+    error_message = "Gold requires two jobs and all five script/module artifacts."
   }
   assert {
     condition = alltrue([for job in aws_glue_job.gold :
@@ -33,9 +33,15 @@ run "gold_plan" {
     condition = alltrue([for job in aws_glue_job.gold :
       job.default_arguments["--job-bookmark-option"] == "job-bookmark-disable" &&
       job.default_arguments["--datalake-formats"] == "iceberg" &&
-      contains(keys(job.default_arguments), "--extra-py-files")
+      contains(keys(job.default_arguments), "--extra-py-files") &&
+      contains(keys(job.default_arguments), "--INTERVAL_TABLE") &&
+      contains(keys(job.default_arguments), "--MONTHLY_CUSTOMER_TABLE")
     ])
-    error_message = "Gold must load Iceberg/shared modules and rebuild complete snapshots."
+    error_message = "Gold must load Iceberg/shared modules and use explicit refresh checkpoints."
+  }
+  assert {
+    condition     = local.gold_scripts.refresh == "src/lakehouse_platform/gold_refresh.py"
+    error_message = "Gold must ship the shared durable refresh module."
   }
   assert {
     condition = (

@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-03",
+  "region": "eu-west-3",
+  "qualified_source_revision": "a47994d893d62d64a2d4f21105db498b038d50d0",
+  "scope": "Fresh complete synthetic analyst-enabled demonstration; native LF failure, no injected errors",
+  "local_validation": {
+    "python_tests_passed": 163,
+    "terraform_mock_scenarios_passed": 6,
+    "terraform_roots_validated": 2,
+    "terraform_fmt_check": true
+  },
+  "fixture": {
+    "glue_succeeded": true,
+    "glue_execution_seconds": 125,
+    "all_57_cleanup_instances_confirmed_before_build": true,
+    "analyst_gold_and_bronze_silver_denials_passed": true,
+    "original_lf_settings_restored_before_build": true
+  },
+  "native_recovery": {
+    "build_status": "SUCCEEDED",
+    "error_count": 7,
+    "only_lf_revoke_errors": true,
+    "refresh_revalidation_message": true,
+    "receipts": [
+      {
+        "succeeded": true,
+        "passes": 2,
+        "initial_delete_count": 57,
+        "recovery": {
+          "lf_revoke_only_failure": true,
+          "strict_subset_revalidated": true,
+          "remaining_lf_revocations": 0,
+          "remaining_delete_count": 8
+        }
+      }
+    ]
+  },
+  "empty_environment_repeat": {
+    "build_status": "SUCCEEDED",
+    "error_count": 0,
+    "only_lf_revoke_errors": false,
+    "refresh_revalidation_message": false,
+    "receipts": [
+      {
+        "succeeded": true,
+        "passes": 1,
+        "initial_delete_count": 0,
+        "recovery": null
+      }
+    ]
+  },
+  "independent_final_checks": {
+    "analyst": {
+      "role_arn_absent": true,
+      "data_role_arn_absent": true,
+      "analyst_workgroup_absent": true,
+      "daily_customer_energy_registration_absent": true,
+      "daily_site_energy_registration_absent": true,
+      "monthly_customer_energy_registration_absent": true,
+      "gold_and_location_grants_absent": true,
+      "original_lf_settings_restored": true,
+      "cleanup_schedule_unchanged": true
+    },
+    "base": {
+      "demo_bucket_absent": true,
+      "demo_database_absent": true,
+      "demo_job_1_absent": true,
+      "demo_job_2_absent": true,
+      "demo_job_3_absent": true,
+      "demo_job_4_absent": true,
+      "demo_workgroup_absent": true,
+      "deployment_user_preserved": true,
+      "deployment_role_preserved": true,
+      "glue_role_preserved": true,
+      "glue_execution_inline_policy_removed": true,
+      "versioned_state_bucket_preserved": true,
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true
+    },
+    "post_build_read_audit_restored_settings": true
+  },
+  "execution_boundaries": {
+    "one_codebuild_invocation_for_both_recovery_passes": true,
+    "cleanup_used_service_role": true,
+    "inter_pass_operator_intervention": false,
+    "cleanup_global_lf_admin_added": false,
+    "schedule_left_enabled": true
+  },
+  "code_sha256": {
+    "src/lakehouse_platform/guarded_destroy.py": "a2e850688a7a4e399bbcc63f96d692839acc1f3878958881bc1f01628391e9d9",
+    "scripts/cleanup/apply_guarded_destroy.py": "ce58057466b14b075065a17cd16cbc073e8f08cae6864402716e1679e2e023c6",
+    "scripts/cleanup/buildspec.yml": "7eac054082c0f4c6a17fc37d7b8dea0a3ef5ce0433fbd2c3f36315f936d0717d",
+    "terraform/analyst.tf": "90b0555e9c305317709afd8b11e540d6d72b420ea2c2345875e91b49f7ebc618",
+    "tests/test_guarded_destroy.py": "4232026a4c25be6380e0af3d28c07784badf249f1c47328cb57ea5e281eeb3a0"
+  },
+  "privacy": "Infrastructure identifiers, state, credentials, plans and raw logs remain private"
+}

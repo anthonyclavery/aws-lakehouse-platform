@@ -2,6 +2,8 @@
 
 ## Scope
 
+This document records the historical operator-only qualification below. For the combined dedicated-ingestion, managed Silver/Gold and analyst sequence, use the [integrated identity-chain qualification](integrated-chain.md). The newer bounded-processing and access-control work supersedes the historical limitations without rewriting the original evidence.
+
 Qualification checks the deployed Glue/Iceberg pipeline against the local calculator on controlled synthetic batch history. It covers reference loading, interval derivation, pricing, the three Gold products, incremental data, a late reading, a higher-version correction and unchanged replay. The calculator is shared between local and Glue execution; business-boundary unit tests validate its rules separately. This comparison validates the deployed adapters, storage and aggregation rather than providing an independent tariff implementation.
 
 It does not qualify a separate analyst identity or Lake Formation denial rules. The operational Terraform role can ingest landing objects, read warehouse objects and query the project catalog. That role is not the future Gold-only analyst role. Performance measurements on this small fixture are execution evidence, not a scaling benchmark. Silver currently recalculates the complete history of each affected meter; Gold rebuilds complete snapshots. This test does not demonstrate bounded backfill performance.

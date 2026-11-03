@@ -28,7 +28,7 @@ def main():
     spark.conf.set("spark.sql.session.timeZone", "UTC")
     spark.conf.set("spark.sql.ansi.enabled", "true")
     spark.conf.set("spark.sql.shuffle.partitions", "4")
-    tables = [v for k, v in args.items() if k.endswith("_TABLE")] + [f"glue_catalog.{database}.consumption_index"]
+    tables = [v for k, v in args.items() if k.endswith("_TABLE")] + [f"glue_catalog.{database}.consumption_index", f"glue_catalog.{database}.quarantine_records"]
     if any(spark.catalog.tableExists(t) for t in tables):
         raise ValueError("Canonical table already exists; use an empty demonstration")
     valid = {"valid_from": "2020-01-01T00:00:00Z", "valid_to": None}
@@ -59,6 +59,8 @@ def main():
     spark.createDataFrame([("analyst-initial", r[0], r[2], "DONE") for r in rows],
                          "batch_id string, meter_id string, reading_at timestamp, state string")\
         .writeTo(args["INTERVAL_TABLE"] + "_recalculation_work").using("iceberg").create()
+    spark.createDataFrame([], "meter_id string, reading_at timestamp, meter_index_wh long, rollover_count int, reading_context string, source_version int, received_at timestamp, schema_version int, quarantine_reason string")\
+        .writeTo(f"glue_catalog.{database}.quarantine_records").using("iceberg").create()
     price(spark, args)
     aggregate(spark, args)
     print("ANALYST_FIXTURE " + json.dumps({"intervals": 4, "daily_site_rows": 4, "daily_customer_rows": 4,

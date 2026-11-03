@@ -90,6 +90,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Bounded Gold refresh](docs/bounded-gold.md) | Silver ledger consumption, old/new group footprints and durable recovery |
 | [Silver reference job](docs/glue-reference-job.md) | Provisioned loader and sequential execution of the four reference flows |
 | [AWS qualification](docs/aws-qualification.md) | Athena reconciliation, operational permissions and evidence procedure |
+| [Integrated AWS identity chain](docs/integrated-chain.md) | Source-shaped ingestion, real Silver/Gold runs and analyst verification before/after governed updates |
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |

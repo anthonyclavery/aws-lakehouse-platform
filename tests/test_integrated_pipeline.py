@@ -53,9 +53,10 @@ class IntegratedPipelineTests(TestCase):
 
     def test_silver_comparison_normalizes_timestamp_encoding_but_preserves_versions_and_duplicates(self):
         expected = [{"reading_at": "2026-01-09T20:00:00Z", "source_version": 1}]
-        actual = [{"reading_at": "2026-01-09 20:00:00.000", "source_version": "1"}]
+        actual = [{"reading_at": "2026-01-09 20:00:00.000000 UTC", "source_version": "1"}]
         fields = ("reading_at", "source_version")
         self.assertTrue(compare_silver_rows(expected, actual, fields)["passed"])
+        self.assertTrue(compare_silver_rows(expected, [{"reading_at": "2026-01-09 20:00:00.000", "source_version": "1"}], fields)["passed"])
         self.assertFalse(compare_silver_rows(expected, actual * 2, fields)["passed"])
         actual[0]["source_version"] = "2"
         self.assertFalse(compare_silver_rows(expected, actual, fields)["passed"])

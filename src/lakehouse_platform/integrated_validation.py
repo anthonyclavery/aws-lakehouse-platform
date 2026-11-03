@@ -26,7 +26,10 @@ def compare_silver_rows(expected, actual, fields):
             for field in fields:
                 value = row[field]
                 if value is not None and field in TIMESTAMPS:
-                    stamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+                    encoded = str(value)
+                    if encoded.endswith(" UTC"):
+                        encoded = encoded[:-4] + "+00:00"
+                    stamp = datetime.fromisoformat(encoded.replace("Z", "+00:00"))
                     if stamp.tzinfo is None: stamp = stamp.replace(tzinfo=UTC)
                     value = stamp.astimezone(UTC).isoformat()
                 values.append(None if value is None else str(value))

@@ -32,6 +32,7 @@ def query_rows(athena, database, workgroup, sql, *, timeout_seconds=300, poll_se
     build_gold_arguments(database)  # Validate database before it enters SQL.
     query_id = athena.start_query_execution(
         QueryString=sql, WorkGroup=workgroup,
+        ResultReuseConfiguration={"ResultReuseByAgeConfiguration": {"Enabled": False}},
         QueryExecutionContext={"Database": database, "Catalog": "AwsDataCatalog"})["QueryExecutionId"]
     deadline = time.monotonic() + timeout_seconds
     while True:

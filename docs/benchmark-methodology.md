@@ -10,6 +10,8 @@ The same interval dataset is loaded into two comparable Iceberg tables. The refe
 
 The report records the exact SQL, table properties, dataset profile, region, Athena engine, workgroup settings, query time, bytes scanned, and estimated scan cost. Query result reuse is disabled. Each query is executed at least three times and individual values plus a median are published.
 
+The executable [partition benchmark](partition-benchmark.md) implements this comparison. Its baseline scatters history through unpartitioned files; its optimized layout clusters rows by time within day partitions. Results describe these two complete layouts, including their different file counts and statistics, rather than isolating one engine setting. Both tables must pass a bidirectional `EXCEPT ALL` before a manifest is published. Every measured result is also compared with an independent integer oracle, and snapshots must remain unchanged during measurement.
+
 ## Small files and compaction
 
 The same benchmark dataset is written first through intentionally fragmented micro-batches. The query is measured before maintenance, then Iceberg file rewrite maintenance is performed and the identical query is measured again.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import base64
 import json
 import re
 from dataclasses import dataclass
@@ -23,9 +24,9 @@ class ImmutableObjectConflict(ValueError):
 
 
 class S3Client(Protocol):
-    def head_object(self, *, Bucket: str, Key: str) -> dict[str, Any]: ...
+    def get_object(self, *, Bucket: str, Key: str) -> dict[str, Any]: ...
 
-    def upload_file(self, Filename: str, Bucket: str, Key: str, ExtraArgs: dict[str, Any]) -> None: ...
+    def put_object(self, **kwargs: Any) -> dict[str, Any]: ...
 
 
 @dataclass(frozen=True)
@@ -99,21 +100,26 @@ def plan_landing_upload(batch_dir: Path, batch_id: str) -> tuple[LandingObject, 
     return tuple(planned)
 
 
-def _is_not_found(error: Exception) -> bool:
+def _is_existing_object(error: Exception) -> bool:
     response = getattr(error, "response", {})
-    code = str(response.get("Error", {}).get("Code", "")) if isinstance(response, dict) else ""
-    return code in {"404", "NoSuchKey", "NotFound"}
+    if not isinstance(response, dict):
+        return False
+    code = str(response.get("Error", {}).get("Code", ""))
+    return (code in {"412", "PreconditionFailed"}
+            and response.get("ResponseMetadata", {}).get("HTTPStatusCode") == 412)
 
 
-def _existing_sha256(client: S3Client, bucket: str, key: str) -> str | None:
+def _existing_sha256(client: S3Client, bucket: str, key: str) -> str:
+    # Metadata is caller-supplied and may be missing or incorrect on legacy
+    # objects. Verify the actual bytes before treating a 412 as a safe replay.
+    body = client.get_object(Bucket=bucket, Key=key)["Body"]
+    digest = hashlib.sha256()
     try:
-        response = client.head_object(Bucket=bucket, Key=key)
-    except Exception as error:
-        if _is_not_found(error):
-            return None
-        raise
-    metadata = response.get("Metadata") or {}
-    return metadata.get("sha256")
+        for chunk in iter(lambda: body.read(1024 * 1024), b""):
+            digest.update(chunk)
+    finally:
+        body.close()
+    return digest.hexdigest()
 
 
 def upload_landing_batch(client: S3Client, bucket: str, batch_dir: Path, batch_id: str) -> UploadResult:
@@ -121,23 +127,19 @@ def upload_landing_batch(client: S3Client, bucket: str, batch_dir: Path, batch_i
     uploaded: list[str] = []
     existing: list[str] = []
     for item in plan_landing_upload(batch_dir, batch_id):
-        existing_sha256 = _existing_sha256(client, bucket, item.key)
-        if existing_sha256 is not None:
-            if existing_sha256 != item.sha256:
+        try:
+            with item.path.open("rb") as body:
+                client.put_object(
+                    Bucket=bucket, Key=item.key, Body=body, IfNoneMatch="*",
+                    ChecksumSHA256=base64.b64encode(bytes.fromhex(item.sha256)).decode("ascii"),
+                    Metadata={"batch-id": batch_id, "project": PROJECT_NAME, "sha256": item.sha256},
+                )
+        except Exception as error:
+            if not _is_existing_object(error):
+                raise
+            if _existing_sha256(client, bucket, item.key) != item.sha256:
                 raise ImmutableObjectConflict(f"Landing object already exists with a different checksum: {item.key}")
             existing.append(item.key)
             continue
-        client.upload_file(
-            Filename=str(item.path),
-            Bucket=bucket,
-            Key=item.key,
-            ExtraArgs={
-                "Metadata": {
-                    "batch-id": batch_id,
-                    "project": PROJECT_NAME,
-                    "sha256": item.sha256,
-                }
-            },
-        )
         uploaded.append(item.key)
     return UploadResult(tuple(uploaded), tuple(existing))

@@ -1,7 +1,17 @@
 locals {
   benchmark_scripts = {
-    build   = "jobs/benchmark_partition_pruning.py"
-    profile = "src/lakehouse_platform/partition_benchmark.py"
+    build              = "jobs/benchmark_partition_pruning.py"
+    profile            = "src/lakehouse_platform/partition_benchmark.py"
+    compaction         = "jobs/benchmark_compaction.py"
+    compaction_profile = "src/lakehouse_platform/compaction_benchmark.py"
+  }
+}
+
+output "compaction_benchmark" {
+  value = {
+    glue_job   = aws_glue_job.gold["price"].name
+    script_uri = "s3://${aws_s3_bucket.lakehouse.id}/${aws_s3_object.benchmark_script["compaction"].key}"
+    module_uri = "s3://${aws_s3_bucket.lakehouse.id}/${aws_s3_object.benchmark_script["compaction_profile"].key}"
   }
 }
 

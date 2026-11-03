@@ -1,0 +1,328 @@
+{
+  "profile": {
+    "benchmark_id": "compact_v1",
+    "history_days": 30,
+    "meters": 200,
+    "start_date": "2024-01-01",
+    "micro_batches": 16
+  },
+  "rows": 144000,
+  "sql_template": "SELECT COUNT(*) AS rows, COUNT(DISTINCT meter_id) AS meters,\nSUM(consumption_wh) AS consumption_wh,\ndate_format(MIN(interval_end), '%Y-%m-%d %H:%i:%s') AS first_reading,\ndate_format(MAX(interval_end), '%Y-%m-%d %H:%i:%s') AS last_reading\nFROM \"benchmark_database\".\"benchmark_compact_v1_compaction\"\nWHERE interval_end >= TIMESTAMP '2024-01-16 00:00:00'\n  AND interval_end < TIMESTAMP '2024-01-17 00:00:00'",
+  "before": {
+    "manifest": {
+      "profile": {
+        "benchmark_id": "compact_v1",
+        "history_days": 30,
+        "meters": 200,
+        "start_date": "2024-01-01",
+        "micro_batches": 16
+      },
+      "phase": "build",
+      "rows": 144000,
+      "layout": {
+        "data_files": 480,
+        "records": 144000,
+        "data_bytes": 1452875,
+        "min_file_bytes": 2999,
+        "max_file_bytes": 3051,
+        "median_file_bytes": 3028,
+        "partition_spec": [
+          {
+            "source_column": "interval_end",
+            "transform": "day"
+          }
+        ],
+        "properties": {
+          "write.format.default": "parquet",
+          "write.parquet.compression-codec": "zstd",
+          "write.target-file-size-bytes": "134217728",
+          "write.distribution-mode": "none"
+        }
+      },
+      "multiset_equal": true
+    },
+    "measurements": {
+      "profile": {
+        "benchmark_id": "compact_v1",
+        "history_days": 30,
+        "meters": 200,
+        "start_date": "2024-01-01",
+        "micro_batches": 16
+      },
+      "phase": "build",
+      "query_date": "2024-01-16",
+      "repetitions": 3,
+      "expected_result": {
+        "rows": "4800",
+        "meters": "200",
+        "consumption_wh": "12272024",
+        "first_reading": "2024-01-16 00:00:00",
+        "last_reading": "2024-01-16 23:00:00"
+      },
+      "samples": [
+        {
+          "bytes_scanned": 20399,
+          "engine_ms": 674,
+          "planning_ms": 93,
+          "queue_ms": 55,
+          "total_ms": 789,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        },
+        {
+          "bytes_scanned": 20399,
+          "engine_ms": 536,
+          "planning_ms": 82,
+          "queue_ms": 55,
+          "total_ms": 662,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        },
+        {
+          "bytes_scanned": 20399,
+          "engine_ms": 876,
+          "planning_ms": 297,
+          "queue_ms": 63,
+          "total_ms": 1038,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        }
+      ],
+      "summary": {
+        "median_bytes_scanned": 20399,
+        "median_engine_ms": 674,
+        "median_planning_ms": 93,
+        "median_queue_ms": 55,
+        "median_total_ms": 789
+      },
+      "results_equal_oracle": true,
+      "snapshot_unchanged": true,
+      "workgroup": {
+        "engine": "Athena engine version 3",
+        "enforced": true,
+        "result_encryption": "SSE_S3",
+        "scan_cap_bytes": 1073741824,
+        "result_reuse": false
+      }
+    }
+  },
+  "after": {
+    "manifest": {
+      "profile": {
+        "benchmark_id": "compact_v1",
+        "history_days": 30,
+        "meters": 200,
+        "start_date": "2024-01-01",
+        "micro_batches": 16
+      },
+      "phase": "compact",
+      "rows": 144000,
+      "layout": {
+        "data_files": 30,
+        "records": 144000,
+        "data_bytes": 352916,
+        "min_file_bytes": 11728,
+        "max_file_bytes": 11795,
+        "median_file_bytes": 11766,
+        "partition_spec": [
+          {
+            "source_column": "interval_end",
+            "transform": "day"
+          }
+        ],
+        "properties": {
+          "write.format.default": "parquet",
+          "write.parquet.compression-codec": "zstd",
+          "write.target-file-size-bytes": "134217728",
+          "write.distribution-mode": "none"
+        }
+      },
+      "multiset_equal": true,
+      "rewrite": {
+        "strategy": "binpack",
+        "options": {
+          "target-file-size-bytes": "134217728",
+          "min-input-files": "2",
+          "rewrite-all": "true",
+          "partial-progress.enabled": "false",
+          "max-concurrent-file-group-rewrites": "2"
+        },
+        "recovered_existing_commit": true
+      }
+    },
+    "measurements": {
+      "profile": {
+        "benchmark_id": "compact_v1",
+        "history_days": 30,
+        "meters": 200,
+        "start_date": "2024-01-01",
+        "micro_batches": 16
+      },
+      "phase": "compact",
+      "query_date": "2024-01-16",
+      "repetitions": 3,
+      "expected_result": {
+        "rows": "4800",
+        "meters": "200",
+        "consumption_wh": "12272024",
+        "first_reading": "2024-01-16 00:00:00",
+        "last_reading": "2024-01-16 23:00:00"
+      },
+      "samples": [
+        {
+          "bytes_scanned": 9955,
+          "engine_ms": 629,
+          "planning_ms": 103,
+          "queue_ms": 67,
+          "total_ms": 791,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        },
+        {
+          "bytes_scanned": 9955,
+          "engine_ms": 582,
+          "planning_ms": 88,
+          "queue_ms": 88,
+          "total_ms": 724,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        },
+        {
+          "bytes_scanned": 9955,
+          "engine_ms": 729,
+          "planning_ms": 117,
+          "queue_ms": 52,
+          "total_ms": 875,
+          "result_reused": false,
+          "scan_cost_model": {
+            "rounded_bytes": 10000000,
+            "estimated_usd": "0.00005"
+          }
+        }
+      ],
+      "summary": {
+        "median_bytes_scanned": 9955,
+        "median_engine_ms": 629,
+        "median_planning_ms": 103,
+        "median_queue_ms": 67,
+        "median_total_ms": 791
+      },
+      "results_equal_oracle": true,
+      "snapshot_unchanged": true,
+      "workgroup": {
+        "engine": "Athena engine version 3",
+        "enforced": true,
+        "result_encryption": "SSE_S3",
+        "scan_cap_bytes": 1073741824,
+        "result_reuse": false
+      }
+    }
+  },
+  "full_multiset_preserved": true,
+  "partition_and_properties_unchanged": true,
+  "measurement_order": "all before queries, one compaction commit, all after queries; no warm-up discarded",
+  "cost_assumptions": {
+    "usd_per_tb": "5",
+    "mb_bytes": 1000000,
+    "tb_bytes": 1000000000000,
+    "minimum_mb_per_query": 10,
+    "rounding_mb": 1,
+    "estimate_not_invoice": true
+  },
+  "limits": [
+    "One synthetic profile; sequential phases cannot eliminate cache or time-order bias.",
+    "Compaction changes clustering/compression too; no universal latency or cost benefit is assumed.",
+    "Active-file reduction does not reclaim retained snapshot files; no snapshot expiration or orphan deletion."
+  ],
+  "region": "eu-west-3",
+  "qualification": {
+    "date": "2026-11-03",
+    "source_revision": "36fc87f579502b43a31b578aea745a910ddbab8f",
+    "runtime": {
+      "service": "AWS Glue",
+      "version": "5.0",
+      "worker_type": "G.1X",
+      "workers": 2
+    },
+    "native_phases": [
+      {
+        "phase": "build",
+        "state": "SUCCEEDED",
+        "execution_seconds": 145
+      },
+      {
+        "phase": "injected_post_commit_interruption",
+        "state": "FAILED",
+        "execution_seconds": 73
+      },
+      {
+        "phase": "recovery",
+        "state": "SUCCEEDED",
+        "execution_seconds": 110
+      }
+    ],
+    "recovery": {
+      "injected_post_commit_failure_verified": true,
+      "retained_baseline_reused": true,
+      "existing_rewrite_recovered": true,
+      "native_states": [
+        "SUCCEEDED",
+        "FAILED",
+        "SUCCEEDED"
+      ],
+      "baseline_checkpoint_sha256_unchanged": true
+    },
+    "deployed_sources": {
+      "matched": true,
+      "sha256": {
+        "jobs/benchmark_compaction.py": "522008198052170760f2aaaabd2dcb79a3544ba50a4b523ad38db181953d22db",
+        "src/lakehouse_platform/compaction_benchmark.py": "30f39cece818bcd1361026049ce648f40d802c6068f40ee54a47faa14db9b370",
+        "src/lakehouse_platform/partition_benchmark.py": "7841ef96c98ea3e8fb4e8ae5cad5e9120577d99c62db1fbad3216d78686d6fb0"
+      }
+    },
+    "runner_sha256": "e6d88ecec81b24ddf86cfd914e6a41bdbfe7f57cd6a46f8ec708872cc241201c",
+    "local_validation": {
+      "unittests": 136,
+      "mocked_terraform_plans": 4,
+      "both_roots_validated": true
+    },
+    "guarded_cleanup": {
+      "status": "SUCCEEDED",
+      "checks": {
+        "demo_bucket_absent": true,
+        "demo_database_absent": true,
+        "demo_job_1_absent": true,
+        "demo_job_2_absent": true,
+        "demo_job_3_absent": true,
+        "demo_job_4_absent": true,
+        "demo_workgroup_absent": true,
+        "deployment_user_preserved": true,
+        "deployment_role_preserved": true,
+        "glue_role_preserved": true,
+        "glue_execution_inline_policy_removed": true,
+        "versioned_state_bucket_preserved": true,
+        "cleanup_context_preserved": true,
+        "data_plane_absent_from_state": true
+      },
+      "schedule": {
+        "state": "ENABLED",
+        "unchanged": true
+      }
+    }
+  }
+}

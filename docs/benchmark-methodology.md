@@ -18,6 +18,8 @@ The same benchmark dataset is written first through intentionally fragmented mic
 
 The report records file count, size distribution, query time, bytes scanned, and estimated scan cost. The report does not claim a universal performance gain; it reports only the measured outcome for the published configuration.
 
+The executable [same-table compaction benchmark](compaction-benchmark.md) implements this sequence, including a durable pre-compaction measurement checkpoint, recovery after an interrupted rewrite commit, full before/after multiset verification and explicit retention of the original snapshot. It distinguishes active-file reduction from physical S3 reclamation and records sequential-phase cache/time-order limitations.
+
 ## Publication standard
 
 No benchmark result is committed until it has been executed and independently reviewed. The raw evidence is redacted for public safety before screenshots or summaries are added to the repository.

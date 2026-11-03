@@ -54,7 +54,7 @@ The local-first workflow validates contracts, business rules, and deterministic 
 
 Bronze ingestion is performed by a versioned Python script, not an orchestration service. It verifies the generated manifest and object checksums before publishing an immutable S3 batch. See [Bronze landing ingestion](docs/landing-ingestion.md).
 
-The partition benchmark compares identical unpartitioned and day-partitioned Iceberg datasets through repeated Athena queries. A separate benchmark for compaction on fragmented files remains planned. Results are published only after real execution and verification.
+The partition benchmark compares identical unpartitioned and day-partitioned Iceberg datasets through repeated Athena queries. The compaction benchmark measures the same fragmented table before and after bin-pack maintenance, with full-content verification and durable recovery. Results are published only after real execution and verification.
 
 See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology.md](docs/benchmark-methodology.md).
 
@@ -76,7 +76,7 @@ Generated batches use newline-delimited JSON. They are intentionally ignored by 
 
 ## Project status
 
-The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition benchmark](docs/partition-benchmark.md) supplies a separate scale profile and repeatable measurement procedure. Analyst/Lake Formation denial checks and the compaction benchmark remain outstanding. Qualification environments are torn down after verification; this is not a continuously deployed service.
+The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. Analyst/Lake Formation denial checks remain outstanding. Qualification environments are torn down after verification; this is not a continuously deployed service.
 
 ## Documentation
 
@@ -93,6 +93,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
 | [Partition benchmark](docs/partition-benchmark.md) | Deterministic Iceberg pair, repeated Athena measurements and evidence |
+| [Compaction benchmark](docs/compaction-benchmark.md) | Same-table before/after measurements, full-content proof and rewrite recovery |
 | [Security and privacy](docs/security-and-privacy.md) | Public-repository and access-control guardrails |
 | [Cost and destruction](docs/cost-and-destruction.md) | Cost discipline and post-demo cleanup requirements |
 | [Architecture decision records](docs/adr/README.md) | Accepted architectural decisions and their consequences |

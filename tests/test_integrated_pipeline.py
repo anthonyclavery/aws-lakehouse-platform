@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from lakehouse_platform.generator import stable_uuid
 from lakehouse_platform.integrated_fixture import write_integrated_fixture
@@ -12,7 +12,8 @@ from lakehouse_platform.integrated_pipeline import build_integrated_invocations,
 from lakehouse_platform.landing import plan_landing_upload
 from lakehouse_platform.processing import process_indexes
 from lakehouse_platform.qualification import expected_products
-from lakehouse_platform.integrated_validation import compare_silver_rows
+from lakehouse_platform.integrated_validation import compare_silver_rows, qualify_integrated_silver
+from lakehouse_platform.reference_processing import process_reference_data
 from test_landing import FakeS3
 
 VALUES = {"landing_path": "s3://aws-lakehouse-platform-integrated-test-aabbccdd/landing/",
@@ -58,6 +59,30 @@ class IntegratedPipelineTests(TestCase):
         self.assertFalse(compare_silver_rows(expected, actual * 2, fields)["passed"])
         actual[0]["source_version"] = "2"
         self.assertFalse(compare_silver_rows(expected, actual, fields)["passed"])
+
+    def silver_responses(self, batch, counts):
+        local = process_indexes([batch])
+        references = process_reference_data([batch])
+        return [(rows, {}) for rows in [local["validated_indexes"], local["consumption_intervals"], *references.values()]] + [([{"n": str(n)}], {}) for n in counts]
+
+    def test_silver_audit_requires_empty_quarantine_and_no_unfinished_work(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder) / "fixture"
+            write_integrated_fixture(root)
+            for counts, expected in (([0, 0, 0, 9, 1], True), ([1, 0, 0, 9, 1], False), ([0, 1, 0, 9, 1], False), ([0, 0, 1, 9, 1], False)):
+                with patch("lakehouse_platform.integrated_validation.query_rows", side_effect=self.silver_responses(root / "initial", counts)) as query:
+                    result = qualify_integrated_silver(Mock(), VALUES["glue_database_name"], "synthetic-workgroup", [root / "initial"])
+                self.assertEqual(expected, result["passed"])
+                controls = [call.args[3] for call in query.call_args_list if "WHERE" in call.args[3]]
+                self.assertTrue(all("state IS NULL OR state <> 'DONE'" in sql for sql in controls))
+
+    def test_empty_completed_work_cannot_count_as_a_finished_pipeline(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder) / "fixture"
+            write_integrated_fixture(root)
+            with patch("lakehouse_platform.integrated_validation.query_rows", side_effect=self.silver_responses(root / "initial", [0, 0, 0, 0])):
+                with self.assertRaises(ValueError):
+                    qualify_integrated_silver(Mock(), VALUES["glue_database_name"], "synthetic-workgroup", [root / "initial"])
 
     def test_fixture_is_deterministic_and_refuses_overwrite(self):
         with TemporaryDirectory() as folder:

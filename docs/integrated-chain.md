@@ -15,7 +15,7 @@ The initial per-contract costs are BASE 2.00, WEEKEND 1.30 and PEAK_OFF_PEAK 1.4
 
 ## Execution sequence
 
-Provision the current demonstration with ingestion enabled and analyst access initially disabled. Follow the [ingestion](ingestion-access.md) and [analyst](analyst-access.md) policy prerequisites. Keep persistent identities/state and the normal cleanup schedule. Save Terraform outputs privately. Do not freeze deployment, data or permissions while a job is still running.
+Provision the current demonstration with ingestion enabled and analyst access initially disabled. Follow the [ingestion](ingestion-access.md) and [analyst](analyst-access.md) policy prerequisites. Keep persistent identities/state and the normal cleanup schedule. Save Terraform outputs privately. Do not change deployment, source data or permissions while a job is still running.
 
 Generate the fixture in a fresh directory:
 

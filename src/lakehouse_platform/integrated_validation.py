@@ -55,7 +55,7 @@ def qualify_integrated_silver(athena, database, workgroup, batch_dirs):
         comparisons[table] = compare_silver_rows(expected, actual, fields)
     counts = {}
     for table in ("quarantine_records", "meter_consumption_interval_recalculation_work", "priced_intervals_refresh"):
-        where = "" if table == "quarantine_records" else " WHERE state <> 'DONE'"
+        where = "" if table == "quarantine_records" else " WHERE state IS NULL OR state <> 'DONE'"
         rows, _ = query_rows(athena, database, workgroup, f'SELECT CAST(COUNT(*) AS varchar) AS n FROM "{database}"."{table}"{where}')
         counts[table] = int(rows[0]["n"])
     for table in ("meter_consumption_interval_recalculation_work", "priced_intervals_refresh"):

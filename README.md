@@ -86,6 +86,7 @@ Local foundation in progress. It currently provides deterministic synthetic init
 | [Data contracts](docs/data-contracts.md) | Input flows, keys, units, versions, and constraints |
 | [Business rules](docs/business-rules.md) | Consumption, tariff, rollover, replacement, and backfill rules |
 | [Gold pricing jobs](docs/glue-gold-jobs.md) | Shared tariff calculation, local rebuild, Glue execution and validation limits |
+| [Bounded Gold refresh](docs/bounded-gold.md) | Silver ledger consumption, old/new group footprints and durable recovery |
 | [Silver reference job](docs/glue-reference-job.md) | Provisioned loader and sequential execution of the four reference flows |
 | [AWS qualification](docs/aws-qualification.md) | Athena reconciliation, operational permissions and evidence procedure |
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |

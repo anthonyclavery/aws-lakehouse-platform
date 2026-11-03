@@ -4,7 +4,7 @@
 
 The index job applies new business keys and strictly higher `source_version` values. Only an effective changed reading and its immediate successor in the merged sequence can change an interval. Overlapping endpoints from multiple changes are deduplicated. An unchanged or lower-version replay produces no interval work.
 
-The bound concerns logical interval pairs and mutations. Neighbour lookup still reads/sorts the affected meters' index history, and Iceberg copy-on-write may rewrite files containing unchanged rows. This implementation does not claim bounded physical reads, proportional latency improvements or bounded file rewrites. Gold still rebuilds full snapshots; reference-history impact planning remains separate future work.
+The bound concerns logical interval pairs and mutations. Neighbour lookup still reads/sorts the affected meters' index history, and Iceberg copy-on-write may rewrite files containing unchanged rows. This implementation does not claim bounded physical reads, proportional latency improvements or bounded file rewrites. [Gold now bounds endpoint pricing and affected-group mutations](bounded-gold.md); reference-history impact planning remains an explicit full refresh.
 
 ## Recovery protocol
 

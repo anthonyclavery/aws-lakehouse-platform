@@ -6,12 +6,13 @@ from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
-from gold_spark import rebuild_aggregates
+from gold_refresh import aggregate
 
 
 def main():
     args = getResolvedOptions(sys.argv, [
-        "JOB_NAME", "PRICED_INTERVAL_TABLE", "DAILY_SITE_TABLE",
+        "JOB_NAME", "BATCH_ID", "REFRESH_MODE", "INTERVAL_TABLE", "SITE_METER_TABLE", "CUSTOMER_SITE_TABLE",
+        "SITE_CONTRACT_TABLE", "TARIFF_TABLE", "PRICED_INTERVAL_TABLE", "DAILY_SITE_TABLE",
         "DAILY_CUSTOMER_TABLE", "MONTHLY_CUSTOMER_TABLE"])
     context = GlueContext(SparkContext.getOrCreate())
     spark = context.spark_session
@@ -19,7 +20,7 @@ def main():
     spark.conf.set("spark.sql.ansi.enabled", "true")
     job = Job(context)
     job.init(args["JOB_NAME"], args)
-    rebuild_aggregates(spark, args)
+    print(aggregate(spark, args), flush=True)
     job.commit()
 
 

@@ -6,20 +6,21 @@ from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
-from gold_spark import rebuild_priced
+from gold_refresh import price
 
 
 def main():
     args = getResolvedOptions(sys.argv, [
-        "JOB_NAME", "INTERVAL_TABLE", "SITE_METER_TABLE", "CUSTOMER_SITE_TABLE",
-        "SITE_CONTRACT_TABLE", "TARIFF_TABLE", "PRICED_INTERVAL_TABLE"])
+        "JOB_NAME", "BATCH_ID", "REFRESH_MODE", "INTERVAL_TABLE", "SITE_METER_TABLE", "CUSTOMER_SITE_TABLE",
+        "SITE_CONTRACT_TABLE", "TARIFF_TABLE", "PRICED_INTERVAL_TABLE", "DAILY_SITE_TABLE",
+        "DAILY_CUSTOMER_TABLE", "MONTHLY_CUSTOMER_TABLE"])
     context = GlueContext(SparkContext.getOrCreate())
     spark = context.spark_session
     spark.conf.set("spark.sql.session.timeZone", "UTC")
     spark.conf.set("spark.sql.ansi.enabled", "true")
     job = Job(context)
     job.init(args["JOB_NAME"], args)
-    print(f"Rebuilt {rebuild_priced(spark, args)} priced segments")
+    print(price(spark, args), flush=True)
     job.commit()
 
 

@@ -104,7 +104,7 @@ resource "aws_iam_role_policy" "terraform_operator" {
         Sid      = "ManageOnlyProjectJobArtifact"
         Effect   = "Allow"
         Action   = ["s3:DeleteObject", "s3:GetObject", "s3:PutObject", "s3:GetObjectTagging", "s3:PutObjectTagging"]
-        Resource = [for filename in ["silver_process_reference.py", "silver_process_indexes.py", "gold_price_intervals.py", "gold_aggregate_energy.py", "pricing.py", "gold_spark.py"] : "arn:aws:s3:::aws-lakehouse-platform-*/jobs/${filename}"]
+        Resource = [for filename in ["silver_process_reference.py", "silver_process_indexes.py", "gold_price_intervals.py", "gold_aggregate_energy.py", "pricing.py", "gold_spark.py", "gold_refresh.py"] : "arn:aws:s3:::aws-lakehouse-platform-*/jobs/${filename}"]
       },
       {
         Sid      = "IngestOnlyProjectLanding"

@@ -1,0 +1,178 @@
+{
+  "date": "2026-11-03",
+  "scope": "Same-account temporary Bronze ingestion identity with existing managed Silver/Gold and job-script probes",
+  "qualified_source_revision": "ab76fbcefac04c439943b1345787750fe003b7e4",
+  "local_validation": {
+    "python_tests_passed": 178,
+    "terraform_mock_scenarios_passed": 9,
+    "terraform_roots_validated": 2,
+    "terraform_fmt_check": true
+  },
+  "glue_fixture": {
+    "succeeded": true,
+    "execution_seconds": 174
+  },
+  "actual_ingestion_access": {
+    "passed": true,
+    "region": "eu-west-3",
+    "temporary_credentials_seconds": 900,
+    "actual_ingestion_role_verified": true,
+    "uploaded_objects": 5,
+    "replayed_objects": 5,
+    "batch_listing_and_all_bytes_match": true,
+    "conditional_overwrite_412": true,
+    "original_batch_object_preserved": true,
+    "no_unconditional_object_created": true,
+    "outside_s3_probes_exist_for_operator": true,
+    "denials": {
+      "unconditional_overwrite": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "unconditional_create": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "delete_batch_object": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "list_bucket_root": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "list_landing_root": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "list_warehouse": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "silver_read": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "silver_write": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "gold_read": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "gold_write": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "scripts_read": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "scripts_write": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "glue_database": {
+        "denied": true,
+        "code": "AccessDeniedException",
+        "http_status": 400
+      },
+      "glue_gold_table": {
+        "denied": true,
+        "code": "AccessDeniedException",
+        "http_status": 400
+      },
+      "glue_job": {
+        "denied": true,
+        "code": "AccessDeniedException",
+        "http_status": 400
+      },
+      "athena_workgroup": {
+        "denied": true,
+        "code": "AccessDeniedException",
+        "http_status": 400
+      },
+      "lakeformation_settings": {
+        "denied": true,
+        "code": "AccessDeniedException",
+        "http_status": 400
+      },
+      "iam_role_metadata": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      },
+      "assume_writer_role": {
+        "denied": true,
+        "code": "AccessDenied",
+        "http_status": 403
+      }
+    }
+  },
+  "cli_upload": {
+    "actual_cli_upload_with_role_succeeded": true
+  },
+  "terraform_convergence_no_managed_changes": true,
+  "native_cleanup": {
+    "build_status": "SUCCEEDED",
+    "error_count": 0,
+    "only_lf_revoke_errors": false,
+    "refresh_revalidation_message": false,
+    "receipts": [
+      {
+        "succeeded": true,
+        "passes": 1,
+        "initial_delete_count": 24,
+        "recovery": null
+      }
+    ]
+  },
+  "independent_cleanup_checks": {
+    "demo_bucket_absent": true,
+    "demo_database_absent": true,
+    "demo_job_1_absent": true,
+    "demo_job_2_absent": true,
+    "demo_job_3_absent": true,
+    "demo_job_4_absent": true,
+    "demo_workgroup_absent": true,
+    "deployment_user_preserved": true,
+    "deployment_role_preserved": true,
+    "glue_role_preserved": true,
+    "glue_execution_inline_policy_removed": true,
+    "versioned_state_bucket_preserved": true,
+    "cleanup_context_preserved": true,
+    "data_plane_absent_from_state": true
+  },
+  "control_preservation": {
+    "ingestion_role_absent": true,
+    "ingestion_policy_absent": true,
+    "original_lf_settings_preserved": true,
+    "cleanup_schedule_enabled": true,
+    "independent_cleanup_verification_passed": true
+  },
+  "code_sha256": {
+    "terraform/ingestion.tf": "a48c9b33ead6e7ccd27fe987481e5dbfa6323b545f0b922308a3230dcfb5bd02",
+    "src/lakehouse_platform/ingestion_access.py": "a8f8b39ce6050b6fd8c87f9a9511a03d51bb64ac47c5f5b69b9b12034e516429",
+    "scripts/qualify_ingestion_access.py": "e91cfb6e9cd4d84ead0c8ce414fdeb0ac154aadd77bbce07697c313e00d454b8",
+    "scripts/upload_landing_batch.py": "6215dcc7549587505b18edc3be0eb9a3ffa95dd23901e311fff488c834b504ee"
+  },
+  "limits": [
+    "IAM governs the demo batch prefix, not tenant ownership or manifest contents",
+    "No separate ingestion user, static key, multipart ingestion or LF grant",
+    "This run qualifies the dedicated ingestion role, not new analyst LF or Gold business behavior"
+  ],
+  "privacy": "Only synthetic counts and sanitized authorization checks are published; infrastructure pointers, credentials, state, plans and raw logs remain private"
+}

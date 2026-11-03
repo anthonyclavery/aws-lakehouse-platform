@@ -10,4 +10,6 @@ Glue resources include the Silver index job, the [reusable reference-data job](.
 
 Copy `terraform.tfvars.example` to a local ignored `terraform.tfvars` only when an explicit AWS demonstration is approved. The example values are placeholders and are not a deployment instruction.
 
+The optional [ingestion identity](../docs/ingestion-access.md) uses `ingestion_access_enabled` and a separate same-account `ingestion_governance_profile`; it adds only a tagged role and inline policy. `ingestion_access` exposes its role ARN. Update the reviewed operator-assumption and bootstrap cleanup prerequisites before enabling it. Keep the enabled flag in subsequent plans; it defaults to false.
+
 The `bootstrap-state` configuration also defines the disabled-by-default cleanup control plane. It creates a daily 20:00 `Europe/Paris` schedule only when explicit cleanup inputs are supplied. Its CodeBuild job verifies the destroy plan before applying it. See [the guarded cleanup design](../docs/automated-cleanup.md).

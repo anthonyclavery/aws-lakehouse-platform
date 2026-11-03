@@ -29,7 +29,7 @@ Gold contains analyst-facing Iceberg products: `daily_site_energy`, `daily_custo
 | AWS Glue and PySpark | Validation, merges, interval calculation, tariff allocation, aggregation, maintenance |
 | Apache Iceberg | Atomic table updates, snapshots, schema evolution, `MERGE INTO`, and compaction |
 | Amazon Athena | Analyst queries and reproducible benchmark queries |
-| AWS Lake Formation | Least-privilege table access for ingestion, transformation, and analyst roles |
+| AWS Lake Formation | Gold table grants for transformation, operations and analysts; Bronze ingestion uses scoped IAM |
 | AWS IAM and encryption | Execution identity, controlled access, and encryption configuration |
 | Terraform | Reproducible creation and destruction of the demonstration environment |
 | Amazon CloudWatch | Glue execution logs and observable batch metrics |
@@ -42,7 +42,7 @@ Corrected or late data triggers a bounded recalculation. A corrected index can a
 
 ## Access model
 
-The transformation role reads raw data and writes Iceberg tables. The [implemented analyst role](analyst-access.md) reads only the three approved Gold products through Athena using Lake Formation credentials. IAM excludes Silver/internal catalog resources and direct landing/warehouse objects. A separate landing-only ingestion identity remains a target; current ingestion uses the dedicated project operator. Lake Formation registration is limited to Gold, with explicit operational grants preserved for the writer and operator.
+The transformation role reads raw data and writes Iceberg tables. The [implemented analyst role](analyst-access.md) reads only the three approved Gold products through Athena using Lake Formation credentials. IAM excludes Silver/internal catalog resources and direct landing/warehouse objects. The [dedicated ingestion role](ingestion-access.md) publishes conditional Bronze batch objects and reads them for replay verification; it cannot access the warehouse or transformation/query control plane. The project operator assumes short-lived ingestion sessions and retains separate provisioning responsibilities. Lake Formation registration is limited to Gold, with explicit operational grants preserved for the writer and operator.
 
 No persistent streaming service or publicly exposed endpoint is required for V1.
 

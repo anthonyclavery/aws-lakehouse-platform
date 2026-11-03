@@ -16,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--bucket", required=True, help="Existing project S3 bucket name.")
     parser.add_argument("--profile", help="Optional AWS CLI profile name.")
     parser.add_argument("--region", help="Optional AWS region, for example eu-west-3.")
+    parser.add_argument("--role-arn", help="Assume this demo's dedicated ingestion role for 15 minutes through the project profile.")
     parser.add_argument("--dry-run", action="store_true", help="Validate and list object keys without contacting AWS.")
     return parser.parse_args()
 
@@ -32,7 +33,11 @@ def main() -> None:
     except ImportError as error:
         raise SystemExit("Install the optional AWS dependency first: python -m pip install -e '.[aws]'") from error
 
-    client = boto3.Session(profile_name=args.profile, region_name=args.region).client("s3")
+    session = boto3.Session(profile_name=args.profile, region_name=args.region)
+    if args.role_arn:
+        from lakehouse_platform.ingestion_access import assume_ingestion_session
+        session = assume_ingestion_session(session, args.role_arn, args.bucket)
+    client = session.client("s3")
     result = upload_landing_batch(client, args.bucket, args.batch_dir, args.batch_id)
     print(f"Uploaded {len(result.uploaded_keys)} objects; reused {len(result.existing_keys)} immutable objects.")
 

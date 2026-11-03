@@ -19,6 +19,8 @@ def approved_plan():
     changes = []
     for address in sorted(ALLOWED_DELETE_ADDRESSES):
         before = {}
+        if address in {"aws_iam_role.ingestion[0]", "aws_iam_role_policy.ingestion[0]"}:
+            before = {"name": f"aws-lakehouse-platform-{DEMO_ID}-ingestion", "role": f"aws-lakehouse-platform-{DEMO_ID}-ingestion"}
         if address in access_addresses():
             before = analyst_before(address, DEMO_ID)
         if address == "aws_iam_role_policy.glue_silver":

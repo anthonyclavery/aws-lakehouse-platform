@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+from .analyst_access import access_addresses, validate_delete
 
 
 ALLOWED_DELETE_ADDRESSES = frozenset(
@@ -31,6 +32,7 @@ ALLOWED_DELETE_ADDRESSES = frozenset(
         "random_id.bucket_suffix",
     }
 )
+ALLOWED_DELETE_ADDRESSES = ALLOWED_DELETE_ADDRESSES | access_addresses()
 
 TAGGABLE_DELETE_ADDRESSES = frozenset(
     {
@@ -53,6 +55,8 @@ TAGGABLE_DELETE_ADDRESSES = frozenset(
         "aws_s3_bucket.lakehouse",
     }
 )
+TAGGABLE_DELETE_ADDRESSES = TAGGABLE_DELETE_ADDRESSES | {
+    "aws_iam_role.analyst[0]", "aws_iam_role.lakeformation_data[0]", "aws_athena_workgroup.analyst[0]"}
 
 
 class DestroyPlanRejected(ValueError):
@@ -101,6 +105,11 @@ def validate_destroy_plan(plan: dict[str, Any], demo_id: str, expires_at: str) -
 
     for change in delete_changes:
         address = change["address"]
+        if address in access_addresses():
+            try:
+                validate_delete(address, change.get("change", {}).get("before") or {}, demo_id)
+            except ValueError as error:
+                raise DestroyPlanRejected(str(error)) from error
         if address == "aws_iam_role_policy.glue_silver":
             before = change.get("change", {}).get("before") or {}
             expected = "aws-lakehouse-platform-demo-glue-silver"

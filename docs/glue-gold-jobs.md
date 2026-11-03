@@ -57,7 +57,7 @@ After deployment, load all four Silver reference histories with the [provisioned
 
 Replace the uppercase placeholders and `demo_database` with the Terraform output values. The runner waits for pricing success before starting aggregation; terminal failure, expiry, API error or timeout returns a nonzero exit status. Each run ID is printed for inspection. The default wait bound is one hour per job.
 
-The reference table names default to `site_meter_history`, `customer_site_history`, `site_contract_history`, `tariff_grid_history`; the interval input is `meter_consumption_interval`. Match those names when invoking Silver, or override Gold job arguments explicitly. Analysts can query products through Athena after successful completion; Lake Formation analyst grants remain outside this change.
+The reference table names default to `site_meter_history`, `customer_site_history`, `site_contract_history`, `tariff_grid_history`; the interval input is `meter_consumption_interval`. Match those names when invoking Silver, or override Gold job arguments explicitly. Analysts can query products through Athena after successful completion and the separate [Gold analyst enable/seal sequence](analyst-access.md).
 
 ## Validation evidence and limits
 

@@ -38,7 +38,7 @@ Glue and PySpark: tariff allocation and aggregates
 Apache Iceberg gold tables queried through Athena
 ```
 
-The target Lake Formation model separates ingestion, transformation, and analyst access. Its separate analyst role and denial tests remain to be provisioned; current managed pipeline qualification uses the dedicated project operator and transformation role. Terraform provisions and later destroys the cloud resources required for a short, controlled demonstration.
+The [implemented analyst boundary](docs/analyst-access.md) combines Lake Formation grants on the three Gold products with IAM refusal of Silver/internal metadata and direct Bronze/warehouse objects. Transformation and project-operation identities remain separate from the analyst; a dedicated ingestion identity remains future work. Terraform provisions and later destroys the cloud resources required for a short, controlled demonstration.
 
 Further design details are in [docs/architecture.md](docs/architecture.md).
 
@@ -76,7 +76,7 @@ Generated batches use newline-delimited JSON. They are intentionally ignored by 
 
 ## Project status
 
-The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. Analyst/Lake Formation denial checks remain outstanding. Qualification environments are torn down after verification; this is not a continuously deployed service.
+The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
 
 ## Documentation
 
@@ -95,6 +95,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Partition benchmark](docs/partition-benchmark.md) | Deterministic Iceberg pair, repeated Athena measurements and evidence |
 | [Compaction benchmark](docs/compaction-benchmark.md) | Same-table before/after measurements, full-content proof and rewrite recovery |
 | [Security and privacy](docs/security-and-privacy.md) | Public-repository and access-control guardrails |
+| [Analyst access](docs/analyst-access.md) | Scoped LF Gold grants, real read/denial tests and protected teardown |
 | [Cost and destruction](docs/cost-and-destruction.md) | Cost discipline and post-demo cleanup requirements |
 | [Architecture decision records](docs/adr/README.md) | Accepted architectural decisions and their consequences |
 | [Architecture diagrams](docs/diagrams/v1-architecture.md) | Platform flow and access boundaries |

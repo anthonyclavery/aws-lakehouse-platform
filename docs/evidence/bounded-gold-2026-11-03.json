@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-03",
+  "runtime": {
+    "service": "AWS Glue",
+    "glue_version": "5.0",
+    "workers": 2,
+    "worker_type": "G.1X"
+  },
+  "qualified_source_revision": "b9a4db4d2d5ea3981782786fdc3425b7c41bb4c0",
+  "production_sources": {
+    "all_sources_match": true,
+    "sha256": {
+      "jobs/gold_price_intervals.py": "21c948f3b6206995973f57383b0356c89229a4fc933dd67c7b5c28ee8787d54d",
+      "jobs/gold_aggregate_energy.py": "1ca60bfa482998009d7a3a129b451d600ae24f48edbdf27541d0688a4defcbaf",
+      "src/lakehouse_platform/gold_spark.py": "4ffa3e77d346c1dcd64ee14415c53a08d063d2283e919b108a54e15a5a57eae1",
+      "src/lakehouse_platform/pricing.py": "251fc9799d322bfa8c4da643185f47b4d40adf1090802aeeed880db8091021dd",
+      "src/lakehouse_platform/gold_refresh.py": "a8224c9436e69d2870ea7616a62483326c937b26540c2aa92a26392cbe2d6300"
+    }
+  },
+  "qualification_driver_sha256": "33b722e484a71bee50cf6224eb286ff509c45ac7982cb9c509aa27f48fbd42f0",
+  "local_validation": {
+    "unittest_cases": 112,
+    "terraform_mock_plans_passed": 3,
+    "both_roots_validated": true,
+    "markdown_links_valid": true
+  },
+  "managed_qualification": {
+    "passed": true,
+    "scenarios": {
+      "bootstrap": {
+        "segments": 102,
+        "full_rebuild_equivalent": true
+      },
+      "late_correction_and_two_commit_recoveries": {
+        "segments": 102,
+        "full_rebuild_equivalent": true
+      },
+      "baseline_deletes_day_month_groups": {
+        "segments": 100,
+        "full_rebuild_equivalent": true
+      },
+      "replay_preserves_four_target_snapshots": {
+        "segments": 100,
+        "full_rebuild_equivalent": true
+      },
+      "explicit_full_reference_ownership_change": {
+        "segments": 100,
+        "full_rebuild_equivalent": true
+      },
+      "failed_preparation_releases_run_without_publishing": {
+        "segments": 100,
+        "full_rebuild_equivalent": true
+      }
+    }
+  },
+  "entry_points_and_athena": {
+    "passed": true,
+    "sequential_jobs_succeeded": 2,
+    "target_snapshots_unchanged": true,
+    "correction_staged_old_segments": 2,
+    "correction_staged_new_segments": 2,
+    "correction_unaffected_meter_segments_staged": 0,
+    "pending_gold_runs": 0
+  },
+  "successful_native_runs": {
+    "qualification": 1,
+    "production_entry_points": 2
+  },
+  "native_execution_seconds": {
+    "qualification": 317,
+    "entry_points": [
+      100,
+      58
+    ]
+  },
+  "guarded_cleanup": {
+    "codebuild_status": "SUCCEEDED",
+    "verified": {
+      "demo_bucket_absent": true,
+      "demo_database_absent": true,
+      "demo_job_1_absent": true,
+      "demo_job_2_absent": true,
+      "demo_job_3_absent": true,
+      "demo_job_4_absent": true,
+      "demo_workgroup_absent": true,
+      "deployment_user_preserved": true,
+      "deployment_role_preserved": true,
+      "glue_role_preserved": true,
+      "glue_execution_inline_policy_removed": true,
+      "versioned_state_bucket_preserved": true,
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true
+    },
+    "scheduler": {
+      "state": "ENABLED",
+      "unchanged": true
+    }
+  },
+  "limits": [
+    "Logical endpoint pricing and target/group mutations are bounded; physical scans and file rewrites are not.",
+    "Requires a single writer across Silver, references and the whole Gold chain; no distributed lock or multi-table transaction.",
+    "Reference snapshot changes require explicit full refresh; checkpoint-free Gold destinations require migration.",
+    "Driver interruptions were injected around real commits; no service outage or IAM denial was injected.",
+    "Fixture contains 101 initial intervals and is not a scaling benchmark."
+  ]
+}

@@ -16,7 +16,7 @@ def main():
     parser.add_argument("--reference-settle-seconds", type=int, default=30, help="Pause before reusing the same completed Glue job; queuing still remains enabled")
     parser.add_argument("--project-profile", required=True)
     parser.add_argument("--region", default="eu-west-3")
-    parser.add_argument("--load-references", action="store_true", help="Load all four references before indexes (initial batch only)")
+    parser.add_argument("--load-references", action="store_true", help="Load all four references before indexes; requires their files in this source batch")
     parser.add_argument("--artifact-dir", type=Path, required=True, help="Fresh private directory for raw job journal and sanitized result")
     args = parser.parse_args()
     values = {k: v["value"] for k, v in json.loads(args.outputs.read_text()).items()}

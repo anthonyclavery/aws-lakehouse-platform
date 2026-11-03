@@ -87,7 +87,7 @@ run "analyst_scoped_mock_apply" {
   }
   assert {
     condition = length([for statement in jsondecode(aws_iam_role_policy.analyst[0].policy).Statement : statement
-      if statement.Effect == "Deny" && contains(statement.Action, "s3:GetObject")]) == 1
+    if statement.Effect == "Deny" && contains(statement.Action, "s3:GetObject")]) == 1
     error_message = "The analyst must be explicitly denied direct warehouse/landing reads."
   }
   assert {

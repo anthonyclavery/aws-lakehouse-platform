@@ -9,7 +9,7 @@ from .generator import stable_uuid
 CONTRACTS = ("BASE", "WEEKEND", "PEAK_OFF_PEAK")
 
 
-def write_integrated_fixture(directory: Path):
+def write_integrated_fixture(directory: Path, *, include_append=True):
     directory.mkdir(parents=True, exist_ok=False)
     metadata = {"source_version": 1, "received_at": "2026-11-03T00:00:00Z", "schema_version": 1}
     valid = {**metadata, "valid_from": "2020-01-01T00:00:00Z", "valid_to": None}
@@ -32,7 +32,10 @@ def write_integrated_fixture(directory: Path):
     for index, (contract, day, begin, end, price) in enumerate(rules):
         refs["tariff_grid"].append({**valid, "tariff_rule_id": stable_uuid("integrated-tariff", index), "contract_type": contract,
                                    "day_scope": day, "time_from_local": begin, "time_to_local": end, "price_eur_per_kwh": price})
-    for name, indexes in (("initial", initial), ("append", append)):
+    batches = [("initial", initial)]
+    if include_append:
+        batches.append(("append", append))
+    for name, indexes in batches:
         batch = directory / name
         batch.mkdir()
         files = {"consumption_index.jsonl": indexes}

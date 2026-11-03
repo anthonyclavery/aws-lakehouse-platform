@@ -12,13 +12,17 @@ def main():
     parser.add_argument("--outputs", type=Path, required=True)
     parser.add_argument("--batch-dir", type=Path, required=True)
     parser.add_argument("--batch-id", required=True)
+    parser.add_argument("--gold-batch-id", help="Optional new Gold run ID for an unchanged or older-version Bronze replay")
+    parser.add_argument("--reference-settle-seconds", type=int, default=30, help="Pause before reusing the same completed Glue job; queuing still remains enabled")
     parser.add_argument("--project-profile", required=True)
     parser.add_argument("--region", default="eu-west-3")
-    parser.add_argument("--load-references", action="store_true", help="Load all four references before indexes (initial batch only)")
+    parser.add_argument("--load-references", action="store_true", help="Load all four references before indexes; requires their files in this source batch")
     parser.add_argument("--artifact-dir", type=Path, required=True, help="Fresh private directory for raw job journal and sanitized result")
     args = parser.parse_args()
     values = {k: v["value"] for k, v in json.loads(args.outputs.read_text()).items()}
-    stages = build_integrated_invocations(values, args.batch_id, load_references=args.load_references)
+    if args.reference_settle_seconds < 0:
+        raise ValueError("Reference settling interval must be nonnegative")
+    stages = build_integrated_invocations(values, args.batch_id, load_references=args.load_references, gold_batch_id=args.gold_batch_id)
     args.artifact_dir.mkdir(parents=True, exist_ok=False)
     import boto3
     operator = boto3.Session(profile_name=args.project_profile, region_name=args.region)
@@ -34,7 +38,8 @@ def main():
         if glue.get_job(JobName=job)["Job"]["Role"] != writer:
             raise ValueError("Every managed job must run as the dedicated transformation role")
     report = run_integrated_batch(ingestion.client("s3"), glue, values, args.batch_dir, args.batch_id,
-                                  load_references=args.load_references, journal=args.artifact_dir / "jobs.jsonl")
+                                  load_references=args.load_references, journal=args.artifact_dir / "jobs.jsonl",
+                                  gold_batch_id=args.gold_batch_id, reuse_delay_seconds=args.reference_settle_seconds)
     report.update(actual_ingestion_role_verified=True, transformation_execution_role_verified=True)
     (args.artifact_dir / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print("Integrated source ingestion and managed Silver/Gold stages succeeded")

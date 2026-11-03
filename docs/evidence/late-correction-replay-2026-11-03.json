@@ -1,0 +1,2161 @@
+{
+  "date": "2026-11-03",
+  "fixture": {
+    "all_phases_raw_energy_wh": 30000,
+    "changed_interval_rows_on_correction": 6,
+    "contracts": [
+      "BASE",
+      "WEEKEND",
+      "PEAK_OFF_PEAK"
+    ],
+    "exact_cost_eur": {
+      "correction_and_replays": "341/70",
+      "initial": "47/10",
+      "late": "167/35"
+    },
+    "final_indexes": 12,
+    "final_intervals": 9,
+    "initial_indexes": 9,
+    "initial_intervals": 6,
+    "persisted_total_cost_eur": {
+      "correction_and_replays": "4.871428571428",
+      "initial": "4.700000000000",
+      "late": "4.771428571428"
+    },
+    "persisted_total_kwh": {
+      "initial": "30.000000000000",
+      "late_and_later": "30.000000000003"
+    },
+    "rounding": "Each priced segment is quantized to 12 decimals before aggregation"
+  },
+  "independent_data_plane_cleanup": {
+    "cleanup_context_preserved": true,
+    "data_plane_absent_from_state": true,
+    "demo_bucket_absent": true,
+    "demo_database_absent": true,
+    "demo_job_1_absent": true,
+    "demo_job_2_absent": true,
+    "demo_job_3_absent": true,
+    "demo_job_4_absent": true,
+    "demo_workgroup_absent": true,
+    "deployment_role_preserved": true,
+    "deployment_user_preserved": true,
+    "glue_execution_inline_policy_removed": true,
+    "glue_role_preserved": true,
+    "versioned_state_bucket_preserved": true
+  },
+  "independent_identity_and_lf_cleanup": {
+    "all_gold_registrations_absent": true,
+    "all_scoped_gold_grants_absent": true,
+    "analyst_role_and_policy_absent": true,
+    "analyst_workgroup_absent": true,
+    "cleanup_schedule_enabled": true,
+    "ingestion_role_and_policy_absent": true,
+    "lf_data_role_and_policy_absent": true,
+    "original_lf_settings_restored": true,
+    "original_schedule_configuration_restored": true
+  },
+  "independent_runtime_audit": {
+    "actual_arguments_verified": true,
+    "actual_fixed_reference_output_metrics": {
+      "reference:customer_site": [
+        {
+          "changed_reference_rows": 0,
+          "created": false
+        }
+      ],
+      "reference:site_contract": [
+        {
+          "changed_reference_rows": 0,
+          "created": false
+        }
+      ],
+      "reference:site_meter": [
+        {
+          "changed_reference_rows": 0,
+          "created": false
+        }
+      ],
+      "reference:tariff_grid": [
+        {
+          "changed_reference_rows": 0,
+          "created": false
+        }
+      ]
+    },
+    "bounded_generations": 5,
+    "dedicated_transformation_role_verified": true,
+    "deployed_production_artifact_sha256": {
+      "jobs/gold_aggregate_energy.py": "1ca60bfa482998009d7a3a129b451d600ae24f48edbdf27541d0688a4defcbaf",
+      "jobs/gold_price_intervals.py": "21c948f3b6206995973f57383b0356c89229a4fc933dd67c7b5c28ee8787d54d",
+      "jobs/silver_process_indexes.py": "dce06b0e50721bd01b441652b553888651abeaa3bea0ecf0a4b562ae004912fb",
+      "jobs/silver_process_reference.py": "3618820a1360f7cbd3b7a388acfb081984109ac2b59d05571d72b7e3cf57bce3",
+      "src/lakehouse_platform/gold_refresh.py": "a8224c9436e69d2870ea7616a62483326c937b26540c2aa92a26392cbe2d6300",
+      "src/lakehouse_platform/gold_spark.py": "4ffa3e77d346c1dcd64ee14415c53a08d063d2283e919b108a54e15a5a57eae1",
+      "src/lakehouse_platform/pricing.py": "251fc9799d322bfa8c4da643185f47b4d40adf1090802aeeed880db8091021dd"
+    },
+    "exact_gold_fingerprints_and_zero_measure_errors_all_successful_phases": true,
+    "expected_reference_guard_rejections": 1,
+    "explicit_full_reference_recovery_generations": 1,
+    "final_index_versions": {
+      "1": 9,
+      "2": 3
+    },
+    "fresh_gold_generations_done": 6,
+    "no_script_overrides": true,
+    "no_unrecorded_runs": true,
+    "reference_artifact_fix_provenance": {
+      "after_sha256": "3618820a1360f7cbd3b7a388acfb081984109ac2b59d05571d72b7e3cf57bce3",
+      "all_runs_terminal_before_update": true,
+      "before_sha256": "06329b133f094607674c241897fd39ac6920a477d690b938bc71ea1b8a1a40ce",
+      "single_reviewed_s3_artifact_update": true
+    },
+    "reference_guard_rejection": {
+      "all_runs_terminal_before_artifact_update": true,
+      "bounded_gold_rejected_changed_reference_snapshots": true,
+      "failed_before_product_publication": true
+    },
+    "runs": [
+      {
+        "execution_seconds": 78,
+        "phase": "initial",
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 71,
+        "phase": "initial",
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 60,
+        "phase": "initial",
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 75,
+        "phase": "initial",
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 68,
+        "phase": "initial",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 76,
+        "phase": "initial",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 61,
+        "phase": "initial",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 99,
+        "phase": "late",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 84,
+        "phase": "late",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 65,
+        "phase": "late",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 101,
+        "phase": "correction",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 128,
+        "phase": "correction",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 102,
+        "phase": "correction",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 97,
+        "phase": "unchanged-replay",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 75,
+        "phase": "unchanged-replay",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 50,
+        "phase": "unchanged-replay",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 101,
+        "phase": "reference-recovery",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 55,
+        "phase": "reference-recovery",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 135,
+        "phase": "old-replay-retry",
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 126,
+        "phase": "old-replay-retry",
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 132,
+        "phase": "old-replay-retry",
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 105,
+        "phase": "old-replay-retry",
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 48,
+        "phase": "old-replay-retry",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 75,
+        "phase": "old-replay-retry",
+        "stage": "gold:price",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 127,
+        "phase": "old-replay-retry",
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 108,
+        "phase": "old-replay",
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 93,
+        "phase": "old-replay",
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 70,
+        "phase": "old-replay",
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 78,
+        "phase": "old-replay",
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 48,
+        "phase": "old-replay",
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED"
+      },
+      {
+        "execution_seconds": 43,
+        "phase": "old-replay",
+        "stage": "gold:price",
+        "state": "FAILED"
+      }
+    ],
+    "successful_runs": 30,
+    "unique_managed_runs": 31
+  },
+  "ingestion_access_with_all_roles_active": {
+    "actual_ingestion_role_verified": true,
+    "batch_listing_and_all_bytes_match": true,
+    "conditional_overwrite_412": true,
+    "denials": {
+      "assume_writer_role": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "athena_workgroup": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "delete_batch_object": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "glue_database": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "glue_gold_table": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "glue_job": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "gold_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "gold_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "iam_role_metadata": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "lakeformation_settings": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "list_bucket_root": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "list_landing_root": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "list_warehouse": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "scripts_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "scripts_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "silver_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "silver_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "unconditional_create": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "unconditional_overwrite": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      }
+    },
+    "no_unconditional_object_created": true,
+    "original_batch_object_preserved": true,
+    "outside_s3_probes_exist_for_operator": true,
+    "passed": true,
+    "region": "eu-west-3",
+    "replayed_objects": 6,
+    "temporary_credentials_seconds": 900,
+    "uploaded_objects": 6
+  },
+  "limits": [
+    "Small deterministic fixture, not a scale benchmark, concurrent-write test or changed-reference correction campaign",
+    "Local and deployed Gold share the tariff calculator; independent unit assertions verify rational boundary totals",
+    "The failed bounded attempt and explicit full recovery are retained; only the two successful replays are claimed metadata-stable",
+    "The access-probe batch was not processed as pipeline history",
+    "Main convergence measured before controlled data-plane destruction; bootstrap convergence measured afterwards"
+  ],
+  "local_validation": {
+    "python_tests_passed": 202,
+    "terraform_fmt_check": true,
+    "terraform_mock_scenarios_passed": 9,
+    "terraform_roots_validated": 2
+  },
+  "native_cleanup": {
+    "build_status": "SUCCEEDED",
+    "error_count": 7,
+    "only_lf_revoke_errors": true,
+    "receipts": [
+      {
+        "initial_delete_count": 59,
+        "passes": 2,
+        "recovery": {
+          "lf_revoke_only_failure": true,
+          "remaining_delete_count": 8,
+          "remaining_lf_revocations": 0,
+          "strict_subset_revalidated": true
+        },
+        "succeeded": true
+      }
+    ],
+    "refresh_revalidation_message": true
+  },
+  "privacy": "Reviewed synthetic counts, fingerprints and checks only; account/resource pointers, credentials, state, plans, raw query rows and logs remain private",
+  "qualification_code_sha256": {
+    "jobs/silver_process_reference.py": "3618820a1360f7cbd3b7a388acfb081984109ac2b59d05571d72b7e3cf57bce3",
+    "src/lakehouse_platform/integrated_pipeline.py": "e0d8b0c409c868f8638ab0df68b35ad07dca5858033aaf72868e42ec15a2a1ac",
+    "src/lakehouse_platform/late_chain_fixture.py": "847623db24f913667986abb37a162a16e1cc19048f5fcaacf81e8c6a99a8c365",
+    "src/lakehouse_platform/replay_validation.py": "632049c59f3a6684cb07087d416498b7933f4eac7a74485b1f3dc017e5503786"
+  },
+  "qualified_cleanup_revision": "17e3d2d9a23e94a3349e84317dac22db82a50ad5",
+  "reference_replay_fix": {
+    "fix": "Select and cache only new keys or strictly higher versions; skip MERGE when count is zero",
+    "observed_failure": "Conditional MERGE rewrote unchanged reference snapshots; bounded Gold correctly refused before publication",
+    "recovery": "One reviewed normal reference S3 artifact update while all runs terminal, followed by explicit full Gold refresh; no permission or checkpoint edit",
+    "retry": "Original source and all four references rerun with a fresh bounded Gold generation; all eleven data metadata identities stable"
+  },
+  "region": "eu-west-3",
+  "scope": "Late cumulative indexes, higher-version correction and genuine unchanged/older-source replays through dedicated ingestion, managed transformation and actual LF analyst identities",
+  "successful_phases": {
+    "correction": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 9,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 12,
+            "actual_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "expected_rows": 12,
+            "expected_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 9,
+            "actual_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "expected_rows": 9,
+            "expected_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {
+        "actual_ingestion_role_verified": true,
+        "reused_source_objects": 0,
+        "source_manifest_last": true,
+        "transformation_execution_role_verified": true,
+        "uploaded_source_objects": 2
+      }
+    },
+    "initial": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "005a77c4782e44669816b25578435e7efa9c2cab3a05b42f1bcd7ff2a05e81fb",
+            "expected_rows": 6,
+            "expected_sha256": "005a77c4782e44669816b25578435e7efa9c2cab3a05b42f1bcd7ff2a05e81fb",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "180c310a02c828c3e0382ac7cf69c3a08e9751173dd0fd3b71abf2be96156acd",
+            "expected_rows": 6,
+            "expected_sha256": "180c310a02c828c3e0382ac7cf69c3a08e9751173dd0fd3b71abf2be96156acd",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "29cf0c0805c7a2b36cef103330d1edacb233c75b8f195dea591f436488d3bec4",
+            "expected_rows": 3,
+            "expected_sha256": "29cf0c0805c7a2b36cef103330d1edacb233c75b8f195dea591f436488d3bec4",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 6,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 9,
+            "actual_sha256": "1e0909e463d2c5c4c932933a2bfd69d19741dd622d5d1f07ed12b3efd0d6b4f4",
+            "expected_rows": 9,
+            "expected_sha256": "1e0909e463d2c5c4c932933a2bfd69d19741dd622d5d1f07ed12b3efd0d6b4f4",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 6,
+            "actual_sha256": "21af03f71fcee63ac5a00a2d26a733d9b2beb63e4a3a6e31b1c8724551921ae8",
+            "expected_rows": 6,
+            "expected_sha256": "21af03f71fcee63ac5a00a2d26a733d9b2beb63e4a3a6e31b1c8724551921ae8",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {
+        "actual_ingestion_role_verified": true,
+        "reused_source_objects": 0,
+        "source_manifest_last": true,
+        "transformation_execution_role_verified": true,
+        "uploaded_source_objects": 6
+      }
+    },
+    "late": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "a74be734a57bdecb32a2c9922f8ea1ad93a3da549b45a86c601cba9ec4d94dac",
+            "expected_rows": 6,
+            "expected_sha256": "a74be734a57bdecb32a2c9922f8ea1ad93a3da549b45a86c601cba9ec4d94dac",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "f9c26c2abeea9a858b7eec4e5d84e083c41253de80857aab1689d739da39d76e",
+            "expected_rows": 6,
+            "expected_sha256": "f9c26c2abeea9a858b7eec4e5d84e083c41253de80857aab1689d739da39d76e",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "40421b88faed8933f36f8d7a8b72be7fae7c929355495cc637c88bd03fd86cd1",
+            "expected_rows": 3,
+            "expected_sha256": "40421b88faed8933f36f8d7a8b72be7fae7c929355495cc637c88bd03fd86cd1",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 9,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 12,
+            "actual_sha256": "a721780e0716f18b35d51d02acb1825c8ef0f3dff49cde089fa41018007c2f4f",
+            "expected_rows": 12,
+            "expected_sha256": "a721780e0716f18b35d51d02acb1825c8ef0f3dff49cde089fa41018007c2f4f",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 9,
+            "actual_sha256": "22392cdeef4444b60558fa2790468178cf234207c30f819fe44328cb29d0d836",
+            "expected_rows": 9,
+            "expected_sha256": "22392cdeef4444b60558fa2790468178cf234207c30f819fe44328cb29d0d836",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {
+        "actual_ingestion_role_verified": true,
+        "reused_source_objects": 0,
+        "source_manifest_last": true,
+        "transformation_execution_role_verified": true,
+        "uploaded_source_objects": 2
+      }
+    },
+    "old-replay-retry": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 9,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 12,
+            "actual_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "expected_rows": 12,
+            "expected_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 9,
+            "actual_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "expected_rows": 9,
+            "expected_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {
+        "actual_ingestion_role_verified": true,
+        "reused_source_objects": 6,
+        "source_manifest_last": true,
+        "transformation_execution_role_verified": true,
+        "uploaded_source_objects": 0
+      }
+    },
+    "reference-recovery": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 9,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 12,
+            "actual_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "expected_rows": 12,
+            "expected_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 9,
+            "actual_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "expected_rows": 9,
+            "expected_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {}
+    },
+    "unchanged-replay": {
+      "analyst": {
+        "authorization_layers": {
+          "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+          "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+          "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+        },
+        "direct_s3_denials": {
+          "bronze": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "gold_direct": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          },
+          "silver": {
+            "code": "AccessDenied",
+            "denied": true,
+            "http_status": 403
+          }
+        },
+        "gold_products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "gold_select_restored": true,
+        "gold_select_revocation_denied": {
+          "authorization_error": true,
+          "denied": true
+        },
+        "passed": true,
+        "region": "eu-west-3",
+        "results_reused": false,
+        "silver_and_internal_sql_denials": {
+          "consumption_index": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "customer_site_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "meter_consumption_interval_recalculation_work": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_refresh": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "priced_intervals_stage": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "quarantine_records": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_contract_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "site_meter_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          },
+          "tariff_grid_history": {
+            "athena": {
+              "authorization_error": true,
+              "catalog_masked_not_found": true,
+              "denied": true
+            },
+            "catalog": {
+              "code": "AccessDeniedException",
+              "denied": true
+            },
+            "exists_for_operator": true
+          }
+        },
+        "temporary_credentials_used": true
+      },
+      "passed": true,
+      "silver": {
+        "expected_consumption_wh": 30000,
+        "expected_intervals": 9,
+        "passed": true,
+        "quarantine_and_unfinished_counts": {
+          "meter_consumption_interval_recalculation_work": 0,
+          "priced_intervals_refresh": 0,
+          "quarantine_records": 0
+        },
+        "tables": {
+          "consumption_index": {
+            "actual_rows": 12,
+            "actual_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "expected_rows": 12,
+            "expected_sha256": "63cbe2188cf52dfa23eaa25bc2596a9332624dda1e0d52231cfff4495a82f913",
+            "passed": true
+          },
+          "customer_site_history": {
+            "actual_rows": 3,
+            "actual_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "expected_rows": 3,
+            "expected_sha256": "9da67b614e63b8f3bf06bc65e8c3e905fe65254f0a77f77a29bdc8612f44d58c",
+            "passed": true
+          },
+          "meter_consumption_interval": {
+            "actual_rows": 9,
+            "actual_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "expected_rows": 9,
+            "expected_sha256": "2f6be8a6af5f225f1fee42e8c7643c94fda38f555c3777ea68f9ac3d843c3a09",
+            "passed": true
+          },
+          "site_contract_history": {
+            "actual_rows": 3,
+            "actual_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "expected_rows": 3,
+            "expected_sha256": "37d44d256590ece9f028e040a0a1180effc78d47bf7361b0b6f8ac943ac04eb3",
+            "passed": true
+          },
+          "site_meter_history": {
+            "actual_rows": 3,
+            "actual_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "expected_rows": 3,
+            "expected_sha256": "643b4ff72abc4af77465c7a79e867b2bc2d76670a7911d01e26161672b655ca5",
+            "passed": true
+          },
+          "tariff_grid_history": {
+            "actual_rows": 5,
+            "actual_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "expected_rows": 5,
+            "expected_sha256": "1f69db626aa124c27fa900ae393d3682766adc30bae71bd0ea946fb246363a67",
+            "passed": true
+          }
+        }
+      },
+      "source_uploads": {
+        "actual_ingestion_role_verified": true,
+        "reused_source_objects": 2,
+        "source_manifest_last": true,
+        "transformation_execution_role_verified": true,
+        "uploaded_source_objects": 0
+      }
+    }
+  },
+  "successful_replay_stability": {
+    "old-replay-retry": {
+      "control_and_stage_tables_excluded_from_metadata_stability": true,
+      "gold_content_unchanged": {
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "monthly_customer_energy": true
+      },
+      "iceberg_data_table_metadata_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "meter_consumption_interval": true,
+        "monthly_customer_energy": true,
+        "priced_intervals": true,
+        "quarantine_records": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      },
+      "passed": true,
+      "silver_content_and_versions_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "meter_consumption_interval": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      }
+    },
+    "unchanged-replay": {
+      "control_and_stage_tables_excluded_from_metadata_stability": true,
+      "gold_content_unchanged": {
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "monthly_customer_energy": true
+      },
+      "iceberg_data_table_metadata_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "meter_consumption_interval": true,
+        "monthly_customer_energy": true,
+        "priced_intervals": true,
+        "quarantine_records": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      },
+      "passed": true,
+      "silver_content_and_versions_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "meter_consumption_interval": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      }
+    }
+  },
+  "terraform_convergence": {
+    "bootstrap_no_managed_changes_after_exact_schedule_restoration": true,
+    "enabled_data_plane_no_managed_changes_before_cleanup": true
+  }
+}

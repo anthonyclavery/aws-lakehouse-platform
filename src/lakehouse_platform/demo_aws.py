@@ -11,6 +11,7 @@ from .cleanup_context import derive_cleanup_context
 from .cleanup_guard import ALLOWED_DELETE_ADDRESSES
 from .demo import load_state, read, run_scenarios, write
 from .integrated_pipeline import build_integrated_invocations
+from .ingestion_access import assume_ingestion_session
 from .qualification import DIMENSIONS, expected_products, query_rows
 from .replay_validation import capture_replay_metadata, compare_replay
 
@@ -24,6 +25,22 @@ def expect_absent(operation, codes):
             raise
         return
     raise ValueError("A demo resource still exists after native cleanup; inspect before declaring destruction complete")
+
+
+def wait_for_ingestion(operator, role, bucket, *, attempts=13, pause=time.sleep):
+    """Only credential readiness is retried, before any source publication/job."""
+    for attempt in range(attempts):
+        try:
+            session = assume_ingestion_session(operator, role, bucket)
+            expected = role.replace(":iam:", ":sts:").replace(":role/", ":assumed-role/") + "/"
+            if not session.client("sts").get_caller_identity()["Arn"].startswith(expected):
+                raise ValueError("Readiness probe must use the exact dedicated ingestion role")
+            return
+        except Exception as error:
+            if getattr(error, "response", {}).get("Error", {}).get("Code") != "AccessDenied" or attempt == attempts - 1:
+                raise
+            print("[aws] ingestion credentials not ready; waiting 5 seconds before another credential-only probe", flush=True)
+            pause(5)
 
 
 def source_digest(repo):
@@ -144,7 +161,8 @@ class AWSJourney:
         self.command(["terraform", "-chdir=terraform", "apply", "-input=false", "-no-color", str(plan)], "aws/deploy.log")
         outputs = json.loads(self.command(["terraform", "-chdir=terraform", "output", "-json"], "aws/outputs.log"))
         write(self.aws / "outputs.json", outputs)
-        self.values()
+        values = self.values()
+        wait_for_ingestion(self.operator, values["ingestion_access"]["role_arn"], values["landing_path"].split("/")[2])
         state["aws_status"] = "deployed"
         write(self.workspace / "state.json", state)
 

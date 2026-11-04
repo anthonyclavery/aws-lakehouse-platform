@@ -66,8 +66,10 @@ All six measured queries selected 2024-01-16 UTC and returned exactly 4,800 read
 | Median planning, ms | 93 | 103 |
 | Median queue, ms | 55 | 67 |
 | Median total execution, ms | 789 | 791 |
-| Modeled scan charge per measured query, USD | 0.00005 | 0.00005 |
+| Historical modeled scan charge at USD 5/TB | 0.00005 | 0.00005 |
 
 Active-file count fell by 93.75%, but total query latency was effectively unchanged and the modeled query charge did not change. The six measured queries total USD 0.00030 under the stated assumptions. The retained original files were still readable for verification, so the active-byte reduction is not a claim of reclaimed S3 storage. These results describe this small synthetic fixture and sequential sample set only.
 
 The [reviewed evidence](evidence/compaction-2026-11-03.json) includes all samples, layout metadata, source hashes, recovery checks and guarded teardown verification. All 136 local tests and four mocked Terraform plans passed, and both Terraform roots validated. CodeBuild cleanup ran from the tested pushed revision; direct checks confirmed the demo bucket/database, four jobs and Athena workgroup absent while persistent identities, versioned state and the enabled cleanup schedule remained. Raw logs, private snapshot manifests and measurement checkpoints stay in ignored local artifacts.
+
+The [final cost report](cost-and-destruction.md) updates the regional rate to the Paris catalog observation of USD 7/TB on 2026-11-04 and recomputes the same examples. Historical measurements and their original explicit USD 5/TB model are preserved; this is not another benchmark execution.

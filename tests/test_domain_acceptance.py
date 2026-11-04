@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from lakehouse_platform.domain_validation import FULL_INTERVAL_FIELDS, compare_hashes, hash_query, qualify_quarantine, write_invalid_fixture
+from lakehouse_platform.domain_validation import FULL_INTERVAL_FIELDS, compare_hashes, hash_query, qualify_domain, qualify_quarantine, write_invalid_fixture
 from lakehouse_platform.integrated_validation import INDEX_FIELDS
 from lakehouse_platform.landing import plan_landing_upload
 from lakehouse_platform.domain_fixture import write_domain_fixture
@@ -15,6 +15,37 @@ from lakehouse_platform.qualification import expected_products
 
 
 class DomainAcceptanceTests(TestCase):
+    def test_operational_and_gold_reads_use_their_distinct_credentials(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            write_integrated_fixture(root / 'compact')
+            batch = root / 'compact/initial'
+            refs = process_reference_data([batch])
+            products = json.loads(json.dumps(expected_products([batch]), default=str))
+            meter_hashes = {f'meter-{index}': {'n': 1, 'sha256': 'a' * 64} for index in range(200)}
+            expected = {'customers': 100, 'sites': 200, 'contracts': {'BASE': 100, 'WEEKEND': 80, 'PEAK_OFF_PEAK': 20},
+                'indexes_by_meter': meter_hashes, 'intervals_by_meter': meter_hashes, 'index_count': 200, 'interval_count': 200, 'raw_energy_wh': 30000}
+            (root / 'expected-domain.json').write_text(json.dumps(expected))
+            (root / 'expected-products.json').write_text(json.dumps(products))
+            operator, analyst = Mock(), Mock()
+            def query(client, database, group, sql):
+                for table, rows in products.items():
+                    if f'"{table}"' in sql:
+                        self.assertIs(analyst, client)
+                        self.assertEqual('analyst-workgroup', group)
+                        return rows, {'ResultReuseInformation': {'ReusedPreviousResult': False}}
+                self.assertIs(operator, client)
+                self.assertEqual('operator-workgroup', group)
+                for flow, rows in refs.items():
+                    if f'"{flow}_history"' in sql: return rows, {'ResultReuseInformation': {'ReusedPreviousResult': False}}
+                return [{'meter_id': key, **row} for key, row in meter_hashes.items()], {'ResultReuseInformation': {'ReusedPreviousResult': False}}
+            with patch('lakehouse_platform.domain_validation.process_reference_data', return_value=refs), \
+                 patch('lakehouse_platform.domain_validation.query_rows', side_effect=query):
+                result = qualify_domain(operator, 'aws_lakehouse_platform_example', 'operator-workgroup', root,
+                    analyst_athena=analyst, analyst_workgroup='analyst-workgroup')
+            self.assertTrue(result['passed'])
+            self.assertEqual('dedicated analyst', result['reader_boundaries']['gold'])
+
     def test_streaming_oracle_matches_existing_complete_business_calculator(self):
         with TemporaryDirectory() as folder:
             root = Path(folder)

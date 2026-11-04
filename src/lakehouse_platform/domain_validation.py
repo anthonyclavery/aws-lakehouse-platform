@@ -33,15 +33,15 @@ def compare_hashes(expected, actual):
             'actual_digest': hashlib.sha256(json.dumps(indexed, sort_keys=True).encode()).hexdigest()}
 
 
-def qualify_domain(athena, database, workgroup, directory):
+def qualify_domain(athena, database, workgroup, directory, *, analyst_athena, analyst_workgroup):
     directory = Path(directory)
     expected = json.loads((directory / 'expected-domain.json').read_text())
     products = json.loads((directory / 'expected-products.json').read_text())
     if (expected['customers'], expected['sites'], expected['contracts']) != (100, 200, {'BASE': 100, 'WEEKEND': 80, 'PEAK_OFF_PEAK': 20}):
         raise ValueError("Full V1 acceptance requires the documented 100-customer/200-site topology")
     report = {'accepted': {}, 'references': {}, 'gold': {}, 'query_statistics': []}
-    def query(sql):
-        rows, stats = query_rows(athena, database, workgroup, sql)
+    def query(sql, *, client=athena, group=workgroup):
+        rows, stats = query_rows(client, database, group, sql)
         if stats.get('ResultReuseInformation', {}).get('ReusedPreviousResult') is not False:
             raise ValueError("Full-domain acceptance requires fresh queries")
         report['query_statistics'].append(stats)
@@ -57,7 +57,9 @@ def qualify_domain(athena, database, workgroup, directory):
         report['references'][flow] = compare_silver_rows(references[flow], actual, fields)
     for table, rows in products.items():
         columns = ', '.join(f'CAST("{field}" AS varchar) AS "{field}"' for field in rows[0])
-        report['gold'][table] = compare_product(table, rows, query(f'SELECT {columns} FROM "{database}"."{table}"'))
+        report['gold'][table] = compare_product(table, rows, query(f'SELECT {columns} FROM "{database}"."{table}"',
+            client=analyst_athena, group=analyst_workgroup))
+    report['reader_boundaries'] = {'indexes_intervals_references': 'project operator', 'gold': 'dedicated analyst'}
     report['passed'] = all(row['passed'] for section in ('accepted', 'references', 'gold') for row in report[section].values())
     report['profile'] = {key: expected[key] for key in ('customers', 'sites', 'contracts', 'index_count', 'interval_count', 'raw_energy_wh')}
     return report

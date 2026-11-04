@@ -62,6 +62,8 @@ See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology
 
 The local foundation has no third-party runtime dependency and does not access AWS.
 
+For a guided business demonstration, follow the [single-entry-point runbook](docs/demo-runbook.md). `scripts/run_demo.py` provides an offline five-phase preview, explicit AWS plan/deploy/run/query/cleanup stages, three named analyst queries and readable reports. See the [generated local report](docs/examples/demo-local-report.md). The combined AWS CLI awaits final native acceptance; existing component qualifications are linked below.
+
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
@@ -93,7 +95,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Integrated AWS identity chain](docs/integrated-chain.md) | Source-shaped ingestion, real Silver/Gold runs and analyst verification before/after governed updates |
 | [Governed late/correction/replay campaign](docs/late-correction-replay.md) | Late indexes, higher versions and genuine fresh-Gold processing replays with all dedicated roles |
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |
-| [Demo runbook](docs/demo-runbook.md) | Planned controlled AWS demonstration |
+| [Demo runbook](docs/demo-runbook.md) | Unified local/AWS commands, analyst queries, readable reports and cleanup |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
 | [Partition benchmark](docs/partition-benchmark.md) | Deterministic Iceberg pair, repeated Athena measurements and evidence |
 | [Compaction benchmark](docs/compaction-benchmark.md) | Same-table before/after measurements, full-content proof and rewrite recovery |

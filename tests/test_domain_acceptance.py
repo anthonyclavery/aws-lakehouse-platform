@@ -8,9 +8,29 @@ from unittest.mock import Mock, patch
 from lakehouse_platform.domain_validation import FULL_INTERVAL_FIELDS, compare_hashes, hash_query, qualify_quarantine, write_invalid_fixture
 from lakehouse_platform.integrated_validation import INDEX_FIELDS
 from lakehouse_platform.landing import plan_landing_upload
+from lakehouse_platform.domain_fixture import write_domain_fixture
+from lakehouse_platform.integrated_fixture import write_integrated_fixture
+from lakehouse_platform.reference_processing import process_reference_data
+from lakehouse_platform.qualification import expected_products
 
 
 class DomainAcceptanceTests(TestCase):
+    def test_streaming_oracle_matches_existing_complete_business_calculator(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            write_integrated_fixture(root / 'compact')
+            batch = root / 'compact/initial'
+            references = process_reference_data([batch])
+            rows = sorted([json.loads(line) for line in (batch / 'consumption_index.jsonl').read_text().splitlines()],
+                          key=lambda row: (row['meter_id'], row['reading_at']))
+            with patch('lakehouse_platform.domain_fixture.build_reference_records', return_value=references), \
+                 patch('lakehouse_platform.domain_fixture.iter_consumption_indexes', return_value=iter(rows)):
+                proof = write_domain_fixture(root / 'streamed')
+            actual = json.loads((root / 'streamed/expected-products.json').read_text())
+            self.assertEqual(json.loads(json.dumps(expected_products([batch]), default=str)), actual)
+            self.assertEqual((9, 6, 30000), (proof['index_count'], proof['interval_count'], proof['raw_energy_wh']))
+            self.assertEqual(6, len(plan_landing_upload(root / 'streamed/initial', 'streamed-test')))
+
     def test_full_typed_row_hashes_detect_mutations_counts_and_duplicates(self):
         expected = {'meter': {'n': 3, 'sha256': hashlib.sha256(b'all eight typed fields').hexdigest()}}
         actual = [{'meter_id': 'meter', **expected['meter']}]

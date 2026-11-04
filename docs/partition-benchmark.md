@@ -53,8 +53,10 @@ The final `pruning_v2` profile ran in eu-west-3 on Glue 5 with two G.1X workers.
 | Median planning, ms | 93 | 99 |
 | Median queue, ms | 62 | 61 |
 | Median total execution, ms | 911 | 745 |
-| Modeled scan charge per measured query, USD | 0.00009 | 0.00005 |
+| Historical modeled scan charge at USD 5/TB | 0.00009 | 0.00005 |
 
 The scan reduction is 99.9528% for this selective query and these two layouts. The corresponding modeled scan-charge reduction is 44.4%, because the daily query reaches the 10 MB minimum. The six measured queries total USD 0.00042 under the documented model; this excludes provisioning, Glue, storage, other validation calls and taxes. It is not a measured bill. The many tiny daily files and different compression ratio are material caveats. Three samples per layout cannot establish stable latency or a universal speedup.
 
 All samples, SQL templates, layout metadata, source hashes and teardown checks are in [the reviewed evidence](evidence/partition-pruning-2026-11-03.json). The final source passed 124 local tests and four mocked Terraform plans. Guarded CodeBuild cleanup ran from the tested pushed revision; direct checks confirmed the demo bucket/database, four jobs and Athena workgroup were absent, while deployment identities, versioned state and the enabled cleanup schedule remained. Raw logs, manifest snapshot identifiers and deployment configuration stay in ignored private artifacts.
+
+The [final cost report](cost-and-destruction.md) updates the regional rate to the Paris catalog observation of USD 7/TB on 2026-11-04 and recomputes the same examples. Historical measurements and their original explicit USD 5/TB model are preserved; this is not another benchmark execution.

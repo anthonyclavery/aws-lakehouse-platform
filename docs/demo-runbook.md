@@ -57,7 +57,7 @@ demo deploy
 demo status
 ```
 
-`deploy` applies that exact saved plan, checks its output namespace/ingestion role and saves outputs privately. A changed plan or runtime source tree is rejected. It does not regenerate an apply from current configuration. An interrupted apply remains marked `deploying` for inspection.
+`deploy` applies that exact saved plan, checks its output namespace/ingestion role and saves outputs privately. Before marking the deployment ready, it performs up to thirteen actual ingestion-credential probes with five-second pauses (up to sixty seconds of explicit waiting) to allow fresh IAM permissions to propagate. Only credential AccessDenied failures are retried; no source upload or managed job has started at this point. A changed plan or runtime source tree is rejected. It does not regenerate an apply from current configuration. An interrupted apply remains marked `deploying` for inspection.
 
 ## Run the AWS business story
 
@@ -126,4 +126,4 @@ python scripts/run_demo.py --workspace artifacts/demo report --mode aws
 
 Tests execute the complete offline CLI and report round-trip, reject source/plan tampering, exercise failure/lock behavior, and drive the AWS adapter with fake service/launcher responses to verify ordering, source IDs, fresh Gold IDs, governance, replay checks and cleanup submission behavior. SQL tests cover Gold-only tables, typed date/month bounds, customer validation and actual-role/workgroup requirements. SQL resources are included in the package build.
 
-Underlying components have [native integrated](integrated-chain.md) and [late/correction/replay](late-correction-replay.md) evidence. This combined entry point has local and mocked-adapter validation. Fresh native acceptance of this exact CLI, full-domain/negative-input coverage and measured service costs remain the final qualification step.
+The [final AWS qualification](final-acceptance.md) executed this combined entry point through all five phases, all three named analyst queries, report generation and guarded cleanup. It also separately qualified the complete historical 200-site domain, controlled invalid records/quarantine and a contradictory batch rejection. The [actual readable AWS report](examples/demo-aws-report.md), reviewed evidence and [cost model/billing limits](cost-and-destruction.md) are published. This closes the on-demand V1 demonstration scope; the stated production/schema/concurrency limits remain.

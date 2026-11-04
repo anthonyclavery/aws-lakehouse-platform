@@ -5,7 +5,7 @@ The project turns cumulative electricity-meter indexes into auditable consumptio
 
 ## Why this project exists
 
-The interesting part of a Lakehouse is not the list of AWS services. It is the ability to process cumulative meter indexes rather than ready-to-use consumption values; duplicate deliveries, late arrivals, source corrections, and targeted backfills; meter rollovers and replacements; temporal customer, site, meter, contract, and tariff relationships; schema evolution, data contracts, data quality, lineage, and access control; and partition pruning alongside the small-file problem.
+The interesting part of a Lakehouse is not the list of AWS services. It is the ability to process cumulative meter indexes rather than ready-to-use consumption values; duplicate deliveries, late arrivals, source corrections, and targeted backfills; meter rollovers and replacements; temporal customer, site, meter, contract, and tariff relationships; schema versions, data contracts, data quality, lineage, and access control; and partition pruning alongside the small-file problem.
 
 All data is deterministic, synthetic, and non-personal. The project does not reproduce a real utility, tariff, customer, architecture, or dataset.
 
@@ -62,7 +62,7 @@ See [docs/demo-runbook.md](docs/demo-runbook.md) and [docs/benchmark-methodology
 
 The local foundation has no third-party runtime dependency and does not access AWS.
 
-For a guided business demonstration, follow the [single-entry-point runbook](docs/demo-runbook.md). `scripts/run_demo.py` provides an offline five-phase preview, explicit AWS plan/deploy/run/query/cleanup stages, three named analyst queries and readable reports. See the [generated local report](docs/examples/demo-local-report.md). The combined AWS CLI awaits final native acceptance; existing component qualifications are linked below.
+For a guided business demonstration, follow the [single-entry-point runbook](docs/demo-runbook.md). `scripts/run_demo.py` provides an offline five-phase preview, explicit AWS plan/deploy/run/query/cleanup stages, three named analyst queries and readable reports. See the [generated local report](docs/examples/demo-local-report.md). The [final AWS acceptance](docs/final-acceptance.md) includes the combined CLI, complete historical 200-site domain, controlled invalid inputs and cleanup. See the [actual AWS report](docs/examples/demo-aws-report.md).
 
 ```bash
 python3 -m venv .venv
@@ -78,7 +78,7 @@ Generated batches use newline-delimited JSON. They are intentionally ignored by 
 
 ## Project status
 
-The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, including late data, corrections, replay, bounded Silver/Gold mutations and interrupted-commit recovery. The [integrated identity chain](docs/integrated-chain.md) proves source publication by the dedicated ingestion role, ten normal managed job runs, complete Silver reconciliation and analyst Gold reads before/after updates under active LF governance. The [partition](docs/partition-benchmark.md) and [compaction](docs/compaction-benchmark.md) benchmarks supply separate reproducible experiments. [Analyst access](docs/analyst-access.md) verifies Gold reads, Silver/internal refusals, direct S3 refusals and LF SELECT revocation/restoration with actual assumed-role credentials. Qualification environments are torn down after verification; this is not a continuously deployed service.
+V1 is accepted for an operator-led, on-demand AWS demonstration. The [final qualification](docs/final-acceptance.md) proves the complete CLI, analyst queries/report, the 100-customer/200-site historical domain, exact quarantine contents and replay, atomic rejection of a contradictory correction, access isolation and guarded cleanup. The [cost report](docs/cost-and-destruction.md) distinguishes observed usage, modeled charges and delayed tagged billing. Qualification environments were destroyed; persistent state/cleanup controls remain. Production SLAs, tenant isolation, concurrent writers and automatic schema migration are outside this V1. Existing partition/compaction measurements retain their published scope and limitations.
 
 ## Documentation
 
@@ -95,6 +95,7 @@ The synthetic pipeline has been qualified on managed Glue/Iceberg and Athena, in
 | [Integrated AWS identity chain](docs/integrated-chain.md) | Source-shaped ingestion, real Silver/Gold runs and analyst verification before/after governed updates |
 | [Governed late/correction/replay campaign](docs/late-correction-replay.md) | Late indexes, higher versions and genuine fresh-Gold processing replays with all dedicated roles |
 | [Bounded Silver recalculation](docs/bounded-silver.md) | Neighbour intervals, durable retry work and unchanged replay |
+| [Final V1 acceptance](docs/final-acceptance.md) | Native combined CLI, historical 200-site domain, controlled invalid inputs, costs and teardown |
 | [Demo runbook](docs/demo-runbook.md) | Unified local/AWS commands, analyst queries, readable reports and cleanup |
 | [Benchmark methodology](docs/benchmark-methodology.md) | Reproducible partition pruning and compaction measurements |
 | [Partition benchmark](docs/partition-benchmark.md) | Deterministic Iceberg pair, repeated Athena measurements and evidence |

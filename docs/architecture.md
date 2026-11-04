@@ -14,7 +14,7 @@ Bronze is the immutable landing layer in Amazon S3. It retains source-shaped syn
 
 Silver is the operational Iceberg layer. AWS Glue and PySpark validate the input contracts, apply source versions, preserve temporal history, calculate consumption intervals, and send invalid records to quarantine.
 
-The planned silver tables are `site_meter_history`, `customer_site_history`, `site_contract_history`, `tariff_grid_history`, `consumption_index`, `meter_consumption_interval`, `quarantine_records`, and `ingestion_batch_audit`.
+The operational Silver tables are `site_meter_history`, `customer_site_history`, `site_contract_history`, `tariff_grid_history`, `consumption_index`, `meter_consumption_interval` and `quarantine_records`. Durable interval-work and Gold refresh/stage tables track bounded processing. Batch audit evidence uses immutable source manifests and retained private execution journals; there is no implemented `ingestion_batch_audit` table.
 
 ### Gold
 

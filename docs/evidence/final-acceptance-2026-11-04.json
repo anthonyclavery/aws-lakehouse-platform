@@ -1,0 +1,2617 @@
+{
+  "accepted_data_metadata_unchanged_after_both_invalid_runs": true,
+  "campaign_controls": {
+    "both_data_planes_cleaned": true,
+    "combined_cli_passed": true,
+    "full_domain_passed": true,
+    "negative_and_replay_passed": true,
+    "original_lf_settings_restored": true,
+    "schedule_configuration_unchanged": true
+  },
+  "cold_start": {
+    "failed_before_source_upload_or_job_submission": true,
+    "fix": "Bounded credential-only readiness checks before marking deployment ready; no managed-job retry",
+    "observed_retry_deployment_waits": 1,
+    "retained_failed_workspace": true
+  },
+  "combined_cli": {
+    "mode": "aws",
+    "phases": {
+      "correction": {
+        "checks": {
+          "Gold reconciliation": true,
+          "Silver reconciliation": true,
+          "analyst refusals and SELECT restoration": true
+        },
+        "contract_eur": {
+          "BASE": "2.000000000003",
+          "PEAK_OFF_PEAK": "1.471428571427",
+          "WEEKEND": "1.399999999998"
+        },
+        "gold_eur": "4.871428571428",
+        "gold_kwh": "30.000000000003",
+        "indexes": 12,
+        "intervals": 9,
+        "origin": "AWS analyst",
+        "passed": true,
+        "products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "raw_energy_wh": 30000
+      },
+      "initial": {
+        "checks": {
+          "Gold reconciliation": true,
+          "Silver reconciliation": true,
+          "analyst refusals and SELECT restoration": true
+        },
+        "contract_eur": {
+          "BASE": "2.000000000000",
+          "PEAK_OFF_PEAK": "1.400000000000",
+          "WEEKEND": "1.300000000000"
+        },
+        "gold_eur": "4.700000000000",
+        "gold_kwh": "30.000000000000",
+        "indexes": 9,
+        "intervals": 6,
+        "origin": "AWS analyst",
+        "passed": true,
+        "products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "005a77c4782e44669816b25578435e7efa9c2cab3a05b42f1bcd7ff2a05e81fb",
+            "expected_rows": 6,
+            "expected_sha256": "005a77c4782e44669816b25578435e7efa9c2cab3a05b42f1bcd7ff2a05e81fb",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "180c310a02c828c3e0382ac7cf69c3a08e9751173dd0fd3b71abf2be96156acd",
+            "expected_rows": 6,
+            "expected_sha256": "180c310a02c828c3e0382ac7cf69c3a08e9751173dd0fd3b71abf2be96156acd",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "29cf0c0805c7a2b36cef103330d1edacb233c75b8f195dea591f436488d3bec4",
+            "expected_rows": 3,
+            "expected_sha256": "29cf0c0805c7a2b36cef103330d1edacb233c75b8f195dea591f436488d3bec4",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "raw_energy_wh": 30000
+      },
+      "late": {
+        "checks": {
+          "Gold reconciliation": true,
+          "Silver reconciliation": true,
+          "analyst refusals and SELECT restoration": true
+        },
+        "contract_eur": {
+          "BASE": "2.000000000003",
+          "PEAK_OFF_PEAK": "1.371428571427",
+          "WEEKEND": "1.399999999998"
+        },
+        "gold_eur": "4.771428571428",
+        "gold_kwh": "30.000000000003",
+        "indexes": 12,
+        "intervals": 9,
+        "origin": "AWS analyst",
+        "passed": true,
+        "products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "a74be734a57bdecb32a2c9922f8ea1ad93a3da549b45a86c601cba9ec4d94dac",
+            "expected_rows": 6,
+            "expected_sha256": "a74be734a57bdecb32a2c9922f8ea1ad93a3da549b45a86c601cba9ec4d94dac",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "f9c26c2abeea9a858b7eec4e5d84e083c41253de80857aab1689d739da39d76e",
+            "expected_rows": 6,
+            "expected_sha256": "f9c26c2abeea9a858b7eec4e5d84e083c41253de80857aab1689d739da39d76e",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "40421b88faed8933f36f8d7a8b72be7fae7c929355495cc637c88bd03fd86cd1",
+            "expected_rows": 3,
+            "expected_sha256": "40421b88faed8933f36f8d7a8b72be7fae7c929355495cc637c88bd03fd86cd1",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "raw_energy_wh": 30000
+      },
+      "older-replay": {
+        "checks": {
+          "Gold reconciliation": true,
+          "Silver reconciliation": true,
+          "analyst refusals and SELECT restoration": true,
+          "eleven data metadata identities stable": true
+        },
+        "contract_eur": {
+          "BASE": "2.000000000003",
+          "PEAK_OFF_PEAK": "1.471428571427",
+          "WEEKEND": "1.399999999998"
+        },
+        "gold_eur": "4.871428571428",
+        "gold_kwh": "30.000000000003",
+        "indexes": 12,
+        "intervals": 9,
+        "origin": "AWS analyst",
+        "passed": true,
+        "products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "raw_energy_wh": 30000
+      },
+      "unchanged-replay": {
+        "checks": {
+          "Gold reconciliation": true,
+          "Silver reconciliation": true,
+          "analyst refusals and SELECT restoration": true,
+          "eleven data metadata identities stable": true
+        },
+        "contract_eur": {
+          "BASE": "2.000000000003",
+          "PEAK_OFF_PEAK": "1.471428571427",
+          "WEEKEND": "1.399999999998"
+        },
+        "gold_eur": "4.871428571428",
+        "gold_kwh": "30.000000000003",
+        "indexes": 12,
+        "intervals": 9,
+        "origin": "AWS analyst",
+        "passed": true,
+        "products": {
+          "daily_customer_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "expected_rows": 6,
+            "expected_sha256": "ac845a6a0964c2ff25afb70952cfc7b4b4ca82c25bcae251286e6879d717aca5",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "daily_site_energy": {
+            "actual_rows": 6,
+            "actual_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "expected_rows": 6,
+            "expected_sha256": "89c30f134bc4ddcf9199f5c97de6908c0b5ecb222225b12700304910b73eb71b",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          },
+          "monthly_customer_energy": {
+            "actual_rows": 3,
+            "actual_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "expected_rows": 3,
+            "expected_sha256": "4425d844773fa8b98cd576aab5749d8cc8069459d11b7f528678f21b957085c6",
+            "extra_groups": 0,
+            "max_absolute_error": {
+              "consumption_kwh": "0E-12",
+              "energy_cost_eur": "0E-12"
+            },
+            "missing_groups": 0,
+            "passed": true
+          }
+        },
+        "raw_energy_wh": 30000
+      }
+    },
+    "run_id": "acceptance-complete",
+    "status": "completed"
+  },
+  "combined_runtime": {
+    "all_native_outcomes_verified": true,
+    "athena_query_histogram": [
+      {
+        "queries": 60,
+        "scan_bytes_each": 0,
+        "state": "FAILED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 27,
+        "scan_bytes_each": 0,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 2,
+        "scan_bytes_each": 245,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 9,
+        "scan_bytes_each": 246,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 2,
+        "scan_bytes_each": 481,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 9,
+        "scan_bytes_each": 488,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 623,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 624,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 696,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 16,
+        "scan_bytes_each": 738,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 1,
+        "scan_bytes_each": 860,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 3,
+        "scan_bytes_each": 916,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 954,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 1,
+        "scan_bytes_each": 1288,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 1,
+        "scan_bytes_each": 1339,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 1,
+        "scan_bytes_each": 1984,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 3,
+        "scan_bytes_each": 1997,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      }
+    ],
+    "deployed_sha256": {
+      "jobs/gold_aggregate_energy.py": "1ca60bfa482998009d7a3a129b451d600ae24f48edbdf27541d0688a4defcbaf",
+      "jobs/gold_price_intervals.py": "21c948f3b6206995973f57383b0356c89229a4fc933dd67c7b5c28ee8787d54d",
+      "jobs/silver_process_indexes.py": "dce06b0e50721bd01b441652b553888651abeaa3bea0ecf0a4b562ae004912fb",
+      "jobs/silver_process_reference.py": "3618820a1360f7cbd3b7a388acfb081984109ac2b59d05571d72b7e3cf57bce3",
+      "src/lakehouse_platform/gold_refresh.py": "a8224c9436e69d2870ea7616a62483326c937b26540c2aa92a26392cbe2d6300",
+      "src/lakehouse_platform/gold_spark.py": "4ffa3e77d346c1dcd64ee14415c53a08d063d2283e919b108a54e15a5a57eae1",
+      "src/lakehouse_platform/pricing.py": "251fc9799d322bfa8c4da643185f47b4d40adf1090802aeeed880db8091021dd"
+    },
+    "expected_business_rejections": 0,
+    "managed_runs": 23,
+    "no_script_override": true,
+    "no_unrecorded_pipeline_runs_since_workspace_creation": true,
+    "normal_artifacts_and_writer_verified": true,
+    "observed_athena_queries": 155,
+    "observed_bucket_bytes_before_cleanup": 1912434,
+    "observed_bucket_objects_before_cleanup": 478,
+    "runs": [
+      {
+        "billable_dpu_seconds_model": 188,
+        "execution_seconds": 94,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 180,
+        "execution_seconds": 90,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 130,
+        "execution_seconds": 65,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 258,
+        "execution_seconds": 129,
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 194,
+        "execution_seconds": 97,
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 236,
+        "execution_seconds": 118,
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 120,
+        "execution_seconds": 59,
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 128,
+        "execution_seconds": 64,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 228,
+        "execution_seconds": 114,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 124,
+        "execution_seconds": 62,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 194,
+        "execution_seconds": 97,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 152,
+        "execution_seconds": 76,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 128,
+        "execution_seconds": 64,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 146,
+        "execution_seconds": 73,
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 152,
+        "execution_seconds": 76,
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 120,
+        "execution_seconds": 57,
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 166,
+        "execution_seconds": 83,
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 120,
+        "execution_seconds": 48,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 156,
+        "execution_seconds": 78,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 120,
+        "execution_seconds": 51,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 216,
+        "execution_seconds": 108,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 196,
+        "execution_seconds": 98,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 170,
+        "execution_seconds": 85,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      }
+    ],
+    "successful_runs": 23,
+    "total_athena_engine_ms": 85343,
+    "unfinished_work_counts": {
+      "meter_consumption_interval_recalculation_work": 0,
+      "priced_intervals_refresh": 0
+    }
+  },
+  "contradictory_sequence": {
+    "all_eleven_data_metadata_identities_stable": true,
+    "expected_silver_failure_before_accepted_mutation": true,
+    "no_gold_job_launched": true
+  },
+  "costs": {
+    "acceptance_total_usd_planning_model": "1.584652766633626834172713832",
+    "assumptions": [
+      "No free-tier, credits, taxes or negotiated discounts included in planning models",
+      "Glue 5 standard, two G.1X workers; service execution seconds with a 60-second per-run floor",
+      "Athena successful DML rounded upward to decimal MB with 10 MB minimum; 1 TB = 10^12 bytes, conservative model",
+      "CodeBuild Linux small total wall minutes rounded upward, including provisioning/queue; billable compute may be lower",
+      "S3 ending-inventory snapshot held for the complete observed campaign duration, 730-hour month and decimal GB model",
+      "Retained shared Glue logs, requests, catalog, transfer and billing APIs use explicit allowances, not claimed complete metering",
+      "Cost Explorer tagged UnblendedCost remains estimated and can lag; a zero current-day value is not a free campaign",
+      "Planning thresholds are operator stop rules, not enforced AWS Budget caps"
+    ],
+    "campaigns": {
+      "combined_cli": {
+        "athena_scan_usd_upper_model": "0.006650000000000",
+        "conservative_billable_scan_bytes": 950000000,
+        "dpu_seconds_model": 3822,
+        "glue_compute_usd_model": "0.4671333333333333333333333335",
+        "managed_runs": 23,
+        "observed_athena_queries": 155,
+        "observed_athena_scan_bytes": 48561,
+        "observed_ending_bucket_bytes": 1912434,
+        "s3_storage_usd_snapshot_model": "5.288982162306093639709150685E-8"
+      },
+      "full_domain_and_negative": {
+        "athena_scan_usd_upper_model": "0.004690000000000",
+        "conservative_billable_scan_bytes": 670000000,
+        "dpu_seconds_model": 4714,
+        "glue_compute_usd_model": "0.5761555555555555555555555554",
+        "managed_runs": 14,
+        "observed_athena_queries": 111,
+        "observed_athena_scan_bytes": 224472070,
+        "observed_ending_bucket_bytes": 692898902,
+        "s3_storage_usd_snapshot_model": "0.00002382485491632222288854553863"
+      }
+    },
+    "cleanup_builds": {
+      "combined_cli_cleanup": {
+        "rounded_wall_minutes_upper_model": "2",
+        "usd_upper_model": "0.0100000000",
+        "wall_seconds": "111.738"
+      },
+      "early_failed_attempt_cleanup": {
+        "rounded_wall_minutes_upper_model": "1",
+        "usd_upper_model": "0.0050000000",
+        "wall_seconds": "57.456"
+      },
+      "empty_scheduled_equivalent": {
+        "rounded_wall_minutes_upper_model": "1",
+        "usd_upper_model": "0.0050000000",
+        "wall_seconds": "52.746"
+      },
+      "full_domain_cleanup": {
+        "rounded_wall_minutes_upper_model": "2",
+        "usd_upper_model": "0.0100000000",
+        "wall_seconds": "111.553"
+      }
+    },
+    "cost_explorer_project_tagged_observation": [
+      {
+        "end_exclusive": "2026-11-03",
+        "estimated": true,
+        "services_usd": {
+          "AWS Glue": "0.8272",
+          "Amazon Athena": "0.0028",
+          "Amazon Simple Storage Service": "0.153670388",
+          "AmazonCloudWatch": "0",
+          "CodeBuild": "0"
+        },
+        "start": "2026-11-02"
+      },
+      {
+        "end_exclusive": "2026-11-04",
+        "estimated": true,
+        "services_usd": {
+          "AWS Glue": "1.30875492",
+          "Amazon Athena": "0.009835",
+          "Amazon Simple Storage Service": "0.0348408004",
+          "AmazonCloudWatch": "0",
+          "CodeBuild": "0"
+        },
+        "start": "2026-11-03"
+      },
+      {
+        "end_exclusive": "2026-11-05",
+        "estimated": true,
+        "services_usd": {
+          "AmazonCloudWatch": "0"
+        },
+        "start": "2026-11-04"
+      }
+    ],
+    "date": "2026-11-04",
+    "low_use_month_usd_model_4_compact_demos": "3.585279951204619825577078922",
+    "observed_metered_components_usd_model": "1.084652766633626834172713832",
+    "planning_stop_thresholds_usd": {
+      "per_campaign": 5,
+      "per_month": 20
+    },
+    "region": "eu-west-3",
+    "regional_public_prices": {
+      "athena": {
+        "effective_date": "2026-03-01T00:00:00Z",
+        "service": "AmazonAthena",
+        "sku": "QJG3MDDH8VGVDPFU",
+        "unit": "Terabytes",
+        "usage_type": "EUW3-DataScannedInTB",
+        "usd_rate": "7.0000000000"
+      },
+      "codebuild": {
+        "effective_date": "2026-08-01T00:00:00Z",
+        "service": "CodeBuild",
+        "sku": "MBV8CRK8VR6AH4WR",
+        "unit": "minutes",
+        "usage_type": "EUW3-Build-Min:Linux:g1.small",
+        "usd_rate": "0.0050000000"
+      },
+      "glue": {
+        "effective_date": "2026-10-01T00:00:00Z",
+        "service": "AWSGlue",
+        "sku": "6J6PZ3K796AHBWXY",
+        "unit": "DPU-Hour",
+        "usage_type": "EUW3-ETL-DPU-Hour",
+        "usd_rate": "0.4400000000"
+      },
+      "s3_standard": {
+        "effective_date": "2026-10-01T00:00:00Z",
+        "service": "AmazonS3",
+        "sku": "4PMVMK58J94ER67S",
+        "unit": "GB-Mo",
+        "usage_type": "EUW3-TimedStorage-ByteHrs",
+        "usd_rate": "0.0240000000"
+      }
+    },
+    "rest_month_usd_model_including_30_daily_empty_builds_and_allowance": "0.6501464063120000000",
+    "retained_state_bytes_all_versions": 6100263,
+    "retained_state_versions": 362,
+    "state_storage_usd_per_month_model": "0.0001464063120000000",
+    "unmetered_requests_catalog_logs_egress_billing_api_allowance_usd": "0.50"
+  },
+  "date": "2026-11-04",
+  "full_domain_analyst_qualifications": {
+    "contradiction": {
+      "authorization_layers": {
+        "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+        "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+        "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+      },
+      "direct_s3_denials": {
+        "bronze": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "gold_direct": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "silver": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        }
+      },
+      "gold_products": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "gold_select_restored": true,
+      "gold_select_revocation_denied": {
+        "authorization_error": true,
+        "denied": true
+      },
+      "passed": true,
+      "region": "eu-west-3",
+      "results_reused": false,
+      "silver_and_internal_sql_denials": {
+        "consumption_index": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "customer_site_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval_recalculation_work": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_refresh": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_stage": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "quarantine_records": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_contract_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_meter_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "tariff_grid_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        }
+      },
+      "temporary_credentials_used": true
+    },
+    "initial": {
+      "authorization_layers": {
+        "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+        "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+        "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+      },
+      "direct_s3_denials": {
+        "bronze": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "gold_direct": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "silver": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        }
+      },
+      "gold_products": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "gold_select_restored": true,
+      "gold_select_revocation_denied": {
+        "authorization_error": true,
+        "denied": true
+      },
+      "passed": true,
+      "region": "eu-west-3",
+      "results_reused": false,
+      "silver_and_internal_sql_denials": {
+        "consumption_index": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "customer_site_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval_recalculation_work": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_refresh": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_stage": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "quarantine_records": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_contract_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_meter_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "tariff_grid_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        }
+      },
+      "temporary_credentials_used": true
+    },
+    "invalid": {
+      "authorization_layers": {
+        "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+        "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+        "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+      },
+      "direct_s3_denials": {
+        "bronze": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "gold_direct": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "silver": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        }
+      },
+      "gold_products": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "gold_select_restored": true,
+      "gold_select_revocation_denied": {
+        "authorization_error": true,
+        "denied": true
+      },
+      "passed": true,
+      "region": "eu-west-3",
+      "results_reused": false,
+      "silver_and_internal_sql_denials": {
+        "consumption_index": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "customer_site_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval_recalculation_work": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_refresh": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_stage": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "quarantine_records": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_contract_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_meter_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "tariff_grid_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        }
+      },
+      "temporary_credentials_used": true
+    },
+    "invalid-replay": {
+      "authorization_layers": {
+        "bronze_silver_and_gold_direct_s3": "Analyst IAM denies direct landing/warehouse object access",
+        "gold": "Lake Formation SELECT with registered Gold-only S3 credentials",
+        "silver_sql": "IAM Glue catalog scope excludes Silver and internal tables"
+      },
+      "direct_s3_denials": {
+        "bronze": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "gold_direct": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        },
+        "silver": {
+          "code": "AccessDenied",
+          "denied": true,
+          "http_status": 403
+        }
+      },
+      "gold_products": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "gold_select_restored": true,
+      "gold_select_revocation_denied": {
+        "authorization_error": true,
+        "denied": true
+      },
+      "passed": true,
+      "region": "eu-west-3",
+      "results_reused": false,
+      "silver_and_internal_sql_denials": {
+        "consumption_index": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "customer_site_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "meter_consumption_interval_recalculation_work": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_refresh": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "priced_intervals_stage": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "quarantine_records": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_contract_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "site_meter_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        },
+        "tariff_grid_history": {
+          "athena": {
+            "authorization_error": true,
+            "catalog_masked_not_found": true,
+            "denied": true
+          },
+          "catalog": {
+            "code": "AccessDeniedException",
+            "denied": true
+          },
+          "exists_for_operator": true
+        }
+      },
+      "temporary_credentials_used": true
+    }
+  },
+  "full_domain_reconciliations": {
+    "contradiction": {
+      "accepted": {
+        "consumption_index": {
+          "actual_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "expected_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "meters": 200,
+          "passed": true,
+          "rows": 1473054
+        },
+        "meter_consumption_interval": {
+          "actual_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "expected_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "meters": 200,
+          "passed": true,
+          "rows": 1472854
+        }
+      },
+      "actual_analyst_credentials_verified": true,
+      "gold": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "profile": {
+        "contracts": {
+          "BASE": 100,
+          "PEAK_OFF_PEAK": 20,
+          "WEEKEND": 80
+        },
+        "customers": 100,
+        "index_count": 1473054,
+        "interval_count": 1472854,
+        "raw_energy_wh": 1778156401,
+        "sites": 200
+      },
+      "query_statistics": {
+        "all_results_fresh": true,
+        "engine_ms": 12314,
+        "queries": 9,
+        "scan_bytes": 36107578
+      },
+      "reader_boundaries": {
+        "gold": "dedicated analyst",
+        "indexes_intervals_references": "project operator"
+      },
+      "references": {
+        "customer_site": {
+          "actual_rows": 200,
+          "actual_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "expected_rows": 200,
+          "expected_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "passed": true
+        },
+        "site_contract": {
+          "actual_rows": 200,
+          "actual_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "expected_rows": 200,
+          "expected_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "passed": true
+        },
+        "site_meter": {
+          "actual_rows": 200,
+          "actual_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "expected_rows": 200,
+          "expected_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "passed": true
+        },
+        "tariff_grid": {
+          "actual_rows": 6,
+          "actual_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "expected_rows": 6,
+          "expected_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "passed": true
+        }
+      }
+    },
+    "initial": {
+      "accepted": {
+        "consumption_index": {
+          "actual_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "expected_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "meters": 200,
+          "passed": true,
+          "rows": 1473054
+        },
+        "meter_consumption_interval": {
+          "actual_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "expected_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "meters": 200,
+          "passed": true,
+          "rows": 1472854
+        }
+      },
+      "actual_analyst_credentials_verified": true,
+      "gold": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "profile": {
+        "contracts": {
+          "BASE": 100,
+          "PEAK_OFF_PEAK": 20,
+          "WEEKEND": 80
+        },
+        "customers": 100,
+        "index_count": 1473054,
+        "interval_count": 1472854,
+        "raw_energy_wh": 1778156401,
+        "sites": 200
+      },
+      "query_statistics": {
+        "all_results_fresh": true,
+        "engine_ms": 11011,
+        "queries": 9,
+        "scan_bytes": 36107578
+      },
+      "reader_boundaries": {
+        "gold": "dedicated analyst",
+        "indexes_intervals_references": "project operator"
+      },
+      "references": {
+        "customer_site": {
+          "actual_rows": 200,
+          "actual_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "expected_rows": 200,
+          "expected_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "passed": true
+        },
+        "site_contract": {
+          "actual_rows": 200,
+          "actual_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "expected_rows": 200,
+          "expected_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "passed": true
+        },
+        "site_meter": {
+          "actual_rows": 200,
+          "actual_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "expected_rows": 200,
+          "expected_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "passed": true
+        },
+        "tariff_grid": {
+          "actual_rows": 6,
+          "actual_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "expected_rows": 6,
+          "expected_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "passed": true
+        }
+      }
+    },
+    "invalid": {
+      "accepted": {
+        "consumption_index": {
+          "actual_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "expected_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "meters": 200,
+          "passed": true,
+          "rows": 1473054
+        },
+        "meter_consumption_interval": {
+          "actual_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "expected_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "meters": 200,
+          "passed": true,
+          "rows": 1472854
+        }
+      },
+      "actual_analyst_credentials_verified": true,
+      "gold": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "profile": {
+        "contracts": {
+          "BASE": 100,
+          "PEAK_OFF_PEAK": 20,
+          "WEEKEND": 80
+        },
+        "customers": 100,
+        "index_count": 1473054,
+        "interval_count": 1472854,
+        "raw_energy_wh": 1778156401,
+        "sites": 200
+      },
+      "query_statistics": {
+        "all_results_fresh": true,
+        "engine_ms": 11686,
+        "queries": 9,
+        "scan_bytes": 36107578
+      },
+      "reader_boundaries": {
+        "gold": "dedicated analyst",
+        "indexes_intervals_references": "project operator"
+      },
+      "references": {
+        "customer_site": {
+          "actual_rows": 200,
+          "actual_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "expected_rows": 200,
+          "expected_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "passed": true
+        },
+        "site_contract": {
+          "actual_rows": 200,
+          "actual_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "expected_rows": 200,
+          "expected_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "passed": true
+        },
+        "site_meter": {
+          "actual_rows": 200,
+          "actual_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "expected_rows": 200,
+          "expected_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "passed": true
+        },
+        "tariff_grid": {
+          "actual_rows": 6,
+          "actual_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "expected_rows": 6,
+          "expected_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "passed": true
+        }
+      }
+    },
+    "invalid-replay": {
+      "accepted": {
+        "consumption_index": {
+          "actual_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "expected_digest": "a44b08a1f6b6dcabd432a18d2ff9a7db930c5391a9196818d2b55b83f56f68e0",
+          "meters": 200,
+          "passed": true,
+          "rows": 1473054
+        },
+        "meter_consumption_interval": {
+          "actual_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "expected_digest": "1825f4e5b1d18f9f59520aacd231dd58e8345d0411379cdc31fa38e8f484e151",
+          "meters": 200,
+          "passed": true,
+          "rows": 1472854
+        }
+      },
+      "actual_analyst_credentials_verified": true,
+      "gold": {
+        "daily_customer_energy": {
+          "actual_rows": 62314,
+          "actual_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "expected_rows": 62314,
+          "expected_sha256": "9a3221dffed999c0f357243f3ed98ef1bf3941a60a10d6e3af70c04b4b936dad",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "daily_site_energy": {
+          "actual_rows": 112220,
+          "actual_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "expected_rows": 112220,
+          "expected_sha256": "e7c5e7cb82fb1903b0dab46577b8a72d59d15b97f9f46f5e5ac7fa61a845c76e",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        },
+        "monthly_customer_energy": {
+          "actual_rows": 2147,
+          "actual_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "expected_rows": 2147,
+          "expected_sha256": "af02adeb7feb67536732a0f162c462d4bf25095bca1b89568834e9728635686f",
+          "extra_groups": 0,
+          "max_absolute_error": {
+            "consumption_kwh": "0E-12",
+            "energy_cost_eur": "0E-12"
+          },
+          "missing_groups": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "profile": {
+        "contracts": {
+          "BASE": 100,
+          "PEAK_OFF_PEAK": 20,
+          "WEEKEND": 80
+        },
+        "customers": 100,
+        "index_count": 1473054,
+        "interval_count": 1472854,
+        "raw_energy_wh": 1778156401,
+        "sites": 200
+      },
+      "query_statistics": {
+        "all_results_fresh": true,
+        "engine_ms": 14831,
+        "queries": 9,
+        "scan_bytes": 36107578
+      },
+      "reader_boundaries": {
+        "gold": "dedicated analyst",
+        "indexes_intervals_references": "project operator"
+      },
+      "references": {
+        "customer_site": {
+          "actual_rows": 200,
+          "actual_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "expected_rows": 200,
+          "expected_sha256": "15f714ec74d6d6e923c79ff472f4f2fad12e4231f5930b6daad0df0bef1ca7bd",
+          "passed": true
+        },
+        "site_contract": {
+          "actual_rows": 200,
+          "actual_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "expected_rows": 200,
+          "expected_sha256": "f808f5aae0d5fd54844fdd21b4fb6b00d86dce5b4b989802d16b0f93398a51f5",
+          "passed": true
+        },
+        "site_meter": {
+          "actual_rows": 200,
+          "actual_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "expected_rows": 200,
+          "expected_sha256": "48e8b05ef6c21bfe53dd94613ff86724770edb7a6906f70d332d1c7c9c5c8498",
+          "passed": true
+        },
+        "tariff_grid": {
+          "actual_rows": 6,
+          "actual_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "expected_rows": 6,
+          "expected_sha256": "17c3988760b3e02cb59eed57d0a440411273a6b482b72fdcbcf07a5e2df17297",
+          "passed": true
+        }
+      }
+    }
+  },
+  "full_domain_runtime": {
+    "all_native_outcomes_verified": true,
+    "athena_query_histogram": [
+      {
+        "queries": 49,
+        "scan_bytes_each": 0,
+        "state": "FAILED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 2,
+        "scan_bytes_each": 0,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 1001,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 2,
+        "scan_bytes_each": 1709,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 7574,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 9349,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 9508,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 8,
+        "scan_bytes_each": 80337,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 8,
+        "scan_bytes_each": 2274811,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 12,
+        "scan_bytes_each": 5266474,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 11197160,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      },
+      {
+        "queries": 5,
+        "scan_bytes_each": 17261364,
+        "state": "SUCCEEDED",
+        "statement_type": "DML"
+      }
+    ],
+    "deployed_sha256": {
+      "jobs/gold_aggregate_energy.py": "1ca60bfa482998009d7a3a129b451d600ae24f48edbdf27541d0688a4defcbaf",
+      "jobs/gold_price_intervals.py": "21c948f3b6206995973f57383b0356c89229a4fc933dd67c7b5c28ee8787d54d",
+      "jobs/silver_process_indexes.py": "dce06b0e50721bd01b441652b553888651abeaa3bea0ecf0a4b562ae004912fb",
+      "jobs/silver_process_reference.py": "3618820a1360f7cbd3b7a388acfb081984109ac2b59d05571d72b7e3cf57bce3",
+      "src/lakehouse_platform/gold_refresh.py": "a8224c9436e69d2870ea7616a62483326c937b26540c2aa92a26392cbe2d6300",
+      "src/lakehouse_platform/gold_spark.py": "4ffa3e77d346c1dcd64ee14415c53a08d063d2283e919b108a54e15a5a57eae1",
+      "src/lakehouse_platform/pricing.py": "251fc9799d322bfa8c4da643185f47b4d40adf1090802aeeed880db8091021dd"
+    },
+    "expected_business_rejections": 1,
+    "managed_runs": 14,
+    "no_script_override": true,
+    "no_unrecorded_pipeline_runs_since_workspace_creation": true,
+    "normal_artifacts_and_writer_verified": true,
+    "observed_athena_queries": 111,
+    "observed_bucket_bytes_before_cleanup": 692898902,
+    "observed_bucket_objects_before_cleanup": 5802,
+    "runs": [
+      {
+        "billable_dpu_seconds_model": 286,
+        "execution_seconds": 143,
+        "stage": "silver:indexes",
+        "state": "FAILED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 148,
+        "execution_seconds": 74,
+        "stage": "reference:site_meter",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 142,
+        "execution_seconds": 71,
+        "stage": "reference:customer_site",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 198,
+        "execution_seconds": 99,
+        "stage": "reference:site_contract",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 168,
+        "execution_seconds": 84,
+        "stage": "reference:tariff_grid",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 396,
+        "execution_seconds": 198,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 1648,
+        "execution_seconds": 824,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 340,
+        "execution_seconds": 170,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 230,
+        "execution_seconds": 115,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 260,
+        "execution_seconds": 130,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 216,
+        "execution_seconds": 108,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 230,
+        "execution_seconds": 115,
+        "stage": "silver:indexes",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 296,
+        "execution_seconds": 148,
+        "stage": "gold:price",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      },
+      {
+        "billable_dpu_seconds_model": 156,
+        "execution_seconds": 78,
+        "stage": "gold:aggregate",
+        "state": "SUCCEEDED",
+        "worker_type": "G.1X",
+        "workers": 2
+      }
+    ],
+    "successful_runs": 13,
+    "total_athena_engine_ms": 93323,
+    "unfinished_work_counts": {
+      "meter_consumption_interval_recalculation_work": 0,
+      "priced_intervals_refresh": 0
+    }
+  },
+  "independent_cli_cleanup_receipts": {
+    "cold_start": {
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true,
+      "independent_bucket_database_jobs_roles_API_checks": true,
+      "native_build_succeeded": true,
+      "persistent_identities_and_versioned_state_verified": true
+    },
+    "combined_cli": {
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true,
+      "independent_bucket_database_jobs_roles_API_checks": true,
+      "native_build_succeeded": true,
+      "persistent_identities_and_versioned_state_verified": true
+    },
+    "full_domain": {
+      "cleanup_context_preserved": true,
+      "data_plane_absent_from_state": true,
+      "independent_bucket_database_jobs_roles_API_checks": true,
+      "native_build_succeeded": true,
+      "persistent_identities_and_versioned_state_verified": true
+    }
+  },
+  "independent_final_scoped_lf_and_policy_checks": {
+    "all_scoped_gold_grants_absent": true,
+    "all_three_registrations_absent": true,
+    "all_three_temporary_inline_policies_absent": true,
+    "native_empty_cleanup_succeeded": true,
+    "original_lf_settings_restored": true
+  },
+  "ingestion_boundary": {
+    "actual_ingestion_role_verified": true,
+    "batch_listing_and_all_bytes_match": true,
+    "conditional_overwrite_412": true,
+    "denials": {
+      "assume_writer_role": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "athena_workgroup": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "delete_batch_object": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "glue_database": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "glue_gold_table": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "glue_job": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "gold_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "gold_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "iam_role_metadata": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "lakeformation_settings": {
+        "code": "AccessDeniedException",
+        "denied": true,
+        "http_status": 400
+      },
+      "list_bucket_root": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "list_landing_root": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "list_warehouse": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "scripts_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "scripts_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "silver_read": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "silver_write": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "unconditional_create": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      },
+      "unconditional_overwrite": {
+        "code": "AccessDenied",
+        "denied": true,
+        "http_status": 403
+      }
+    },
+    "no_unconditional_object_created": true,
+    "original_batch_object_preserved": true,
+    "outside_s3_probes_exist_for_operator": true,
+    "passed": true,
+    "region": "eu-west-3",
+    "replayed_objects": 6,
+    "temporary_credentials_seconds": 900,
+    "uploaded_objects": 6
+  },
+  "invalid_replay_source_and_processing": {
+    "byte_verified_reused_source_objects": 2,
+    "fresh_gold_processing_id_verified": true,
+    "new_source_uploads": 0,
+    "original_silver_source_id_verified": true
+  },
+  "limits": [
+    "Compact five-phase CLI and full historical domain are separate clean AWS deployments",
+    "Gold uses the shared tariff engine; independent unit expectations and full raw-index/interval SHA-256 complement it",
+    "Reference comparisons cover the declared operational projection; no new reference-business-correction campaign",
+    "Invalid records are valid JSON with ten controlled contract/type/value violations; malformed JSON syntax is not covered",
+    "Quarantine replay proves exact logical contents, not physical snapshot stability; accepted ten-table metadata stays stable",
+    "Schema version 2 is rejected, not migrated; no production SLA, tenant isolation or concurrent-writer certification",
+    "Cost Explorer is estimated/delayed; metered planning models and unmetered allowances are not a settled invoice",
+    "Persistent controls, versioned state and reviewed/shared job logs remain; no continuously running data-processing cluster"
+  ],
+  "local_validation": {
+    "fmt_and_repository_hygiene": true,
+    "python_tests": 220,
+    "terraform_mock_scenarios": 9,
+    "validated_roots": 2
+  },
+  "named_analyst_queries": {
+    "daily-customer": {
+      "actual_analyst": true,
+      "results_reused": false,
+      "rows": 6,
+      "scan_bytes": 488
+    },
+    "daily-site": {
+      "actual_analyst": true,
+      "results_reused": false,
+      "rows": 6,
+      "scan_bytes": 738
+    },
+    "monthly-customer": {
+      "actual_analyst": true,
+      "results_reused": false,
+      "rows": 3,
+      "scan_bytes": 246
+    }
+  },
+  "native_cleanup_builds": {
+    "cold_start": {
+      "guard_receipt": {
+        "initial_delete_count": 24,
+        "passes": 1,
+        "recovery": null,
+        "succeeded": true
+      },
+      "status": "SUCCEEDED"
+    },
+    "combined_cli": {
+      "guard_receipt": {
+        "initial_delete_count": 59,
+        "passes": 2,
+        "recovery": {
+          "lf_revoke_only_failure": true,
+          "remaining_delete_count": 8,
+          "remaining_lf_revocations": 0,
+          "strict_subset_revalidated": true
+        },
+        "succeeded": true
+      },
+      "status": "SUCCEEDED"
+    },
+    "empty": {
+      "guard_receipt": {
+        "initial_delete_count": 0,
+        "passes": 1,
+        "recovery": null,
+        "succeeded": true
+      },
+      "status": "SUCCEEDED"
+    },
+    "full_domain": {
+      "guard_receipt": {
+        "initial_delete_count": 59,
+        "passes": 2,
+        "recovery": {
+          "lf_revoke_only_failure": true,
+          "remaining_delete_count": 8,
+          "remaining_lf_revocations": 0,
+          "strict_subset_revalidated": true
+        },
+        "succeeded": true
+      },
+      "status": "SUCCEEDED"
+    }
+  },
+  "positive_replay_proofs": {
+    "older-replay": {
+      "control_and_stage_tables_excluded_from_metadata_stability": true,
+      "gold_content_unchanged": {
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "monthly_customer_energy": true
+      },
+      "iceberg_data_table_metadata_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "meter_consumption_interval": true,
+        "monthly_customer_energy": true,
+        "priced_intervals": true,
+        "quarantine_records": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      },
+      "passed": true,
+      "silver_content_and_versions_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "meter_consumption_interval": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      }
+    },
+    "unchanged-replay": {
+      "control_and_stage_tables_excluded_from_metadata_stability": true,
+      "gold_content_unchanged": {
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "monthly_customer_energy": true
+      },
+      "iceberg_data_table_metadata_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "daily_customer_energy": true,
+        "daily_site_energy": true,
+        "meter_consumption_interval": true,
+        "monthly_customer_energy": true,
+        "priced_intervals": true,
+        "quarantine_records": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      },
+      "passed": true,
+      "silver_content_and_versions_unchanged": {
+        "consumption_index": true,
+        "customer_site_history": true,
+        "meter_consumption_interval": true,
+        "site_contract_history": true,
+        "site_meter_history": true,
+        "tariff_grid_history": true
+      }
+    }
+  },
+  "privacy": "Synthetic counts, fingerprints, scoped checks and reviewed project costs only; raw data rows, pointers, credentials, plans, state, queries and logs remain private",
+  "qualification_identity_fix": {
+    "no_IAM_permission_expansion_or_processing_job_resubmission": true,
+    "observed_operator_gold_GetDataAccess_denial": true,
+    "operational_reads_remain_operator_gold_reads_now_actual_analyst": true
+  },
+  "qualification_source_sha256": {
+    "src/lakehouse_platform/analyst_queries.py": "135e381bb77ea62a1db0f7d21f3e77f131bafad00296102726f6ad34e49a1fe2",
+    "src/lakehouse_platform/demo.py": "44311c2210c33ae8eb7f259a355a3e9ff3ba77d1dc296e460fd3a0ae0b3f204c",
+    "src/lakehouse_platform/demo_aws.py": "3a34e024444b612e6d8e6a0f476ab311dda03cde82e2e2d64f24e7c8b08ae27b",
+    "src/lakehouse_platform/domain_fixture.py": "44a19c082054ba086ce6fc721715fd4246324a8acb8bf7e662a685efd4225933",
+    "src/lakehouse_platform/domain_validation.py": "a9533aed6bc2957b640a1c9083b9583b306758a2cca791959e1a1a2c644bf675"
+  },
+  "quarantine_exact_contents_and_replay": {
+    "invalid": {
+      "actual_rows": 10,
+      "actual_sha256": "07b60b4bc1d7be2a71a78a6c0cb1d3436d0489491f60c303475dd08d93bdb6e7",
+      "expected_rows": 10,
+      "expected_sha256": "07b60b4bc1d7be2a71a78a6c0cb1d3436d0489491f60c303475dd08d93bdb6e7",
+      "passed": true
+    },
+    "invalid-replay": {
+      "actual_rows": 10,
+      "actual_sha256": "07b60b4bc1d7be2a71a78a6c0cb1d3436d0489491f60c303475dd08d93bdb6e7",
+      "expected_rows": 10,
+      "expected_sha256": "07b60b4bc1d7be2a71a78a6c0cb1d3436d0489491f60c303475dd08d93bdb6e7",
+      "passed": true
+    }
+  },
+  "region": "eu-west-3",
+  "scope": "Final on-demand V1 demonstration acceptance, not production certification",
+  "terraform_convergence": {
+    "enabled_data_plane_before_cleanup": true,
+    "persistent_bootstrap_after_cleanup": true
+  }
+}
